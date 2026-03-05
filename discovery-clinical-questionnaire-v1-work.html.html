@@ -1,0 +1,1625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceMate® — Discovery &amp; Clinical Questionnaire Wizard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@300;400;500;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pm-red:#EA0044;--pm-red-dark:#c8003b;--pm-red-light:#ff2a5f;
+  --pm-red-bg:#FFF5F7;--pm-red-bg2:#FFEAEF;
+  --pm-gray:#626469;--pm-light-gray:#D9D9D6;
+  --text-primary:#212529;--text-secondary:#495057;--text-tertiary:#868E96;
+  --bg-body:#F8F9FA;--bg-white:#FFFFFF;
+  --border:#DEE2E6;--border-light:#E9ECEF;
+  --ops-color:#EA0044;--ops-bg:#FFF5F7;
+  --clin-color:#0077B6;--clin-bg:#EBF5FB;
+  --shared-color:#2E7D32;--shared-bg:#E8F5E9;
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.08);--shadow-md:0 4px 12px rgba(0,0,0,0.1);
+  --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Roboto',sans-serif;background:var(--bg-body);color:var(--text-primary);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* LAYOUT */
+.app{display:grid;grid-template-columns:280px 1fr;grid-template-rows:auto 1fr;min-height:100vh}
+.topbar{grid-column:1/-1;background:#FFFFFF;border-bottom:3px solid #EA0044;padding:0 24px;height:72px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 1px 8px rgba(0,0,0,0.06)}
+.topbar-left{display:flex;align-items:center;gap:14px}
+.topbar-logo{display:flex;align-items:center;height:56px}
+.topbar-logo svg{height:56px;width:auto}
+.topbar-divider{width:1px;height:22px;background:#D9D9D6}
+.topbar-title{font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:600;color:#626469}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.topbar-save{font-family:'Roboto Condensed',sans-serif;font-size:0.7rem;color:#8A8C90;font-style:italic}
+.btn-topbar{padding:6px 16px;border-radius:20px;border:1.5px solid #D9D9D6;background:white;color:#2D2E32;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s}
+.btn-topbar:hover{border-color:#EA0044;color:#EA0044}
+
+/* SIDEBAR */
+.sidebar{background:#2D2E32;color:white;padding:0;overflow-y:auto;position:sticky;top:60px;height:calc(100vh - 60px)}
+.sidebar-track-toggle{padding:16px 14px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.track-toggle-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.08em;color:rgba(255,255,255,0.35);margin-bottom:8px;padding-left:4px}
+.track-btns{display:flex;gap:4px}
+.track-btn{flex:1;padding:7px 4px;border:none;border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.72rem;font-weight:600;cursor:pointer;transition:all 0.2s;background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.5);text-align:center}
+.track-btn:hover{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.8)}
+.track-btn.active-ops{background:rgba(200,16,46,0.3);color:#FF8A80;border:1px solid rgba(200,16,46,0.4)}
+.track-btn.active-clin{background:rgba(0,119,182,0.3);color:#80D4FF;border:1px solid rgba(0,119,182,0.4)}
+.track-btn.active-both{background:rgba(46,125,50,0.25);color:#80CBC4;border:1px solid rgba(46,125,50,0.35)}
+
+.sidebar-progress{display:none}
+.sp-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.sp-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:0.05em;color:rgba(255,255,255,0.4)}
+.sp-pct{font-size:0.78rem;font-weight:700;color:white}
+.sp-track{height:4px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;margin-bottom:8px}
+.sp-fill-ops{height:100%;background:var(--pm-red);border-radius:2px;transition:width 0.4s ease;width:0%}
+.sp-fill-clin{height:100%;background:var(--clin-color);border-radius:2px;transition:width 0.4s ease;width:0%}
+
+.sidebar-section-label{font-size:0.65rem;text-transform:uppercase;letter-spacing:0.07em;color:rgba(255,255,255,0.3);padding:14px 20px 5px;display:flex;align-items:center;gap:8px}
+.sidebar-section-label::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.07)}
+.sidebar-nav{list-style:none}
+.sidebar-nav a{display:flex;align-items:center;justify-content:space-between;padding:9px 20px;color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.83rem;transition:all 0.15s;border-left:3px solid transparent;cursor:pointer}
+.sidebar-nav a:hover{background:rgba(255,255,255,0.05);color:white}
+.sidebar-nav a.active{background:rgba(255,255,255,0.08);color:white}
+.sidebar-nav a.active-ops-nav{border-left-color:var(--pm-red)}
+.sidebar-nav a.active-clin-nav{border-left-color:var(--clin-color)}
+.sidebar-nav a.active-shared-nav{border-left-color:var(--shared-color)}
+.nav-status{font-size:0.65rem;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap;flex-shrink:0}
+.nav-complete{background:rgba(46,125,50,0.2);color:#81C784}
+.nav-partial{background:rgba(230,81,0,0.2);color:#FFA726}
+.nav-empty{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.3)}
+.nav-hidden{opacity:0.25;pointer-events:none}
+
+/* MAIN */
+.main{padding:28px 36px 60px;overflow-y:auto}
+.section{display:none}.section.active{display:block;animation:fadeIn 0.25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.section-header{margin-bottom:24px}
+.section-track-badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:20px;font-size:0.7rem;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:10px}
+.badge-ops{background:var(--pm-red-bg2);color:var(--pm-red-dark)}
+.badge-clin{background:#DBEAFE;color:#1D4ED8}
+.badge-shared{background:#D1FAE5;color:#065F46}
+.section-header h2{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:5px}
+.section-header .section-desc{font-size:0.88rem;color:var(--text-secondary);max-width:600px;line-height:1.6}
+
+/* FIELD CARDS */
+.field-card{background:var(--bg-white);border-radius:var(--radius);padding:20px 24px;margin-bottom:14px;box-shadow:var(--shadow-sm);border:1px solid var(--border-light)}
+.field-card-title{font-size:0.73rem;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--text-tertiary);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border-light)}
+.field{margin-bottom:16px}.field:last-child{margin-bottom:0}
+.field label{display:block;font-size:0.82rem;font-weight:600;color:var(--text-secondary);margin-bottom:5px}
+.field label .req{color:var(--pm-red);margin-left:2px}
+.field-hint{font-size:0.75rem;color:var(--text-tertiary);margin-bottom:5px;line-height:1.5}
+.field input,.field select,.field textarea{width:100%;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.86rem;color:var(--text-primary);background:#FAFBFC;transition:all 0.15s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--pm-red);box-shadow:0 0 0 3px rgba(200,16,46,0.08);background:white}
+.field input::placeholder,.field textarea::placeholder{color:#ADB5BD}
+.field textarea{min-height:80px;resize:vertical}
+.field input.prefilled{background:#F0FDF4;border-color:#86EFAC;color:var(--text-primary)}
+.field-note{font-size:0.72rem;color:var(--text-tertiary);margin-top:4px;font-style:italic}
+
+.inline-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.inline-grid.three{grid-template-columns:1fr 1fr 1fr}
+.full{grid-column:1/-1}
+
+/* RADIO / YES-NO */
+.yn-group{display:flex;gap:10px;margin-top:4px}
+.yn-btn{padding:8px 20px;border:1.5px solid var(--border);border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.84rem;font-weight:600;cursor:pointer;transition:all 0.15s;background:white;color:var(--text-secondary)}
+.yn-btn:hover{border-color:var(--pm-red);color:var(--pm-red)}
+.yn-btn.selected-yes{background:var(--pm-red);border-color:var(--pm-red);color:white}
+.yn-btn.selected-no{background:#F8F9FA;border-color:#495057;color:#212529}
+.conditional{display:none;margin-top:10px;padding:14px;background:#F8F9FA;border-radius:8px;border-left:3px solid var(--pm-red)}
+.conditional.visible{display:block}
+
+/* SERVICE MODEL CARDS */
+.service-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.service-card{border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;cursor:pointer;transition:all 0.2s;user-select:none}
+.service-card:hover{border-color:var(--pm-red-light);background:var(--pm-red-bg)}
+.service-card.selected{border-color:var(--pm-red);background:var(--pm-red-bg);box-shadow:0 0 0 3px rgba(200,16,46,0.1)}
+.service-card-icon{font-size:1.3rem;margin-bottom:5px}
+.service-card-label{font-size:0.86rem;font-weight:700;color:var(--text-primary)}
+.service-card.selected .service-card-label{color:var(--pm-red-dark)}
+.service-card-sub{font-size:0.74rem;color:var(--text-tertiary);margin-top:2px;line-height:1.4}
+
+/* CHAMPION CARDS */
+.champion-card{background:#F8F9FA;border:1px solid var(--border-light);border-radius:10px;padding:14px 16px;margin-bottom:10px;position:relative}
+.champion-card .inline-grid{gap:10px}
+.remove-champion{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--text-tertiary);cursor:pointer;font-size:1rem;padding:4px 8px;border-radius:6px;transition:all 0.15s}
+.remove-champion:hover{background:var(--pm-red-bg);color:var(--pm-red)}
+
+/* INFO CALLOUT */
+.info-callout{background:#EFF6FF;border:1px solid #BFDBFE;border-left:4px solid #3B82F6;border-radius:10px;padding:14px 18px;margin-bottom:16px;font-size:0.83rem;color:var(--text-secondary);line-height:1.6}
+.info-callout strong{color:var(--text-primary)}
+.shared-callout{background:#F0FDF4;border:1px solid #BBF7D0;border-left:4px solid #22C55E;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:0.8rem;color:#166534}
+
+/* NAV BUTTONS */
+.nav-buttons{display:flex;justify-content:space-between;align-items:center;margin-top:28px;padding-top:20px;border-top:1px solid var(--border-light)}
+.nav-btn{padding:10px 26px;border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;transition:all 0.15s;border:none}
+.nav-btn-primary{background:var(--pm-red);color:white}
+.nav-btn-primary:hover{background:var(--pm-red-dark);transform:translateY(-1px)}
+.nav-btn-secondary{background:var(--bg-body);color:var(--text-primary);border:1px solid var(--border)}
+.nav-btn-secondary:hover{background:var(--border-light)}
+.nav-step-info{font-size:0.78rem;color:var(--text-tertiary)}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;padding:12px 22px;background:#1a1a2e;color:white;border-radius:9px;font-size:0.84rem;font-weight:500;opacity:0;transform:translateY(10px);transition:all 0.3s;z-index:1000;box-shadow:0 8px 24px rgba(0,0,0,0.2)}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.success{background:#2B8A3E}
+
+/* TRACK INTRO */
+.track-intro{background:white;border-radius:16px;padding:32px;box-shadow:var(--shadow-md);margin-bottom:24px;border:1px solid var(--border-light)}
+.track-intro h2{font-family:'Poppins',sans-serif;font-size:1.6rem;margin-bottom:8px}
+.track-intro p{font-size:0.9rem;color:var(--text-secondary);line-height:1.7;margin-bottom:24px}
+.track-option-cards{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.track-option{border:2px solid var(--border);border-radius:12px;padding:20px;cursor:pointer;transition:all 0.2s;text-align:center;user-select:none}
+.track-option:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.track-option.ops-option:hover,.track-option.ops-option.selected{border-color:var(--pm-red);background:var(--pm-red-bg)}
+.track-option.clin-option:hover,.track-option.clin-option.selected{border-color:var(--clin-color);background:var(--clin-bg)}
+.track-option.both-option:hover,.track-option.both-option.selected{border-color:var(--shared-color);background:var(--shared-bg)}
+.track-option-icon{font-size:2rem;margin-bottom:10px}
+.track-option-label{font-family:'Poppins',sans-serif;font-size:1rem;font-weight:700;margin-bottom:5px}
+.track-option.ops-option .track-option-label{color:var(--pm-red-dark)}
+.track-option.clin-option .track-option-label{color:#1D4ED8}
+.track-option.both-option .track-option-label{color:#065F46}
+.track-option-sub{font-size:0.76rem;color:var(--text-tertiary);line-height:1.5}
+.track-option-role{display:inline-block;margin-top:8px;font-size:0.68rem;font-weight:700;padding:3px 10px;border-radius:10px}
+.ops-option .track-option-role{background:var(--pm-red-bg2);color:var(--pm-red-dark)}
+.clin-option .track-option-role{background:#DBEAFE;color:#1D4ED8}
+.both-option .track-option-role{background:#D1FAE5;color:#065F46}
+
+@media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:16px 20px 40px}.track-option-cards{grid-template-columns:1fr}.service-cards{grid-template-columns:1fr}.inline-grid{grid-template-columns:1fr}}
+@media print{.sidebar,.topbar,.nav-buttons,.btn-topbar{display:none!important}.app{display:block!important}.main{padding:0!important}.section{display:block!important}.section:not(.active){display:none!important}}
+
+/* ── PM Standard Action Bar ───────────────────────────── */
+.pm-action-bar{position:fixed;bottom:0;left:0;right:0;z-index:500;background:rgba(255,255,255,0.97);border-top:1px solid #E9ECEF;backdrop-filter:blur(8px);padding:12px 40px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 -4px 16px rgba(0,0,0,0.07);}
+.pm-action-left{display:flex;align-items:center;gap:8px;}
+.pm-action-right{display:flex;align-items:center;gap:8px;}
+.pm-pill{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;font-family:'Roboto',sans-serif;font-size:0.8rem;font-weight:600;cursor:pointer;transition:all 0.15s;border:none;white-space:nowrap;}
+.pm-pill-close{background:#F1F3F5;color:#495057;}
+.pm-pill-close:hover{background:#E9ECEF;color:#212529;}
+.pm-pill-cancel{background:#FBE8EC;color:#EA0044;border:1.5px solid #FFD0D5;}
+.pm-pill-cancel:hover{background:#EA0044;color:#fff;}
+.pm-pill-save{background:#E8F5EE;color:#1B6B45;border:1.5px solid #C8EDD1;font-family:'Poppins',sans-serif;}
+.pm-pill-save:hover{background:#1B6B45;color:#fff;}
+.pm-pill-submit{background:#EA0044;color:#fff;}
+.pm-pill-submit:hover{background:#c8003b;}
+.pm-export-wrap{position:relative;}
+.pm-pill-export{background:#F1F3F5;color:#495057;}
+.pm-pill-export:hover{background:#E9ECEF;}
+.pm-export-menu{position:absolute;bottom:calc(100% + 8px);right:0;background:#fff;border:1px solid #DEE2E6;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.12);min-width:180px;overflow:hidden;display:none;z-index:600;}
+.pm-export-menu.open{display:block;}
+.pm-export-item{display:flex;align-items:center;gap:9px;padding:10px 14px;font-family:'Roboto',sans-serif;font-size:0.8rem;font-weight:500;color:#495057;cursor:pointer;transition:background 0.1s;border:none;background:none;width:100%;text-align:left;}
+.pm-export-item:hover{background:#F8F9FA;color:#212529;}
+.pm-autosave{display:flex;align-items:center;gap:6px;font-size:0.72rem;color:#ADB5BD;position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);padding:5px 12px;border-radius:20px;border:1px solid #E9ECEF;box-shadow:0 2px 8px rgba(0,0,0,0.06);pointer-events:none;opacity:0;transition:opacity 0.3s;z-index:100;white-space:nowrap;}
+.pm-autosave.show{opacity:1;}
+.pm-autosave-dot{width:7px;height:7px;border-radius:50%;background:#1B6B45;}
+body{padding-bottom:72px;}
+@media print{.pm-action-bar{display:none!important;}.pm-autosave{display:none!important;}}
+
+/* Required field validation */
+.field-error-highlight input,
+.field-error-highlight select,
+.field-error-highlight textarea {
+  border-color: #EA0044 !important;
+  box-shadow: 0 0 0 3px rgba(234,0,68,0.15) !important;
+}
+.field-error-highlight .yn-group .yn-btn:not(.selected-yes):not(.selected-no) {
+  border-color: #EA0044 !important;
+}
+
+/* COMPLETION BANNER */
+.completion-banner{display:none;margin-top:24px;border-radius:12px;overflow:hidden;border:2px solid #EA0044;}
+.completion-banner.show{display:block;}
+.completion-banner-header{background:#EA0044;padding:16px 20px;display:flex;align-items:center;gap:12px;}
+.completion-banner-header span{font-family:'Roboto',sans-serif;font-size:1rem;font-weight:700;color:white;}
+.completion-banner-body{background:#FFF5F7;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.completion-banner-msg{font-size:0.9rem;color:#495057;line-height:1.5;}
+.completion-banner-actions{display:flex;gap:10px;flex-shrink:0;}
+.btn-complete-primary{padding:10px 24px;background:#EA0044;color:white;border:none;border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.btn-complete-primary:hover{background:#C8003A;transform:translateY(-1px);}
+.btn-complete-secondary{padding:10px 20px;background:white;color:#495057;border:1.5px solid #dee2e6;border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.88rem;font-weight:600;cursor:pointer;transition:all 0.15s;}
+.btn-complete-secondary:hover{border-color:#EA0044;color:#EA0044;}
+
+/* PROGRESS BARS */
+.sidebar-progress{display:block;padding:12px 16px;border-top:1px solid var(--border);}
+.sp-track-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-tertiary);margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;}
+.sp-track-label span{font-size:0.72rem;font-weight:700;}
+.sp-track-label span.ops-pct{color:var(--pm-red);}
+.sp-track-label span.clin-pct{color:var(--clin-color);}
+.sp-bar-track{height:5px;background:var(--border-light);border-radius:3px;margin-bottom:10px;overflow:hidden;}
+.sp-fill-ops{height:100%;background:var(--pm-red);border-radius:3px;transition:width 0.4s ease;width:0%;}
+.sp-fill-clin{height:100%;background:var(--clin-color);border-radius:3px;transition:width 0.4s ease;width:0%;}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+<div class="app">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" overflow="hidden">
+          <g><path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.601 57.79 165.601 33.675 172.08 33.675 176.723 50.509 176.79 50.509 181.467 33.675 188.014 33.675 188.014 57.79 184.005 57.79 184.005 38.818 183.938 38.818 178.528 57.79 175.02 57.79 169.676 38.818 169.609 38.818 169.609 57.79 165.601 57.79Z" fill="#636569"/><path d="M201.94 57.79 201.674 56.287C200.003 57.422 198.433 58.123 196.263 58.123 193.122 58.123 191.551 55.885 191.551 53.515 191.551 49.573 194.759 47.503 201.506 46.701L201.506 45.232C201.506 43.895 200.438 43.161 198.968 43.161 197.031 43.161 195.962 44.196 195.16 45.299L192.489 43.261C193.557 41.425 196.43 40.021 198.968 40.09 203.644 40.189 205.648 41.892 205.648 47.104L205.648 55.286C205.648 56.155 205.715 57.023 205.982 57.792L201.94 57.792ZM201.507 49.473C198.735 50.008 195.695 50.576 195.695 53.013 195.695 54.315 196.529 55.051 197.699 55.051 199.001 55.051 200.638 53.948 201.507 53.214L201.507 49.473Z" fill="#636569"/><path d="M210.689 40.421 210.689 34.676 214.83 34.676 214.83 40.421 218.238 40.421 218.238 43.762 214.83 43.762 214.83 53.582C214.83 54.517 215.299 54.785 216.334 54.785 216.969 54.785 217.636 54.584 218.238 54.45L218.238 57.857C217.101 57.991 216.099 58.125 214.965 58.125 211.892 58.125 210.689 56.588 210.689 54.116L210.689 43.762 208.284 43.762 208.284 40.421 210.689 40.421Z" fill="#636569"/><path d="M224.179 49.774C224.245 53.381 225.849 54.784 227.787 54.784 229.725 54.784 230.626 53.915 231.662 52.713L234.668 54.584C233.065 57.056 230.727 58.124 227.386 58.124 222.877 58.124 220.038 54.617 220.038 49.106 220.038 43.595 222.877 40.088 227.586 40.088 232.129 40.054 234.667 43.896 234.667 48.072L234.667 49.775 224.179 49.775ZM230.86 46.968C230.794 44.563 229.524 43.16 227.519 43.16 225.514 43.16 224.246 44.563 224.179 46.968L230.86 46.968Z" fill="#636569"/></g></g><g><circle cx="240.028" cy="40.004" r="3.659" stroke="#636569" stroke-width="0.48" stroke-miterlimit="10" fill="none"/><path d="M239.897 40.276 239.24 40.276 239.24 41.999 238.707 41.999 238.707 38.011 239.984 38.011C240.968 38.011 241.272 38.489 241.272 39.076 241.272 39.532 241.136 40.027 240.43 40.206L241.348 41.999 240.767 41.999 239.898 40.276ZM239.761 39.858C240.424 39.858 240.717 39.684 240.717 39.103 240.717 38.63 240.451 38.435 239.869 38.435L239.239 38.435 239.239 39.859 239.761 39.859Z" fill="#636569"/></g>
+        </svg>
+    </div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-title">Discovery &amp; Clinical Questionnaire</div>
+  </div>
+  <div class="topbar-right">
+    <span class="topbar-save" id="saveStatus">All changes saved</span>
+    <button class="btn-topbar" onclick="saveProgress()">&#128190; Save</button>
+    <button class="btn-topbar" onclick="window.print()">&#128438; Print</button>
+  </div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-track-toggle">
+    <div class="track-toggle-label">Active Track</div>
+    <div class="track-btns">
+      <div class="track-btn" id="tb-ops" onclick="selectTrackAndNavigate('ops')">&#128203; Operations</div>
+      <div class="track-btn" id="tb-clin" onclick="selectTrackAndNavigate('clin')">&#10084;&#65039; Clinical</div>
+      <div class="track-btn" id="tb-both" onclick="selectTrackAndNavigate('both')">&#9889; Both</div>
+    </div>
+  </div>
+
+
+
+  <div class="sidebar-section-label">Start Here</div>
+  <ul class="sidebar-nav" id="nav-shared">
+    <li><a onclick="goSection('intro')" id="nav-intro" class="active active-shared-nav"><span>&#128075; Welcome</span><span class="nav-status nav-empty" id="ns-intro">—</span></a></li>
+    <li><a onclick="goSection('shared')" id="nav-shared-link" class="active-shared-nav"><span>&#127981; Practice Basics</span><span class="nav-status nav-empty" id="ns-shared">—</span></a></li>
+  </ul>
+
+  <div class="sidebar-section-label" id="label-ops">Operations</div>
+  <ul class="sidebar-nav" id="nav-ops-list">
+    <li><a onclick="goSection('ops-overview')" id="nav-ops-overview" class="active-ops-nav"><span>&#128203; Practice Overview</span><span class="nav-status nav-empty" id="ns-ops-overview">—</span></a></li>
+    <li><a onclick="goSection('ops-champions')" id="nav-ops-champions" class="active-ops-nav"><span>&#127942; Champions</span><span class="nav-status nav-empty" id="ns-ops-champions">—</span></a></li>
+    <li><a onclick="goSection('ops-billing')" id="nav-ops-billing" class="active-ops-nav"><span>&#128176; Billing & Authorization</span><span class="nav-status nav-empty" id="ns-ops-billing">—</span></a></li>
+  </ul>
+
+  <div class="sidebar-section-label" id="label-clin">Clinical</div>
+  <ul class="sidebar-nav" id="nav-clin-list">
+    <li><a onclick="goSection('clin-vendors')" id="nav-clin-vendors" class="active-clin-nav"><span>&#128225; Vendor Sites</span><span class="nav-status nav-empty" id="ns-clin-vendors">—</span></a></li>
+    <li><a onclick="goSection('clin-team')" id="nav-clin-team" class="active-clin-nav"><span>&#128101; Team & Access</span><span class="nav-status nav-empty" id="ns-clin-team">—</span></a></li>
+    <li><a onclick="goSection('clin-remote')" id="nav-clin-remote" class="active-clin-nav"><span>&#128247; Remote Monitoring</span><span class="nav-status nav-empty" id="ns-clin-remote">—</span></a></li>
+    <li><a onclick="goSection('clin-inclinic')" id="nav-clin-inclinic" class="active-clin-nav"><span>&#127973; In-Clinic Workflow</span><span class="nav-status nav-empty" id="ns-clin-inclinic">—</span></a></li>
+    <li><a onclick="goSection('clin-patients')" id="nav-clin-patients" class="active-clin-nav"><span>&#128101; Patient Communication</span><span class="nav-status nav-empty" id="ns-clin-patients">—</span></a></li>
+    <li><a onclick="goSection('clin-scheduling')" id="nav-clin-scheduling" class="active-clin-nav"><span>&#128197; Remote Scheduling</span><span class="nav-status nav-empty" id="ns-clin-scheduling">—</span></a></li>
+  </ul>
+
+  <!-- PROGRESS BARS -->
+  <div class="sidebar-progress" id="sidebar-progress-section" style="display:none;">
+    <div class="sp-track-label">Operations <span class="ops-pct" id="ops-pct">0%</span></div>
+    <div class="sp-bar-track"><div class="sp-fill-ops" id="ops-bar"></div></div>
+    <div class="sp-track-label">Clinical <span class="clin-pct" id="clin-pct">0%</span></div>
+    <div class="sp-bar-track"><div class="sp-fill-clin" id="clin-bar"></div></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- ===== INTRO ===== -->
+  <div class="section active" id="intro">
+    <div class="track-intro">
+      <h2>Welcome to Your Discovery Questionnaire</h2>
+      <p>This questionnaire helps PaceMate&reg; understand how your practice works so we can configure PaceMateLIVE&trade; to fit your workflows perfectly. It typically takes <strong>20–30 minutes</strong> to complete. You can save your progress at any time and pick up where you left off.</p>
+      <p style="margin-top:12px;margin-bottom:24px">Select who is completing this form today. Different roles can complete different tracks — you can share this link with a colleague to finish the other track.</p>
+      <div class="track-option-cards" id="trackOptionCards">
+        <div class="track-option ops-option" onclick="selectTrack('ops')">
+          <div class="track-option-icon">&#128203;</div>
+          <div class="track-option-label">Operations</div>
+          <div class="track-option-sub">Practice overview, EMR, billing configuration, and implementation contacts.</div>
+          <div class="track-option-role">Admin / Practice Manager</div>
+        </div>
+        <div class="track-option clin-option" onclick="selectTrack('clin')">
+          <div class="track-option-icon">&#10084;&#65039;</div>
+          <div class="track-option-label">Clinical</div>
+          <div class="track-option-sub">Vendor sites, monitoring workflows, in-clinic processes, and patient communication.</div>
+          <div class="track-option-role">Device Nurse / Clinical Staff</div>
+        </div>
+        <div class="track-option both-option" onclick="selectTrack('both')">
+          <div class="track-option-icon">&#9889;</div>
+          <div class="track-option-label">Both Tracks</div>
+          <div class="track-option-sub">Complete the full questionnaire if one person is responsible for all sections.</div>
+          <div class="track-option-role">Full Completion</div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <div></div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="nav-step-info">Select a track above to begin</span>
+        <button class="nav-btn nav-btn-primary" id="intro-next-btn" onclick="goSection('shared')" style="display:none">Begin &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SHARED: PRACTICE BASICS ===== -->
+  <div class="section" id="shared">
+    <div class="section-header">
+      <div class="section-track-badge badge-shared">&#127981; Practice Basics — Shared</div>
+      <h2>Practice Basics</h2>
+      <div class="section-desc">These answers apply to both Operations and Clinical tracks. Fill this in once — it pre-fills relevant fields throughout the questionnaire.</div>
+    </div>
+
+    <div class="field-card">
+      <div class="field-card-title">Practice Identity</div>
+      <div class="inline-grid">
+        <div class="field full">
+          <label>Practice / Organization Name <span class="req">*</span></label>
+          <input type="text" id="s-practice-name" placeholder="e.g., Clearwater Health System" oninput="propagateShared(); updateProgress()">
+        </div>
+        <div class="field">
+          <label>IDN (if applicable)</label>
+          <input type="text" id="s-idn" placeholder="Integrated Delivery Network name" oninput="updateProgress()">
+        </div>
+        <div class="field">
+          <label>Target Go-Live Date <span class="req">*</span></label>
+          <input type="date" id="s-golive" oninput="updateProgress()">
+        </div>
+        <div class="field">
+          <label>Number of Patients</label>
+          <input type="text" id="s-patients" placeholder="e.g., 2,500" oninput="updateProgress()">
+        </div>
+        <div class="field">
+          <label>Number of Unique Locations</label>
+          <input type="text" id="s-locations" placeholder="e.g., 3" oninput="updateProgress()">
+        </div>
+        <div class="field">
+          <label>Number of PaceMateLIVE&trade; Users <span class="req">*</span></label>
+          <input type="text" id="s-users" placeholder="All staff who will access the platform" oninput="propagateShared(); updateProgress()">
+        </div>
+      </div>
+    </div>
+
+    <div class="field-card">
+      <div class="field-card-title">Service Model</div>
+      <p class="field-hint" style="margin-bottom:12px">Select the PaceMate&reg; service model your practice has contracted for.</p>
+      <div class="service-cards" id="serviceCards">
+        <div class="service-card" onclick="selectService('full-service')">
+          <div class="service-card-icon">&#11088;</div>
+          <div class="service-card-label">Full Service</div>
+          <div class="service-card-sub">Clinical + Technical + Patient Services</div>
+        </div>
+        <div class="service-card" onclick="selectService('hybrid')">
+          <div class="service-card-icon">&#128260;</div>
+          <div class="service-card-label">Hybrid</div>
+          <div class="service-card-sub">Software + select services</div>
+        </div>
+        <div class="service-card" onclick="selectService('software-only')">
+          <div class="service-card-icon">&#128187;</div>
+          <div class="service-card-label">Software Only</div>
+          <div class="service-card-sub">PaceMateLIVE&trade; platform access</div>
+        </div>
+        <div class="service-card" onclick="selectService('integration')">
+          <div class="service-card-icon">&#128279;</div>
+          <div class="service-card-label">Integration</div>
+          <div class="service-card-sub">EMR integration configuration</div>
+        </div>
+      </div>
+      <input type="hidden" id="s-service-model">
+    </div>
+
+    <div class="field-card">
+      <div class="field-card-title">Patient & Enrollment — Shared Questions</div>
+      <div class="field">
+        <label>How do your patients get a home monitor? <span class="req">*</span></label>
+        <div class="field-hint">Describe the typical process — at implant, first follow-up, via mail, etc.</div>
+        <textarea id="s-monitor-delivery" rows="2" placeholder="e.g., Monitors are distributed at the time of implant by the device rep..." oninput="propagateShared(); updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label>Who enrolls the patient in the vendor monitoring site(s)? <span class="req">*</span></label>
+        <textarea id="s-patient-enrollment" rows="2" placeholder="e.g., Device nurse enrolls in CareLink at first post-implant visit..." oninput="propagateShared(); updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label>Do you currently bill for Heart Failure (HF) monitoring? <span class="req">*</span></label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-hf-billing-yes" onclick="setYN('hf-billing','yes')">Yes</button>
+          <button type="button" class="yn-btn" id="yn-hf-billing-no" onclick="setYN('hf-billing','no')">No</button>
+        </div>
+        <input type="hidden" id="s-hf-billing">
+      </div>
+    </div>
+
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('intro')">&larr; Back</button>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="nav-step-info" id="shared-next-hint">Complete basics, then continue to your track</span>
+        <button class="nav-btn nav-btn-primary" onclick="goNextFromShared()">Continue &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== OPS: PRACTICE OVERVIEW ===== -->
+  <div class="section" id="ops-overview">
+    <div class="section-header">
+      <div class="section-track-badge badge-ops">&#128203; Operations Track</div>
+      <h2>Practice Overview</h2>
+      <div class="section-desc">EMR systems and operational context for your implementation.</div>
+    </div>
+    <div class="shared-callout">&#10003; Practice name and user count are pre-filled from Practice Basics.</div>
+    <div class="field-card">
+      <div class="field-card-title">Practice Reference</div>
+      <div class="inline-grid">
+        <div class="field">
+          <label>Practice Name</label>
+          <input type="text" id="o-practice-name" placeholder="Auto-filled from Practice Basics" class="prefilled" readonly>
+        </div>
+        <div class="field">
+          <label>Total PaceMateLIVE&trade; Users</label>
+          <input type="text" id="o-users" placeholder="Auto-filled from Practice Basics" class="prefilled" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">EMR Systems</div>
+      <div class="inline-grid">
+        <div class="field">
+          <label>EMR for Clinical Documentation <span class="req">*</span></label>
+          <input type="text" id="o-emr-clinical" placeholder="e.g., Epic, Cerner, Athena" oninput="updateProgress()">
+        </div>
+        <div class="field">
+          <label>EMR for Revenue Cycle Management</label>
+          <input type="text" id="o-emr-rcm" placeholder="e.g., Same as above, Greenway" oninput="updateProgress()">
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('shared')">&larr; Back</button>
+      <button class="nav-btn nav-btn-primary" onclick="goSection('ops-champions')">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ===== OPS: CHAMPIONS ===== -->
+  <div class="section" id="ops-champions">
+    <div class="section-header">
+      <div class="section-track-badge badge-ops">&#128203; Operations Track</div>
+      <h2>Implementation Champions</h2>
+      <div class="section-desc">These are the key contacts who will be involved throughout your implementation. Add everyone who should be kept in the loop.</div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">Champions</div>
+      <div id="championsContainer">
+        <div class="champion-card" id="champ-0">
+          <button class="remove-champion" onclick="removeChampion(0)" title="Remove">&#215;</button>
+          <div class="inline-grid">
+            <div class="field"><label>First Name <span class="req">*</span></label><input type="text" placeholder="First name" oninput="updateProgress()"></div>
+            <div class="field"><label>Last Name <span class="req">*</span></label><input type="text" placeholder="Last name" oninput="updateProgress()"></div>
+            <div class="field"><label>Role / Title</label><input type="text" placeholder="e.g., Practice Manager, Device Nurse" oninput="updateProgress()"></div>
+            <div class="field"><label>Email <span class="req">*</span></label><input type="email" placeholder="email@practice.com" oninput="updateProgress()"></div>
+            <div class="field"><label>Phone</label><input type="tel" placeholder="(000) 000-0000" oninput="updateProgress()"></div>
+          </div>
+        </div>
+      </div>
+      <button class="nav-btn nav-btn-secondary" style="margin-top:8px;font-size:0.8rem;padding:8px 16px" onclick="addChampion()">+ Add Champion</button>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('ops-overview')">&larr; Back</button>
+      <button class="nav-btn nav-btn-primary" onclick="goSection('ops-billing')">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ===== OPS: BILLING ===== -->
+  <div class="section" id="ops-billing">
+    <div class="section-header">
+      <div class="section-track-badge badge-ops">&#128203; Operations Track</div>
+      <h2>Billing &amp; Authorization</h2>
+      <div class="section-desc">Billing configuration details that affect how PaceMateLIVE&trade; routes charges and generates reports.</div>
+    </div>
+    <div class="shared-callout">&#10003; HF billing status is pre-filled from Practice Basics.</div>
+    <div class="field-card">
+      <div class="field-card-title">Billing Classification</div>
+      <div class="field">
+        <label>Are you a Hospital Outpatient Department (HOPD)?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-hopd-yes" onclick="setYN('hopd','yes')">Yes</button>
+          <button type="button" class="yn-btn" id="yn-hopd-no" onclick="setYN('hopd','no')">No</button>
+        </div>
+        <input type="hidden" id="o-hopd">
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Are you a Provider-Based Clinic?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-pbc-yes" onclick="setYN('pbc','yes')">Yes</button>
+          <button type="button" class="yn-btn" id="yn-pbc-no" onclick="setYN('pbc','no')">No</button>
+        </div>
+        <input type="hidden" id="o-pbc">
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Do you have a separate Heart Failure Clinic?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-hfclinic-yes" onclick="setYN('hfclinic','yes')">Yes</button>
+          <button type="button" class="yn-btn" id="yn-hfclinic-no" onclick="setYN('hfclinic','no')">No</button>
+        </div>
+        <input type="hidden" id="o-hfclinic">
+      </div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">CPT &amp; Billing Structure</div>
+      <div class="field">
+        <label>HF Monitoring billing (from Practice Basics)</label>
+        <input type="text" id="o-hf-billing-ref" class="prefilled" readonly placeholder="Auto-filled from Practice Basics">
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Do you split professional and technical CPT codes?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-cptsplit-yes" onclick="setYN('cptsplit','yes')">Yes</button>
+          <button type="button" class="yn-btn" id="yn-cptsplit-no" onclick="setYN('cptsplit','no')">No</button>
+        </div>
+        <input type="hidden" id="o-cptsplit">
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Do you have a Central Billing Office?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-cbo-yes" onclick="setYN('cbo','yes')">Yes</button>
+          <button type="button" class="yn-btn" id="yn-cbo-no" onclick="setYN('cbo','no')">No</button>
+        </div>
+        <input type="hidden" id="o-cbo">
+      </div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">Pre-Authorization</div>
+      <div class="field">
+        <label>Is pre-authorization required for remote device checks?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-preauth-yes" onclick="setYN('preauth','yes',true)">Yes</button>
+          <button type="button" class="yn-btn" id="yn-preauth-no" onclick="setYN('preauth','no')">No</button>
+        </div>
+        <input type="hidden" id="o-preauth">
+      </div>
+      <div class="conditional" id="cond-preauth">
+        <div class="inline-grid">
+          <div class="field"><label>Stakeholder Name</label><input type="text" id="o-preauth-name" placeholder="Contact for pre-auth questions" oninput="updateProgress()"></div>
+          <div class="field"><label>Stakeholder Email</label><input type="email" id="o-preauth-email" placeholder="email@practice.com" oninput="updateProgress()"></div>
+          <div class="field full"><label>Estimated volume requiring pre-auth</label><input type="text" id="o-preauth-volume" placeholder="e.g., ~200 patients/month" oninput="updateProgress()"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('ops-champions')">&larr; Back</button>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="nav-step-info" id="ops-complete-msg"></span>
+        <button class="nav-btn nav-btn-primary" id="ops-done-btn" onclick="showOpsCompletion()">Next &rarr;</button>
+      </div>
+    </div>
+
+    <!-- Ops completion banner -->
+    <div class="completion-banner" id="ops-completion-banner">
+      <div class="completion-banner-header">
+        <span>&#10003; &nbsp;Operations Track Complete</span>
+      </div>
+      <div class="completion-banner-body">
+        <div class="completion-banner-msg" id="ops-completion-msg">You have finished the Operations track. Please proceed to the Clinical track to complete your submission.</div>
+        <div class="completion-banner-actions" id="ops-completion-actions">
+          <button class="btn-complete-primary" id="ops-completion-primary-btn" onclick="goSection('clin-vendors')">Continue to Clinical &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CLIN: VENDOR SITES ===== -->
+  <div class="section" id="clin-vendors">
+    <div class="section-header">
+      <div class="section-track-badge badge-clin">&#10084;&#65039; Clinical Track</div>
+      <h2>Vendor Sites</h2>
+      <div class="section-desc">Tell us about your remote monitoring vendor relationships and site structure.</div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">Vendor Site Admin Contact</div>
+      <div class="info-callout">This person manages access and credentials for your remote monitoring vendor sites (CareLink, Latitude, Merlin, etc.).</div>
+      <div class="inline-grid">
+        <div class="field"><label>Name <span class="req">*</span></label><input type="text" id="c-vendor-admin-name" placeholder="First Last" oninput="updateProgress()"></div>
+        <div class="field"><label>Role</label><input type="text" id="c-vendor-admin-role" placeholder="e.g., Device Coordinator" oninput="updateProgress()"></div>
+        <div class="field"><label>Email <span class="req">*</span></label><input type="email" id="c-vendor-admin-email" placeholder="email@practice.com" oninput="updateProgress()"></div>
+        <div class="field"><label>Phone</label><input type="tel" id="c-vendor-admin-phone" placeholder="(000) 000-0000" oninput="updateProgress()"></div>
+      </div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">Site Structure</div>
+      <div class="field">
+        <label>How many vendor monitoring sites does your practice have? List by manufacturer. <span class="req">*</span></label>
+        <div class="field-hint">e.g., "2 Medtronic CareLink sites, 1 BSC Latitude, 1 Abbott Merlin"</div>
+        <textarea id="c-vendor-count" rows="3" placeholder="List your vendor sites and counts..." oninput="updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Do any of your vendor sites include multiple satellite clinics?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-satellites-yes" onclick="setYN('satellites','yes',true)">Yes</button>
+          <button type="button" class="yn-btn" id="yn-satellites-no" onclick="setYN('satellites','no')">No</button>
+        </div>
+        <input type="hidden" id="c-satellites">
+        <div class="conditional" id="cond-satellites">
+          <div class="field"><label>Which sites and how many clinics per site?</label><textarea rows="2" placeholder="e.g., CareLink site 1 has 3 satellite clinics..." oninput="updateProgress()"></textarea></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('shared')">&larr; Back</button>
+      <button class="nav-btn nav-btn-primary" onclick="goSection('clin-team')">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ===== CLIN: TEAM & ACCESS ===== -->
+  <div class="section" id="clin-team">
+    <div class="section-header">
+      <div class="section-track-badge badge-clin">&#10084;&#65039; Clinical Track</div>
+      <h2>Team &amp; Access</h2>
+      <div class="section-desc">How your practice is structured and how staff will use PaceMateLIVE&trade;.</div>
+    </div>
+    <div class="shared-callout">&#10003; Total user count is pre-filled from Practice Basics.</div>
+    <div class="field-card">
+      <div class="field-card-title">Care Team Structure</div>
+      <div class="field">
+        <label>Total PaceMateLIVE&trade; users</label>
+        <input type="text" id="c-users" placeholder="Auto-filled from Practice Basics" class="prefilled" readonly>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Do you have one central care team, or are teams separated by location? <span class="req">*</span></label>
+        <div class="field-hint">This affects how we configure user access and reporting views.</div>
+        <textarea id="c-team-structure" rows="2" placeholder="e.g., One central device team manages all remote monitoring across 3 locations..." oninput="updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Is it clearly understood by all users that PaceMateLIVE&trade; is a web-based platform?</label>
+        <div class="field-hint">PaceMateLIVE&trade; is entirely web-based — no software to install. All users need to be aware before training begins.</div>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-webbased-yes" onclick="setYN('webbased','yes')">Yes, all users know</button>
+          <button type="button" class="yn-btn" id="yn-webbased-no" onclick="setYN('webbased','no')">Not yet confirmed</button>
+        </div>
+        <input type="hidden" id="c-webbased">
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('clin-vendors')">&larr; Back</button>
+      <button class="nav-btn nav-btn-primary" onclick="goSection('clin-remote')">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ===== CLIN: REMOTE MONITORING ===== -->
+  <div class="section" id="clin-remote">
+    <div class="section-header">
+      <div class="section-track-badge badge-clin">&#10084;&#65039; Clinical Track</div>
+      <h2>Remote Monitoring Workflow</h2>
+      <div class="section-desc">Walk us through how your practice handles remote transmissions today.</div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">Workflow Overview</div>
+      <div class="field">
+        <label>Walk us through your remote monitoring workflow — from when a transmission arrives to when the report is signed. <span class="req">*</span></label>
+        <textarea id="c-remote-workflow" rows="4" placeholder="e.g., Transmission arrives overnight, device nurse reviews in the morning, flags alerts for physician, report signed by EOD..." oninput="updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Do you have a different workflow for alert transmissions vs. scheduled transmissions?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-alertwf-yes" onclick="setYN('alertwf','yes',true)">Yes</button>
+          <button type="button" class="yn-btn" id="yn-alertwf-no" onclick="setYN('alertwf','no')">No</button>
+        </div>
+        <input type="hidden" id="c-alertwf">
+        <div class="conditional" id="cond-alertwf">
+          <div class="field"><label>How does alert handling differ from scheduled?</label><textarea rows="2" placeholder="e.g., Alerts go directly to the on-call physician, while scheduled transmissions are queued..." oninput="updateProgress()"></textarea></div>
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>How does your team prioritize which reports to work on first? <span class="req">*</span></label>
+        <textarea id="c-prioritization" rows="2" placeholder="e.g., Alerts first, then by device type, then oldest pending..." oninput="updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>How do reports get to the physician for review, and how are they signed off? <span class="req">*</span></label>
+        <textarea id="c-signing-workflow" rows="2" placeholder="e.g., Reports are routed through Epic In-Basket for e-signature..." oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('clin-team')">&larr; Back</button>
+      <button class="nav-btn nav-btn-primary" onclick="goSection('clin-inclinic')">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ===== CLIN: IN-CLINIC ===== -->
+  <div class="section" id="clin-inclinic">
+    <div class="section-header">
+      <div class="section-track-badge badge-clin">&#10084;&#65039; Clinical Track</div>
+      <h2>In-Clinic Workflow</h2>
+      <div class="section-desc">How your team handles device interrogations and in-clinic checks.</div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">In-Clinic Process</div>
+      <div class="field">
+        <label>How do you currently process in-clinic device checks? <span class="req">*</span></label>
+        <div class="field-hint">Walk us through from device interrogation to final signed report.</div>
+        <textarea id="c-inclinic-workflow" rows="3" placeholder="e.g., Device nurse performs interrogation with programmer, exports data via USB, uploads to vendor site, tech review, physician signs..." oninput="updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Which staff roles perform in-clinic device checks? <span class="req">*</span></label>
+        <textarea id="c-roles" rows="2" placeholder="e.g., Device RN, Device Tech, APP..." oninput="updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>When a patient is seen for an in-clinic check, is their remote transmission also reviewed at the same visit?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-dual-yes" onclick="setYN('dual','yes')">Yes</button>
+          <button type="button" class="yn-btn" id="yn-dual-no" onclick="setYN('dual','no')">No</button>
+        </div>
+        <input type="hidden" id="c-dual">
+      </div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">Tools &amp; Technology</div>
+      <div class="field">
+        <label>Do you use SessionSync, Latitude Link, or BIOTRONIK direct-connect tools?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-tools-yes" onclick="setYN('tools','yes',true)">Yes</button>
+          <button type="button" class="yn-btn" id="yn-tools-no" onclick="setYN('tools','no')">No</button>
+        </div>
+        <input type="hidden" id="c-tools">
+        <div class="conditional" id="cond-tools">
+          <div class="field"><label>Which tools, and are they still in active use?</label><textarea rows="2" placeholder="e.g., SessionSync for Boston Scientific, still in use at main clinic..." oninput="updateProgress()"></textarea></div>
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Do you currently use USBs to transfer interrogation data?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-usb-yes" onclick="setYN('usb','yes',true)">Yes</button>
+          <button type="button" class="yn-btn" id="yn-usb-no" onclick="setYN('usb','no')">No</button>
+        </div>
+        <input type="hidden" id="c-usb">
+        <div class="conditional" id="cond-usb">
+          <div class="field"><label>Does IT require encrypted USBs?</label><div class="yn-group"><button type="button" class="yn-btn" id="yn-usb-encrypt-yes" onclick="setYN('usb-encrypt','yes')">Yes</button><button type="button" class="yn-btn" id="yn-usb-encrypt-no" onclick="setYN('usb-encrypt','no')">No</button></div><input type="hidden" id="c-usb-encrypt"></div>
+        </div>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Do device reps perform in-clinic checks for your practice?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-devrep-yes" onclick="setYN('devrep','yes',true)">Yes</button>
+          <button type="button" class="yn-btn" id="yn-devrep-no" onclick="setYN('devrep','no')">No</button>
+        </div>
+        <input type="hidden" id="c-devrep">
+        <div class="conditional" id="cond-devrep">
+          <div class="field"><label>Do they also submit data to vendor sites on your behalf?</label><div class="yn-group"><button type="button" class="yn-btn" id="yn-devrep-submit-yes" onclick="setYN('devrep-submit','yes')">Yes</button><button type="button" class="yn-btn" id="yn-devrep-submit-no" onclick="setYN('devrep-submit','no')">No</button></div><input type="hidden" id="c-devrep-submit"></div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('clin-remote')">&larr; Back</button>
+      <button class="nav-btn nav-btn-primary" onclick="goSection('clin-patients')">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ===== CLIN: PATIENT COMMUNICATION ===== -->
+  <div class="section" id="clin-patients">
+    <div class="section-header">
+      <div class="section-track-badge badge-clin">&#10084;&#65039; Clinical Track</div>
+      <h2>Patient Communication</h2>
+      <div class="section-desc">How your practice manages patient connectivity and communication around remote monitoring.</div>
+    </div>
+    <div class="shared-callout">&#10003; Monitor delivery and enrollment process are pre-filled from Practice Basics.</div>
+    <div class="field-card">
+      <div class="field-card-title">Monitor Distribution &amp; Enrollment</div>
+      <div class="field">
+        <label>How patients receive their home monitor</label>
+        <textarea id="c-monitor-delivery" rows="2" placeholder="Auto-filled from Practice Basics" class="prefilled" readonly></textarea>
+      </div>
+      <div class="field" style="margin-top:12px">
+        <label>Patient enrollment process</label>
+        <textarea id="c-patient-enrollment" rows="2" placeholder="Auto-filled from Practice Basics" class="prefilled" readonly></textarea>
+      </div>
+    </div>
+    <div class="field-card">
+      <div class="field-card-title">Connectivity Management</div>
+      <div class="field">
+        <label>What is your process when a patient's monitor is disconnected or not transmitting? <span class="req">*</span></label>
+        <textarea id="c-connectivity" rows="3" placeholder="e.g., Device nurse reviews connectivity report weekly, calls patient if no transmission in 30 days..." oninput="updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Do you have dedicated staff who call patients to help with monitor connectivity issues?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-callstaff-yes" onclick="setYN('callstaff','yes',true)">Yes</button>
+          <button type="button" class="yn-btn" id="yn-callstaff-no" onclick="setYN('callstaff','no')">No</button>
+        </div>
+        <input type="hidden" id="c-callstaff">
+        <div class="conditional" id="cond-callstaff">
+          <div class="inline-grid">
+            <div class="field"><label>How many FTEs?</label><input type="text" placeholder="e.g., 1.5 FTE" oninput="updateProgress()"></div>
+            <div class="field"><label>Their role/title</label><input type="text" placeholder="e.g., Patient Services Coordinator" oninput="updateProgress()"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('clin-inclinic')">&larr; Back</button>
+      <button class="nav-btn nav-btn-primary" onclick="goSection('clin-scheduling')">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- ===== CLIN: SCHEDULING ===== -->
+  <div class="section" id="clin-scheduling">
+    <div class="section-header">
+      <div class="section-track-badge badge-clin">&#10084;&#65039; Clinical Track</div>
+      <h2>Remote Scheduling</h2>
+      <div class="section-desc">Heart failure monitoring scheduling and billing practices.</div>
+    </div>
+    <div class="shared-callout">&#10003; HF billing status is pre-filled from Practice Basics.</div>
+    <div class="field-card">
+      <div class="field-card-title">Heart Failure Monitoring</div>
+      <div class="field">
+        <label>HF Monitoring billing status</label>
+        <input type="text" id="c-hf-billing-ref" class="prefilled" readonly placeholder="Auto-filled from Practice Basics">
+      </div>
+      <div class="field" style="margin-top:14px" id="hf-schedule-field">
+        <label>Do you currently bill and schedule HF monitoring every 30 days?</label>
+        <div class="yn-group">
+          <button type="button" class="yn-btn" id="yn-hf30-yes" onclick="setYN('hf30','yes')">Yes</button>
+          <button type="button" class="yn-btn" id="yn-hf30-no" onclick="setYN('hf30','no')">No</button>
+        </div>
+        <input type="hidden" id="c-hf30">
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>Which manufacturers and device types do you bill HF monitoring for?</label>
+        <textarea id="c-hf-manufacturers" rows="2" placeholder="e.g., Medtronic CRT-D, Boston Scientific ICD... or N/A" oninput="updateProgress()"></textarea>
+      </div>
+      <div class="field" style="margin-top:14px">
+        <label>If you are not currently billing for HF monitoring, who is driving that decision?</label>
+        <textarea id="c-hf-decision" rows="2" placeholder="e.g., N/A — we do bill / Physician preference / Payor restrictions..." oninput="updateProgress()"></textarea>
+      </div>
+    </div>
+    <div class="nav-buttons">
+      <button class="nav-btn nav-btn-secondary" onclick="goSection('clin-patients')">&larr; Back</button>
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="nav-step-info" id="clin-complete-msg"></span>
+        <button class="nav-btn nav-btn-primary" id="clin-done-btn" onclick="showClinCompletion()">Complete Clinical Track &#10003;</button>
+      </div>
+    </div>
+
+    <!-- Clinical completion banner -->
+    <div class="completion-banner" id="clin-completion-banner">
+      <div class="completion-banner-header">
+        <span>&#127881; &nbsp;You're All Done!</span>
+      </div>
+      <div class="completion-banner-body">
+        <div class="completion-banner-msg" id="clin-completion-msg">Thank you for completing the questionnaire. Please review your answers, then submit to PaceMate when you are ready.</div>
+        <div class="completion-banner-actions">
+          <button class="btn-complete-secondary" onclick="goSection('intro')">&#128203; Review Answers</button>
+          <button class="btn-complete-primary" onclick="pmSubmit()">Submit to PaceMate &rarr;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+</div><!-- /app -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+var PM_WORKSTREAM = 'csm';
+var PM_FORM_ID   = 'discovery-wizard';
+var PM_FORM_NAME = 'Discovery & Clinical Questionnaire Wizard';
+var PM_FORM_FILE = 'Form_Discovery_and_Clinical_Questionnaire_Wizard_v1.html';
+
+
+/* ── PM Standard Action Bar Functions ───────────────── */
+function pmSave() {
+  if (typeof saveProgress === 'function') saveProgress();
+  showPmAutosave('Saved');
+}
+
+function pmCancel() {
+  if (confirm('Cancel and clear all entries? This cannot be undone.')) {
+    localStorage.removeItem('pmDiscoveryWizard');
+    window.location.reload();
+  }
+}
+
+function pmClearForm() {
+  if (confirm('Clear all form data? This cannot be undone.')) {
+    localStorage.removeItem('pmDiscoveryWizard');
+    window.location.reload();
+  }
+}
+
+function pmValidate() {
+  var errors = [];
+
+  // Determine which tracks to validate based on active track
+  var track = activeTrack || 'both';
+  var validateShared = true;
+  var validateOps = (track === 'ops' || track === 'both');
+  var validateClin = (track === 'clin' || track === 'both');
+
+  // Clear previous errors
+  document.querySelectorAll('.field-error-highlight').forEach(function(el) {
+    el.classList.remove('field-error-highlight');
+  });
+
+  function checkField(id, label) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var val = el.value ? el.value.trim() : '';
+    if (!val) {
+      var fieldDiv = el.closest('.field');
+      if (fieldDiv) fieldDiv.classList.add('field-error-highlight');
+      errors.push({ el: el, label: label });
+    }
+    // Auto-clear on input
+    el.addEventListener('input', function() {
+      var p = el.closest('.field');
+      if (p) p.classList.remove('field-error-highlight');
+    }, { once: true });
+  }
+
+  function checkYN(key, label) {
+    if (!ynValues[key]) {
+      // Find any yn-group associated with this key and highlight it
+      var btn = document.getElementById('yn-' + key + '-yes');
+      if (btn) {
+        var group = btn.closest('.field');
+        if (group) group.classList.add('field-error-highlight');
+        errors.push({ el: btn, label: label });
+      }
+    }
+  }
+
+  // Shared required fields
+  if (validateShared) {
+    checkField('s-practice-name', 'Practice / Organization Name');
+    checkField('s-golive', 'Target Go-Live Date');
+    checkField('s-users', 'Number of PaceMateLIVE™ Users');
+    checkField('s-monitor-delivery', 'How do your patients get a home monitor?');
+    checkField('s-patient-enrollment', 'Who enrolls the patient in the vendor monitoring site(s)?');
+    checkYN('hf-billing', 'Do you currently bill for HF monitoring?');
+  }
+
+  // Ops required fields
+  if (validateOps) {
+    checkField('o-emr-clinical', 'EMR for Clinical Documentation');
+    // First champion email
+    var champEmail = document.querySelector('#champ-0 input[type="email"]');
+    if (champEmail && !champEmail.value.trim()) {
+      var champField = champEmail.closest('.field');
+      if (champField) champField.classList.add('field-error-highlight');
+      errors.push({ el: champEmail, label: 'Champion Email' });
+      champEmail.addEventListener('input', function() {
+        var p = champEmail.closest('.field');
+        if (p) p.classList.remove('field-error-highlight');
+      }, { once: true });
+    }
+    var champFirst = document.querySelector('#champ-0 input[placeholder="First name"]');
+    if (champFirst && !champFirst.value.trim()) {
+      var champField2 = champFirst.closest('.field');
+      if (champField2) champField2.classList.add('field-error-highlight');
+      errors.push({ el: champFirst, label: 'Champion First Name' });
+      champFirst.addEventListener('input', function() {
+        var p = champFirst.closest('.field');
+        if (p) p.classList.remove('field-error-highlight');
+      }, { once: true });
+    }
+    var champLast = document.querySelector('#champ-0 input[placeholder="Last name"]');
+    if (champLast && !champLast.value.trim()) {
+      var champField3 = champLast.closest('.field');
+      if (champField3) champField3.classList.add('field-error-highlight');
+      errors.push({ el: champLast, label: 'Champion Last Name' });
+      champLast.addEventListener('input', function() {
+        var p = champLast.closest('.field');
+        if (p) p.classList.remove('field-error-highlight');
+      }, { once: true });
+    }
+  }
+
+  // Clinical required fields
+  if (validateClin) {
+    checkField('c-vendor-admin-name', 'Vendor Site Admin Name');
+    checkField('c-vendor-admin-email', 'Vendor Site Admin Email');
+    checkField('c-vendor-count', 'Vendor Sites (count by manufacturer)');
+    checkField('c-team-structure', 'Care Team Structure');
+    checkField('c-remote-workflow', 'Remote Monitoring Workflow');
+    checkField('c-prioritization', 'Report Prioritization');
+    checkField('c-signing-workflow', 'Report Signing Workflow');
+    checkField('c-inclinic-workflow', 'In-Clinic Check Process');
+    checkField('c-roles', 'Staff Roles for In-Clinic Checks');
+    checkField('c-connectivity', 'Disconnected Monitor Process');
+  }
+
+  return errors;
+}
+
+function pmSubmit() {
+  var errors = pmValidate();
+  if (errors.length > 0) {
+    showPmToast('Please complete all required fields (' + errors.length + ' remaining)', true);
+    // Scroll to first error — navigate to its section first
+    var firstEl = errors[0].el;
+    var section = firstEl.closest('.section');
+    if (section && section.id && section.id !== currentSection) {
+      goSection(section.id);
+    }
+    setTimeout(function() {
+      firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 300);
+    return;
+  }
+
+  pmSave();
+  var WS_KEYS = {csm:'csm_inbox_submissions',integration:'integration_inbox_submissions',clinical:'clinical_inbox_submissions',patientsvcs:'patientsvcs_inbox_submissions',support:'support_inbox_submissions'};
+  var key = WS_KEYS[PM_WORKSTREAM];
+  if (!key) return;
+  var data = []; try { data = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+  var now = Date.now();
+  var existing = data.find(function(e){ return e.id === PM_FORM_ID; });
+  if (existing) {
+    existing.history[existing.history.length - 1].statusAtReview = existing.status;
+    existing.history.push({ submittedAt: now, statusAtReview: null });
+    existing.status = 'submitted'; existing.glowStart = now;
+  } else {
+    data.push({ id: PM_FORM_ID, formName: PM_FORM_NAME, formFile: PM_FORM_FILE, status: 'submitted', glowStart: now, history: [{ submittedAt: now, statusAtReview: null }] });
+  }
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+  var btn = document.querySelector('.pm-pill-submit');
+  if (btn) { btn.textContent = '✓ Submitted'; btn.disabled = true; btn.style.opacity = '0.6'; }
+  showPmToast('✓ Submitted to PaceMate®!');
+}
+
+function pmToggleExport(e) {
+  e.stopPropagation();
+  document.getElementById('pmExportMenu').classList.toggle('open');
+}
+document.addEventListener('click', function() {
+  var m = document.getElementById('pmExportMenu');
+  if (m) m.classList.remove('open');
+});
+
+function pmExportPDF() {
+  document.getElementById('pmExportMenu').classList.remove('open');
+  showPmToast('Generating PDF…');
+  var bar = document.querySelector('.pm-action-bar');
+  if (bar) bar.style.display = 'none';
+  html2canvas(document.body, { scale: 1.5, useCORS: true, backgroundColor: '#F8F9FA' }).then(function(canvas) {
+    var img = canvas.toDataURL('image/png');
+    var pdf = new jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    var pw = pdf.internal.pageSize.getWidth(), ph = pdf.internal.pageSize.getHeight();
+    var iw = pw, ih = (canvas.height * pw) / canvas.width, y = 0;
+    while (y < ih) { if (y > 0) pdf.addPage(); pdf.addImage(img, 'PNG', 0, -y, iw, ih); y += ph; }
+    pdf.save(PM_FORM_NAME.replace(/\s+/g, '-') + '.pdf');
+    if (bar) bar.style.display = '';
+    showPmToast('✓ PDF exported');
+  });
+}
+
+function pmExportExcel() {
+  document.getElementById('pmExportMenu').classList.remove('open');
+  var saved = {}; try { saved = JSON.parse(localStorage.getItem('pmDiscoveryWizard') || '{}'); } catch(e) {}
+  var rows = [['Field', 'Response']].concat(Object.keys(saved).map(function(k){ return [k, saved[k]]; }));
+  var ws = XLSX.utils.aoa_to_sheet(rows); ws['!cols'] = [{wch:30},{wch:60}];
+  var wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, 'Discovery Wizard');
+  XLSX.writeFile(wb, PM_FORM_NAME.replace(/\s+/g,'-') + '.xlsx');
+  showPmToast('✓ Excel exported');
+}
+
+function pmExportCSV() {
+  document.getElementById('pmExportMenu').classList.remove('open');
+  var saved = {}; try { saved = JSON.parse(localStorage.getItem('pmDiscoveryWizard') || '{}'); } catch(e) {}
+  var rows = [['Field','Response']].concat(Object.keys(saved).map(function(k){ return [k, saved[k]]; }));
+  var csv = rows.map(function(r){ return r.map(function(v){ return '"' + String(v||'').replace(/"/g,'""') + '"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a'); a.href = url; a.download = PM_FORM_NAME.replace(/\s+/g,'-') + '.csv';
+  a.click(); URL.revokeObjectURL(url);
+  showPmToast('✓ CSV exported');
+}
+
+function showPmToast(msg, isError) {
+  var t = document.getElementById('pmActionToast');
+  if (!t) return;
+  t.textContent = msg;
+  t.style.background = isError ? '#DC3545' : '#212529';
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, isError ? 4000 : 2500);
+}
+
+function showPmAutosave(msg) {
+  var el = document.getElementById('pmAutosaveIndicator');
+  if (!el) return;
+  var ts = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  el.innerHTML = '<span class="pm-autosave-dot"></span>' + (msg || 'Auto-saved at ' + ts);
+  el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 3000);
+}
+
+/* Auto-save every 30s */
+setInterval(function(){ if(typeof saveProgress==='function'){ saveProgress(); showPmAutosave(); } }, 30000);
+/* ================================================================
+   STATE
+   ================================================================ */
+var currentSection = 'intro';
+var activeTrack = null;
+var champCount = 1;
+var ynValues = {};
+
+var SECTION_ORDER_SHARED = ['intro','shared'];
+var SECTION_ORDER_OPS = ['ops-overview','ops-champions','ops-billing'];
+var SECTION_ORDER_CLIN = ['clin-vendors','clin-team','clin-remote','clin-inclinic','clin-patients','clin-scheduling'];
+
+/* ================================================================
+   NAVIGATION
+   ================================================================ */
+function goSection(id) {
+    document.querySelectorAll('.section').forEach(function(s){ s.classList.remove('active'); });
+    var el = document.getElementById(id);
+    if (el) { el.classList.add('active'); currentSection = id; }
+    // Update sidebar active states
+    document.querySelectorAll('.sidebar-nav a').forEach(function(a){ a.classList.remove('active'); });
+    var navId = 'nav-' + id;
+    // Handle special cases
+    var navMap = {
+        'intro': 'nav-intro',
+        'shared': 'nav-shared-link',
+        'ops-overview': 'nav-ops-overview',
+        'ops-champions': 'nav-ops-champions',
+        'ops-billing': 'nav-ops-billing',
+        'clin-vendors': 'nav-clin-vendors',
+        'clin-team': 'nav-clin-team',
+        'clin-remote': 'nav-clin-remote',
+        'clin-inclinic': 'nav-clin-inclinic',
+        'clin-patients': 'nav-clin-patients',
+        'clin-scheduling': 'nav-clin-scheduling'
+    };
+    if (navMap[id]) {
+        var navEl = document.getElementById(navMap[id]);
+        if (navEl) navEl.classList.add('active');
+    }
+    window.scrollTo(0,0);
+    updateProgress();
+}
+
+function selectTrack(track) {
+    activeTrack = track;
+    document.querySelectorAll('.track-option').forEach(function(c){ c.classList.remove('selected'); });
+    var el = document.querySelector('.' + track + '-option');
+    if (el) el.classList.add('selected');
+    document.getElementById('intro-next-btn').style.display = 'inline-flex';
+    // Show progress bars
+    var prog = document.getElementById('sidebar-progress-section');
+    if (prog) prog.style.display = 'block';
+    switchTrack(track);
+    updateProgress();
+}
+
+function switchTrack(track) {
+    activeTrack = track;
+    // Update sidebar toggle buttons
+    document.getElementById('tb-ops').className = 'track-btn' + (track==='ops'?' active-ops':'');
+    document.getElementById('tb-clin').className = 'track-btn' + (track==='clin'?' active-clin':'');
+    document.getElementById('tb-both').className = 'track-btn' + (track==='both'?' active-both':'');
+
+    var showOps = (track === 'ops' || track === 'both');
+    var showClin = (track === 'clin' || track === 'both');
+
+    document.getElementById('label-ops').style.opacity = showOps ? '1' : '0.3';
+    document.getElementById('label-clin').style.opacity = showClin ? '1' : '0.3';
+    document.querySelectorAll('#nav-ops-list a').forEach(function(a){
+        a.classList.toggle('nav-hidden', !showOps);
+    });
+    document.querySelectorAll('#nav-clin-list a').forEach(function(a){
+        a.classList.toggle('nav-hidden', !showClin);
+    });
+}
+
+function selectTrackAndNavigate(track) {
+    // Save current state first
+    if (activeTrack) saveProgress();
+    activeTrack = track;
+    switchTrack(track);
+    var prog = document.getElementById('sidebar-progress-section');
+    if (prog) prog.style.display = 'block';
+    // Navigate to the start of the selected track
+    if (track === 'ops') {
+        goSection('ops-overview');
+    } else if (track === 'clin') {
+        goSection('clin-vendors');
+    } else {
+        goSection('shared');
+    }
+    // Update intro cards
+    document.querySelectorAll('.track-option').forEach(function(c){ c.classList.remove('selected'); });
+    var sel = document.querySelector('.' + track + '-option');
+    if (sel) sel.classList.add('selected');
+    document.getElementById('intro-next-btn').style.display = 'inline-flex';
+}
+
+function goNextFromShared() {
+    if (!activeTrack) { showToast('Please select a track first'); return; }
+    if (activeTrack === 'ops' || activeTrack === 'both') {
+        goSection('ops-overview');
+    } else {
+        goSection('clin-vendors');
+    }
+}
+
+function showOpsCompletion() {
+    var banner = document.getElementById('ops-completion-banner');
+    if (!banner) return;
+    banner.classList.add('show');
+    // Scroll to banner
+    banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Determine message based on active track
+    if (activeTrack === 'both') {
+        document.getElementById('ops-completion-msg').textContent = 'You have finished the Operations track. Please proceed to the Clinical track to complete your submission.';
+        document.getElementById('ops-completion-primary-btn').textContent = 'Continue to Clinical →';
+        document.getElementById('ops-completion-primary-btn').onclick = function(){ goSection('clin-vendors'); };
+    } else {
+        document.getElementById('ops-completion-msg').textContent = 'You have finished the Operations track. You can also complete the Clinical track, or submit to PaceMate now.';
+        var actions = document.getElementById('ops-completion-actions');
+        actions.innerHTML = '<button class="btn-complete-secondary" onclick="showClinTrackFromOps()">Add Clinical Track</button><button class="btn-complete-primary" onclick="pmSubmit()">Submit to PaceMate →</button>';
+    }
+    var msg = document.getElementById('ops-complete-msg');
+    if (msg) msg.textContent = '✓ Ops complete';
+}
+
+function showClinTrackFromOps() {
+    activeTrack = 'both';
+    switchTrack('both');
+    goSection('clin-vendors');
+}
+
+function showClinCompletion() {
+    var banner = document.getElementById('clin-completion-banner');
+    if (!banner) return;
+    banner.classList.add('show');
+    banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (activeTrack === 'both') {
+        document.getElementById('clin-completion-msg').textContent = 'Thank you for completing both tracks. Please review your answers, then submit to PaceMate when you are ready.';
+    } else {
+        document.getElementById('clin-completion-msg').textContent = 'Thank you for completing the Clinical track. Please review your answers, then submit to PaceMate when you are ready.';
+    }
+    var msg = document.getElementById('clin-complete-msg');
+    if (msg) msg.textContent = '✓ Clinical complete';
+}
+
+function goNextAfterOps() {
+    if (activeTrack === 'both') {
+        goSection('clin-vendors');
+    } else {
+        // Ops-only track complete — offer clinical track
+        showToast('Operations track complete! Starting Clinical track...', 'success');
+        // Unlock clinical nav and navigate there
+        activeTrack = 'both';
+        switchTrack('both');
+        // Update button so if they come back it makes sense
+        var btn = document.getElementById('ops-done-btn');
+        if (btn) { btn.textContent = 'Continue to Clinical →'; btn.onclick = function(){ goSection('clin-vendors'); }; }
+        var msg = document.getElementById('ops-complete-msg');
+        if (msg) msg.textContent = '✓ Ops complete';
+        goSection('clin-vendors');
+    }
+}
+
+function finishClinical() {
+    if (activeTrack === 'both') {
+        showToast('All tracks complete — thank you! Don\'t forget to Save.', 'success');
+        document.getElementById('clin-complete-msg').textContent = '🎉 All tracks complete!';
+    } else {
+        // Clinical-only — offer ops track
+        showToast('Clinical track complete! Operations track is also available.', 'success');
+        activeTrack = 'both';
+        switchTrack('both');
+        var btn = document.getElementById('clin-done-btn');
+        if (btn) { btn.textContent = 'Go to Operations Track →'; btn.onclick = function(){ goSection('ops-overview'); }; }
+        var msg = document.getElementById('clin-complete-msg');
+        if (msg) msg.textContent = '✓ Clinical complete';
+        goSection('ops-overview');
+    }
+}
+
+function showCompletion(track) {
+    showToast('Track complete — thank you! Don\'t forget to Save.', 'success');
+    if (track === 'both') {
+        document.getElementById('clin-complete-msg').textContent = '&#127881; All tracks complete!';
+    }
+}
+
+/* ================================================================
+   YES/NO TOGGLES
+   ================================================================ */
+function setYN(key, val, showCond) {
+    ynValues[key] = val;
+    var yBtn = document.getElementById('yn-' + key + '-yes');
+    var nBtn = document.getElementById('yn-' + key + '-no');
+    if (yBtn) { yBtn.className = 'yn-btn' + (val==='yes'?' selected-yes':''); }
+    if (nBtn) { nBtn.className = 'yn-btn' + (val==='no'?' selected-no':''); }
+    var hiddenId = key.indexOf('c-') === 0 ? key : (SECTION_ORDER_OPS.join(',').indexOf(currentSection) > -1 ? 'o-' + key : 'c-' + key);
+    // Try to find the hidden input
+    var hidden = document.getElementById('o-' + key) || document.getElementById('c-' + key) || document.getElementById('s-' + key);
+    if (hidden) hidden.value = val;
+    if (showCond) {
+        var cond = document.getElementById('cond-' + key);
+        if (cond) cond.classList.toggle('visible', val === 'yes');
+    }
+    propagateShared();
+    updateProgress();
+}
+
+/* ================================================================
+   SERVICE MODEL
+   ================================================================ */
+function selectService(val) {
+    document.querySelectorAll('.service-card').forEach(function(c){ c.classList.remove('selected'); });
+    event.currentTarget.classList.add('selected');
+    document.getElementById('s-service-model').value = val;
+    updateProgress();
+}
+
+/* ================================================================
+   CHAMPIONS
+   ================================================================ */
+function addChampion() {
+    var container = document.getElementById('championsContainer');
+    var idx = champCount++;
+    var div = document.createElement('div');
+    div.className = 'champion-card';
+    div.id = 'champ-' + idx;
+    div.innerHTML = '<button class="remove-champion" onclick="removeChampion('+idx+')" title="Remove">&#215;</button>' +
+        '<div class="inline-grid">' +
+        '<div class="field"><label>First Name</label><input type="text" placeholder="First name" oninput="updateProgress()"></div>' +
+        '<div class="field"><label>Last Name</label><input type="text" placeholder="Last name" oninput="updateProgress()"></div>' +
+        '<div class="field"><label>Role / Title</label><input type="text" placeholder="e.g., Practice Manager" oninput="updateProgress()"></div>' +
+        '<div class="field"><label>Email</label><input type="email" placeholder="email@practice.com" oninput="updateProgress()"></div>' +
+        '<div class="field"><label>Phone</label><input type="tel" placeholder="(000) 000-0000" oninput="updateProgress()"></div>' +
+        '</div>';
+    container.appendChild(div);
+}
+
+function removeChampion(idx) {
+    var el = document.getElementById('champ-' + idx);
+    if (el) el.remove();
+}
+
+/* ================================================================
+   SHARED FIELD PROPAGATION
+   ================================================================ */
+function propagateShared() {
+    var pname = document.getElementById('s-practice-name') ? document.getElementById('s-practice-name').value : '';
+    var users = document.getElementById('s-users') ? document.getElementById('s-users').value : '';
+    var delivery = document.getElementById('s-monitor-delivery') ? document.getElementById('s-monitor-delivery').value : '';
+    var enrollment = document.getElementById('s-patient-enrollment') ? document.getElementById('s-patient-enrollment').value : '';
+    var hf = ynValues['hf-billing'] || '';
+
+    // Ops track
+    var opName = document.getElementById('o-practice-name');
+    var opUsers = document.getElementById('o-users');
+    var opHF = document.getElementById('o-hf-billing-ref');
+    if (opName) opName.value = pname;
+    if (opUsers) opUsers.value = users;
+    if (opHF) opHF.value = hf ? (hf === 'yes' ? 'Yes — billing for HF monitoring' : 'No — not currently billing') : '';
+
+    // Clinical track
+    var cUsers = document.getElementById('c-users');
+    var cDel = document.getElementById('c-monitor-delivery');
+    var cEnroll = document.getElementById('c-patient-enrollment');
+    var cHF = document.getElementById('c-hf-billing-ref');
+    if (cUsers) cUsers.value = users;
+    if (cDel) cDel.value = delivery;
+    if (cEnroll) cEnroll.value = enrollment;
+    if (cHF) cHF.value = hf ? (hf === 'yes' ? 'Yes — billing for HF monitoring' : 'No — not currently billing') : '';
+}
+
+/* ================================================================
+   PROGRESS
+   ================================================================ */
+function countFilled(ids) {
+    var filled = 0, total = ids.length;
+    ids.forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && el.value && el.value.trim()) filled++;
+    });
+    return { filled: filled, total: total };
+}
+
+function updateProgress() {
+    // Shared
+    var sharedFields = ['s-practice-name','s-golive','s-users','s-monitor-delivery','s-patient-enrollment'];
+    var sc = countFilled(sharedFields);
+    var sharedHF = ynValues['hf-billing'] ? 1 : 0;
+    var sharedPct = Math.round(((sc.filled + sharedHF) / (sc.total + 1)) * 100);
+    updateNavStatus('ns-shared', sc.filled + sharedHF, sc.total + 1);
+
+    // Ops
+    var opsFields = ['o-emr-clinical'];
+    var oc = countFilled(opsFields);
+    var opsYN = ['hopd','pbc','cptsplit','cbo'].filter(function(k){ return ynValues[k]; }).length;
+    var opsFilled = oc.filled + opsYN + (document.getElementById('championsContainer').querySelectorAll('input[type="text"]').length > 0 ? 1 : 0);
+    var opsTotal = opsFields.length + 4 + 1;
+    var opsPct = Math.round((opsFilled / opsTotal) * 100);
+    document.getElementById('ops-bar').style.width = Math.min(opsPct, 100) + '%';
+    document.getElementById('ops-pct').textContent = Math.min(opsPct, 100) + '%';
+    updateNavStatus('ns-ops-overview', countFilled(['o-emr-clinical']).filled, 1);
+    updateNavStatus('ns-ops-billing', opsYN, 4);
+    var champInputsFilled = document.getElementById('championsContainer').querySelectorAll('input[type="email"]');
+    var champCount2 = 0;
+    champInputsFilled.forEach(function(el){ if(el.value.trim()) champCount2++; });
+    updateNavStatus('ns-ops-champions', champCount2, 1);
+
+    // Clinical
+    var clinFields = ['c-vendor-admin-name','c-vendor-admin-email','c-vendor-count','c-team-structure','c-remote-workflow','c-prioritization','c-signing-workflow','c-inclinic-workflow','c-roles','c-connectivity'];
+    var cc = countFilled(clinFields);
+    var clinPct = Math.round((cc.filled / clinFields.length) * 100);
+    document.getElementById('clin-bar').style.width = Math.min(clinPct, 100) + '%';
+    document.getElementById('clin-pct').textContent = Math.min(clinPct, 100) + '%';
+
+    updateNavStatus('ns-clin-vendors', countFilled(['c-vendor-admin-name','c-vendor-admin-email','c-vendor-count']).filled, 3);
+    updateNavStatus('ns-clin-team', countFilled(['c-team-structure']).filled, 1);
+    updateNavStatus('ns-clin-remote', countFilled(['c-remote-workflow','c-prioritization','c-signing-workflow']).filled, 3);
+    updateNavStatus('ns-clin-inclinic', countFilled(['c-inclinic-workflow','c-roles']).filled, 2);
+    updateNavStatus('ns-clin-patients', countFilled(['c-connectivity']).filled, 1);
+    updateNavStatus('ns-clin-scheduling', countFilled(['c-hf-manufacturers']).filled, 1);
+
+    // Intro status
+    if (activeTrack) updateNavStatus('ns-intro', 1, 1);
+
+    // Save indicator
+    document.getElementById('saveStatus').textContent = 'Unsaved changes';
+}
+
+function updateNavStatus(id, filled, total) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    if (filled === 0) {
+        el.textContent = '—'; el.className = 'nav-status nav-empty';
+    } else if (filled >= total) {
+        el.textContent = '✓'; el.className = 'nav-status nav-complete';
+    } else {
+        el.textContent = filled + '/' + total; el.className = 'nav-status nav-partial';
+    }
+}
+
+/* ================================================================
+   SAVE / TOAST
+   ================================================================ */
+function saveProgress() {
+    try {
+        var data = { ynValues: ynValues, track: activeTrack };
+        document.querySelectorAll('input[id], select[id], textarea[id]').forEach(function(el) {
+            if (el.id && !el.classList.contains('prefilled')) data[el.id] = el.value;
+        });
+        localStorage.setItem('pmDiscoveryWizard', JSON.stringify(data));
+        localStorage.setItem('pmDiscoveryWizard_version', 'v1-brand-rebuild');
+        document.getElementById('saveStatus').textContent = 'Saved ' + new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+        showToast('Progress saved successfully', 'success');
+    } catch(e) {
+        showToast('Save unavailable — please use Print');
+    }
+}
+
+function loadSaved() {
+    try {
+        // Clear stale data if version flag doesn't match
+        if (localStorage.getItem('pmDiscoveryWizard_version') !== 'v1-brand-rebuild') {
+            localStorage.removeItem('pmDiscoveryWizard');
+            localStorage.setItem('pmDiscoveryWizard_version', 'v1-brand-rebuild');
+        }
+        var saved = localStorage.getItem('pmDiscoveryWizard');
+        if (!saved) return;
+        var data = JSON.parse(saved);
+        if (data.ynValues) { ynValues = data.ynValues; Object.keys(ynValues).forEach(function(k){ setYN(k, ynValues[k], true); }); }
+        if (data.track) { selectTrack(data.track); }
+        Object.keys(data).forEach(function(key) {
+            if (key === 'ynValues' || key === 'track') return;
+            var el = document.getElementById(key);
+            if (el && !el.classList.contains('prefilled')) el.value = data[key];
+        });
+        propagateShared();
+        updateProgress();
+    } catch(e) {}
+}
+
+var toastTimer;
+function showToast(msg, type) {
+    var t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast show' + (type ? ' ' + type : '');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ t.className = 'toast'; }, 3000);
+}
+
+// Auto-save every 60 seconds
+setInterval(function() {
+    if (activeTrack) saveProgress();
+}, 60000);
+
+// Init
+document.addEventListener('DOMContentLoaded', function() {
+    switchTrack('both');
+    loadSaved();
+    updateProgress();
+});
+</script>
+
+<!-- PaceMate Back Button -->
+<style>
+.pm-back-btn{
+  position:fixed;top:16px;left:16px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px 8px 12px;
+  background:#fff;
+  border:1.5px solid #DEE2E6;
+  border-radius:20px;
+  font-family:'Roboto',sans-serif;
+  font-size:0.78rem;font-weight:600;
+  color:#495057;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.09);
+  transition:all 0.15s;
+  line-height:1;
+}
+.pm-back-btn:hover{
+  background:#EA0044;color:#fff;
+  border-color:#EA0044;
+  box-shadow:0 3px 12px rgba(234,0,68,0.25);
+  transform:translateX(-2px);
+}
+.pm-back-btn svg{transition:transform 0.15s;}
+.pm-back-btn:hover svg{transform:translateX(-2px);}
+@media print{.pm-back-btn{display:none!important}}
+.pm-form-footer{text-align:center;padding:24px 20px 16px;font-size:0.75rem;color:#868E96;border-top:1px solid #F1F3F5;margin-top:8px;font-family:'Roboto',sans-serif;line-height:1.8;}
+.pm-form-footer strong{color:#495057;font-weight:600;}
+@media print{.pm-form-footer{display:none!important;}}
+</style>
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 4L6 8l4 4"/>
+  </svg>
+  Back
+</button>
+
+<div class="pm-form-footer-locked" style="max-width:100%;padding:14px 40px;border-top:1px solid #D9D9D6;display:flex;align-items:center;justify-content:space-between;font-family:'Poppins',sans-serif;font-weight:300;font-size:10px;color:#8A8C90;">
+  <div>PaceMate<sup>®</sup> <span style="color:#D9D9D6;margin:0 6px;">|</span> PaceMate.com</div>
+  <div><strong style="font-weight:600;color:#2D2E32;">Discovery &amp; Clinical Questionnaire</strong> <span style="color:#D9D9D6;margin:0 6px;">|</span> v1 <span style="color:#D9D9D6;margin:0 6px;">|</span> February 2026</div>
+</div>
+
+<!-- ── PM Standard Action Bar ─────────────────────────── -->
+<div class="pm-autosave" id="pmAutosaveIndicator">
+  <div class="pm-autosave-dot"></div>
+  <span>Saved</span>
+</div>
+
+<div class="pm-action-bar">
+  <div class="pm-action-left">
+    <button class="pm-pill pm-pill-save" onclick="pmSave()">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M11 11H2V2h7l2 2v7z"/><path d="M4 11V7h5v4"/><path d="M4 2v3h4"/></svg>
+      Save Progress
+    </button>
+    <button class="pm-pill pm-pill-cancel" onclick="pmClearForm()">Clear Form</button>
+  </div>
+  <div class="pm-action-right">
+    <div class="pm-export-wrap">
+      <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 1v7M4 6l2.5 2.5L9 6M2 10h9"/></svg>
+        Export ▾
+      </button>
+      <div class="pm-export-menu" id="pmExportMenu">
+        <button class="pm-export-item" onclick="pmExportPDF()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2h6l3 3v8H3V2z"/><path d="M9 2v3h3"/></svg>
+          Export as PDF
+        </button>
+        <button class="pm-export-item" onclick="pmExportExcel()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="11" height="11" rx="1"/><path d="M5 5l5 5M10 5l-5 5"/></svg>
+          Export as Excel
+        </button>
+        <button class="pm-export-item" onclick="pmExportCSV()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h9M3 7h9M3 10h6"/></svg>
+          Export as CSV
+        </button>
+      </div>
+    </div>
+    <button class="pm-pill pm-pill-submit" onclick="pmSubmit()">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6.5h9M7.5 2.5l4 4-4 4"/></svg>
+      Submit to PaceMate®
+    </button>
+  </div>
+</div>
+
+<div id="pmActionToast" style="position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-12px);background:#212529;color:#fff;padding:10px 20px;border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.88rem;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:9999;opacity:0;pointer-events:none;transition:opacity 0.2s ease,transform 0.2s ease;white-space:nowrap;"></div>
+<script>document.getElementById('pmActionToast').classList&&(document.getElementById('pmActionToast').show=function(){});</script>
+<style>#pmActionToast.show{opacity:1;transform:translateX(-50%) translateY(0);}</style>
+
+</body>
+</html>
