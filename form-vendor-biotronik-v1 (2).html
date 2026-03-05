@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BIOTRONIK Vendor Forms</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── SHARED ── */
+body{font-family:'Segoe UI','Helvetica Neue',Arial,sans-serif;background:#F5F5F5;line-height:1.4;-webkit-font-smoothing:antialiased;color:#333}
+@media print{
+  body{background:white}
+  .form-container{box-shadow:none;margin:0;max-width:100%}
+  .no-print,.pm-action-bar,.pm-back-btn{display:none!important}
+  .section-break{page-break-before:always;border-top:none;margin-top:0;padding-top:0}
+}
+.form-container{max-width:850px;margin:20px auto;background:white;box-shadow:0 2px 12px rgba(0,0,0,0.1);overflow:hidden}
+
+/* ── SECTION DIVIDER ── */
+.section-break{
+  border-top:4px solid #3A7DA6;
+  margin:32px 0 0;
+  padding:0;
+  position:relative;
+}
+.section-break-label{
+  display:flex;align-items:center;gap:12px;
+  background:#3A7DA6;color:white;
+  padding:10px 40px;
+  font-size:0.9rem;font-weight:700;letter-spacing:0.04em;
+  text-transform:uppercase;
+}
+.section-break-label svg{width:18px;height:18px;fill:white;flex-shrink:0}
+
+/* ══════════════════════════════════════════
+   SECTION 1 — HM (Remote Services Request)
+═══════════════════════════════════════════ */
+:root{
+  --hm-blue:#3A7DA6;--hm-blue-dark:#1A4D7C;
+  --hm-gray:#333;--hm-gray-med:#555;--hm-gray-lt:#999;
+  --hm-border:#CCC;--hm-bg:#F5F5F5;
+  --field-bg:#D6DEE8;--field-req-border:#CC3333;
+  --stripe-1:#C0D0DE;--stripe-2:#DDE6EE;
+}
+.header-area{display:flex;position:relative}
+.header-left-stripe{width:48px;flex-shrink:0;background:repeating-linear-gradient(-55deg,var(--stripe-1),var(--stripe-1) 4px,var(--stripe-2) 4px,var(--stripe-2) 10px)}
+.header-main{flex:1;position:relative}
+.header-top-stripe{height:24px;background:repeating-linear-gradient(-55deg,var(--stripe-1),var(--stripe-1) 4px,var(--stripe-2) 4px,var(--stripe-2) 10px)}
+.header-content{padding:16px 30px 18px 24px;position:relative}
+.header-content h1{font-size:1.5rem;font-weight:700;color:var(--hm-blue-dark);line-height:1.15}
+.header-content .subtitle{font-size:1.25rem;font-weight:300;color:var(--hm-blue);margin-bottom:10px}
+.hm-contact-block{position:absolute;top:16px;right:0;display:flex;align-items:flex-start;gap:0}
+.hm-contact-text{text-align:right;padding-right:8px}
+.hm-contact-text .phone{font-size:0.92rem;font-weight:700;color:var(--hm-blue-dark)}
+.hm-contact-text .email{font-size:0.82rem;font-weight:600;color:var(--hm-blue-dark)}
+.hm-blue-box{width:26px;height:48px;background:var(--hm-blue-dark);flex-shrink:0}
+.submit-note{font-size:0.82rem;color:var(--hm-gray-med);line-height:1.5}
+.submit-note a{color:var(--hm-blue-dark);text-decoration:none}
+
+.hm-form-body{padding:24px 40px 20px 72px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px 40px}
+.col-header{font-size:1.15rem;font-weight:400;color:var(--hm-blue);margin-bottom:16px;line-height:1.3}
+.hm-field-group{margin-bottom:12px}
+.hm-field-group label{display:block;font-size:0.82rem;font-weight:700;color:var(--hm-gray);margin-bottom:4px}
+.hm-field-group input.field{width:100%;padding:7px 8px;font-size:0.85rem;font-family:inherit;border:1px solid transparent;background:var(--field-bg);color:var(--hm-gray);outline:none;transition:all 0.2s}
+.hm-field-group input.field:focus{border-color:var(--hm-blue);background:#C8D6E4}
+.hm-field-group input.field.required{border:2px solid var(--field-req-border);background:var(--field-bg)}
+.hm-field-group input.field.required:focus{border-color:#AA0000;background:#C8D6E4}
+.required-note{font-size:0.72rem;font-style:italic;color:var(--hm-gray-lt);margin-top:8px}
+.solution-section{margin-top:24px;padding:0}
+.solution-header{font-size:1.15rem;font-weight:400;color:var(--hm-blue-dark);margin-bottom:14px}
+.solution-table{width:100%;border-collapse:collapse}
+.solution-table thead th{font-size:0.82rem;font-weight:600;color:var(--hm-gray);padding:8px 16px;text-align:center}
+.solution-table thead th:first-child{text-align:left;width:55%}
+.solution-table tbody tr{border-bottom:1px solid #D0D0D0}
+.solution-table tbody tr:last-child{border-bottom:none}
+.solution-table td{padding:12px 16px;vertical-align:top}
+.solution-table td:not(:first-child){text-align:center}
+.solution-name{font-size:0.86rem;font-weight:700;color:var(--hm-gray)}
+.solution-desc{font-size:0.78rem;color:var(--hm-gray-med);margin-top:2px}
+input[type="radio"].silver{width:22px;height:22px;accent-color:#888;cursor:pointer;appearance:auto}
+.hm-bottom{border-top:1px solid #D0D0D0;margin-top:20px;padding:16px 24px 0}
+.hm-doc-footer{display:flex;justify-content:space-between;align-items:flex-end;padding:14px 40px 16px;font-size:0.68rem;color:var(--hm-gray-lt);border-top:1px solid #E0E0E0;line-height:1.5}
+
+/* ══════════════════════════════════════════
+   SECTION 2 — RS (Interrogation Integration)
+═══════════════════════════════════════════ */
+.rs-form-header{display:flex;justify-content:space-between;align-items:flex-start;padding:30px 40px 20px}
+.rs-form-title h1{font-size:1.25rem;font-weight:700;color:#333;line-height:1.3;margin-bottom:2px}
+.rs-form-title .subtitle{font-size:1.05rem;font-weight:600;color:#333}
+.rs-form-body{padding:0 40px 30px}
+.rs-instructions{margin-bottom:12px}
+.rs-instructions h3{font-size:0.85rem;font-weight:700;text-decoration:underline;margin-bottom:6px}
+.rs-instructions ol{margin-left:24px;font-size:0.82rem;line-height:1.6}
+.rs-instructions ol li{margin-bottom:3px}
+.rs-important-note{background:#FFF8E1;border:1px solid #E6D28C;border-left:4px solid #D4A017;padding:10px 14px;margin-bottom:20px;font-size:0.75rem;font-style:italic;line-height:1.4}
+.rs-important-note strong{color:#CC0000;font-style:italic}
+.rs-section-header{font-size:0.95rem;font-weight:700;color:#333;margin-bottom:10px;margin-top:20px}
+.rs-ext-note{float:right;font-size:0.72rem;font-weight:400;font-style:italic;color:#666}
+.rs-field-row{display:flex;gap:16px;margin-bottom:10px;align-items:flex-end}
+.rs-field-row.full{display:block}
+.rs-field-group{flex:1;display:flex;flex-direction:column}
+.rs-field-group label{font-size:0.8rem;font-weight:500;color:#333;margin-bottom:3px;white-space:nowrap}
+.rs-field-group input{width:100%;padding:6px 8px;font-size:0.82rem;font-family:inherit;border:none;border-bottom:1px solid #CCC;background:transparent;color:#333;outline:none;transition:border-color 0.2s}
+.rs-field-group input:focus{border-bottom-color:#1A3A5C;background:#F8FAFC}
+.rs-contact-subsection{margin-bottom:16px;padding-top:4px}
+.rs-contact-subsection h4{font-size:0.88rem;font-weight:700;color:#333;margin-bottom:8px}
+.rs-signature-block{margin-top:20px}
+.rs-signature-block h4{font-size:0.88rem;font-weight:700;color:#333;margin-bottom:12px}
+.rs-signature-row{display:flex;gap:40px;align-items:flex-end}
+.rs-signature-field{flex:1}
+.rs-signature-field .sig-line{border-bottom:1.5px solid #333;height:30px;margin-bottom:4px}
+.rs-signature-field .sig-label{font-size:0.78rem;font-weight:600}
+.rs-date-field{flex:0 0 180px}
+.rs-date-field input{width:100%;padding:6px 8px;font-size:0.82rem;font-family:inherit;border:none;border-bottom:1.5px solid #333;background:transparent;outline:none}
+.rs-date-field input:focus{border-bottom-color:#1A3A5C;background:#F8FAFC}
+.rs-date-field .sig-label{font-size:0.78rem;font-weight:600;margin-top:4px}
+.rs-page-footer{display:flex;justify-content:space-between;padding:10px 40px 15px;font-size:0.72rem;color:#999;border-top:1px solid #E0E0E0}
+
+/* ── ACTION BAR ── */
+.pm-back-btn{position:fixed;top:16px;left:16px;z-index:9999;display:inline-flex;align-items:center;gap:7px;padding:8px 16px 8px 12px;background:#fff;border:1.5px solid #DEE2E6;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:0.78rem;font-weight:600;color:#495057;cursor:pointer;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.09);transition:all 0.15s;line-height:1}
+.pm-back-btn:hover{background:#EA0044;color:#fff;border-color:#EA0044;box-shadow:0 3px 12px rgba(200,16,46,0.25);transform:translateX(-2px)}
+.pm-back-btn svg{transition:transform 0.15s}
+.pm-back-btn:hover svg{transform:translateX(-2px)}
+.pm-action-bar{display:flex;align-items:center;gap:10px;padding:20px 40px 16px;border-top:1px solid #E9ECEF;margin-top:24px;flex-wrap:nowrap;background:#fff}
+.pm-pill{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.18s;border:none;outline:none;white-space:nowrap;line-height:1}
+.pm-pill svg{width:14px;height:14px;flex-shrink:0;fill:currentColor}
+.pm-pill-save{background:white;color:#495057;border:1.5px solid #DEE2E6}
+.pm-pill-save:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529}
+.pm-export-wrap{position:relative;margin-left:auto}
+.pm-pill-export{background:white;color:#495057;border:1.5px solid #DEE2E6}
+.pm-pill-export:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529}
+.pm-chevron{width:11px!important;height:11px!important;transition:transform 0.18s;margin-left:1px}
+.pm-export-wrap.open .pm-pill-export{border-color:#ADB5BD;background:#F8F9FA}
+.pm-export-wrap.open .pm-chevron{transform:rotate(180deg)}
+.pm-export-menu{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:white;border:1.5px solid #E9ECEF;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.12);min-width:190px;z-index:200;overflow:hidden}
+.pm-export-wrap.open .pm-export-menu{display:block}
+.pm-export-item{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:0.82rem;font-weight:500;color:#495057;cursor:pointer;transition:background 0.12s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+.pm-export-item:hover{background:#F8F9FA;color:#212529}
+.pm-export-item+.pm-export-item{border-top:1px solid #F1F3F5}
+.pm-export-item svg{width:15px;height:15px;flex-shrink:0}
+.pm-pill-submit{background:#EA0044;color:white;box-shadow:0 3px 12px rgba(234,0,68,0.22)}
+.pm-pill-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,16,46,0.35)}
+.pm-autosave{font-size:0.72rem;color:#ADB5BD;display:flex;align-items:center;gap:5px}
+.pm-autosave.active{color:#2B8A3E}
+.pm-autosave-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.toast{position:fixed;bottom:30px;right:30px;padding:14px 24px;background:#3A7DA6;color:white;border-radius:6px;font-size:0.85rem;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2);transform:translateY(100px);opacity:0;transition:all 0.3s;z-index:9999}
+.toast.show{transform:translateY(0);opacity:1}.toast.success{background:#28A745}.toast.error{background:#DC3545}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .form-container{margin:10px}
+  .header-left-stripe{width:30px}
+  .header-content{padding:12px 20px 14px 16px}
+  .hm-contact-block{position:static;margin-top:10px}
+  .hm-form-body{padding:20px}
+  .two-col{grid-template-columns:1fr}
+  .rs-form-header{flex-direction:column;gap:12px;padding:20px}
+  .rs-form-body{padding:0 20px 20px}
+  .rs-field-row{flex-direction:column;gap:8px}
+  .rs-signature-row{flex-direction:column;gap:16px}
+  .rs-date-field{flex:1;width:100%}
+}
+@media(max-width:600px){
+  .pm-action-bar{gap:8px;flex-wrap:wrap;padding:14px 20px}
+  .pm-export-wrap{margin-left:0}
+  .pm-pill-submit{width:100%;justify-content:center}
+}
+
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div class="form-container">
+
+<!-- ══════════════════════════════════════════
+     SECTION 1 — BIOTRONIK Remote Services
+     (HM — EHR Integration Interest Form)
+════════════════════════════════════════════ -->
+
+  <div class="header-area">
+    <div class="header-left-stripe"></div>
+    <div class="header-main">
+      <div class="header-top-stripe"></div>
+      <div class="header-content">
+        <div class="hm-contact-block">
+          <div class="hm-contact-text">
+            <div class="phone">1-800-547-0394</div>
+            <div class="email">hmsc@biotronik.com</div>
+          </div>
+          <div class="hm-blue-box"></div>
+        </div>
+        <h1>BIOTRONIK Remote Services</h1>
+        <div class="subtitle">Request Form</div>
+        <div class="submit-note">To request the activation or deactivation of a Remote Services Solution,<br>please fill in the form and submit to <a href="mailto:hmsc@biotronik.com">hmsc@biotronik.com</a>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hm-form-body">
+    <div class="two-col">
+      <div>
+        <div class="col-header">General Information:</div>
+        <div class="hm-field-group"><label>Hospital/Clinic Name:</label><input type="text" class="field" name="hm_hospital_name"></div>
+        <div class="hm-field-group"><label>City*:</label><input type="text" class="field required" name="hm_city"></div>
+        <div class="hm-field-group"><label>State:</label><input type="text" class="field" name="hm_state"></div>
+        <div class="hm-field-group"><label>HMSC User group:</label><input type="text" class="field" name="hm_hmsc_group"></div>
+      </div>
+      <div>
+        <div class="col-header">Hospital/Clinic Primary<br>Contact Information:</div>
+        <div class="hm-field-group"><label>Name*:</label><input type="text" class="field required" name="hm_contact_name"></div>
+        <div class="hm-field-group"><label>Email*:</label><input type="email" class="field required" name="hm_contact_email"></div>
+        <div class="hm-field-group"><label>Telephone*:</label><input type="tel" class="field required" name="hm_contact_phone"></div>
+        <div class="required-note">*All fields with an asterisk (*) must be filled out.</div>
+      </div>
+    </div>
+
+    <div class="solution-section">
+      <div class="solution-header">BIOTRONIK Requested Solution:</div>
+      <table class="solution-table">
+        <thead><tr><th></th><th>Activation</th><th>Deactivation</th></tr></thead>
+        <tbody>
+          <tr><td><div class="solution-name">EHR DataSync &ndash; Manual Integration</div><div class="solution-desc">Manual XML and PDF export</div></td><td><input type="radio" class="silver" name="hm_manual_int" value="activation"></td><td><input type="radio" class="silver" name="hm_manual_int" value="deactivation"></td></tr>
+          <tr><td><div class="solution-name">EHR DataSync &ndash; Web Integration</div><div class="solution-desc">Automatic XML and PDF export</div></td><td><input type="radio" class="silver" name="hm_web_int" value="activation"></td><td><input type="radio" class="silver" name="hm_web_int" value="deactivation"></td></tr>
+          <tr><td><div class="solution-name">EHR DataSync &ndash; HL7 Integration</div><div class="solution-desc">Automatic HL7 and PDF export</div></td><td><input type="radio" class="silver" name="hm_hl7_int" value="activation"></td><td><input type="radio" class="silver" name="hm_hl7_int" value="deactivation"></td></tr>
+          <tr><td><div class="solution-name">Remote Technical Service (RTS)</div><div class="solution-desc">Programmer interrogation transmission of PDF to general purpose HMSC User group</div></td><td><input type="radio" class="silver" name="hm_rts" value="activation"></td><td><input type="radio" class="silver" name="hm_rts" value="deactivation"></td></tr>
+          <tr><td><div class="solution-name">ReportShare (RS)</div><div class="solution-desc">Programmer interrogation transmission of Discrete Data and PDF to account specific User group</div></td><td><input type="radio" class="silver" name="hm_rs" value="activation"></td><td><input type="radio" class="silver" name="hm_rs" value="deactivation"></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="hm-bottom">
+    <div style="font-size:0.78rem;font-weight:600;color:#636569;margin-bottom:12px;">*All fields with an asterisk (*) must be filled out.</div>
+    <div style="text-align:center;margin-bottom:8px;">
+      <p style="font-size:0.82rem;font-weight:700;color:#636569;">Thank you very much for your request.</p>
+      <p style="font-size:0.78rem;color:#636569;">You will receive an email with additional information.</p>
+    </div>
+  </div>
+
+  <div class="hm-doc-footer">
+    <div>BIOTRONIK, Inc.<br>6024 Jean Road<br>Lake Oswego, OR 97035-5369</div>
+    <div>Tel: (800) 547-0394 (24-hour)<br>Fax: (800) 291-0470<br>www.biotronik.com</div>
+    <div>F1424-B 03/21<br>&copy;2021 BIOTRONIK, Inc. All rights reserved.<br>FM068r2 03/23/21</div>
+  </div>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2 — Biotronik Home Monitoring
+     (RS — Interrogation Integration Request)
+════════════════════════════════════════════ -->
+
+  <div class="section-break">
+    <div class="section-break-label">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM9 13h6v2H9v-2zm0 4h6v2H9v-2z"/></svg>
+      Section 2 — Biotronik Home Monitoring: Interrogation Integration Request Form
+    </div>
+  </div>
+
+  <div class="rs-form-body" style="padding-top:24px">
+    <div class="rs-instructions">
+      <h3>Instructions:</h3>
+      <ol>
+        <li>Complete all applicable sections of the form.</li>
+        <li>Submit the completed document to PaceMate contact.</li>
+      </ol>
+    </div>
+    <div class="rs-important-note">
+      <strong>Important Note:</strong> The latest version of Adobe&trade; Reader software is required to save this PDF with entered data. The latest version of Adobe Reader is available at: <a href="https://get.adobe.com/reader/" target="_blank">https://get.adobe.com/reader/</a>
+    </div>
+
+    <h3 class="rs-section-header">Practice Information <span class="rs-ext-note">* Please include extension number if applicable.</span></h3>
+    <div class="rs-field-row full"><div class="rs-field-group"><label>Practice User Group:</label><input type="text" name="rs_practice_user_group"></div></div>
+    <div class="rs-field-row full"><div class="rs-field-group"><label>Name of Clinic, Hospital or Group:</label><input type="text" name="rs_clinic_name"></div></div>
+    <div class="rs-field-row full"><div class="rs-field-group"><label>Street Address:</label><input type="text" name="rs_street_address"></div></div>
+    <div class="rs-field-row"><div class="rs-field-group"><label>Zip/Postal Code:</label><input type="text" name="rs_zip_code" placeholder="00000"></div><div class="rs-field-group"><label>Country:</label><input type="text" name="rs_country"></div></div>
+    <div class="rs-field-row"><div class="rs-field-group"><label>City:</label><input type="text" name="rs_city" placeholder="Auto-populated from zip"></div><div class="rs-field-group"><label>State:</label><input type="text" name="rs_state" placeholder="Auto-populated from zip"></div></div>
+    <div class="rs-field-row"><div class="rs-field-group"><label>Telephone:</label><input type="tel" name="rs_clinic_phone"></div><div class="rs-field-group"><label>Website URL:</label><input type="url" name="rs_clinic_url"></div></div>
+
+    <div class="rs-contact-subsection">
+      <h4>Device / Clinician(s) Contact <span class="rs-ext-note">*Please include extension number if applicable.</span></h4>
+      <div class="rs-field-row"><div class="rs-field-group"><label>Name:</label><input type="text" name="rs_clinician_name"></div><div class="rs-field-group"><label>Title or Role:</label><input type="text" name="rs_clinician_role"></div></div>
+      <div class="rs-field-row"><div class="rs-field-group"><label>Telephone*:</label><input type="tel" name="rs_clinician_phone"></div><div class="rs-field-group"><label>E-mail:</label><input type="email" name="rs_clinician_email"></div></div>
+    </div>
+
+    <div class="rs-contact-subsection">
+      <h4>Biotronik Field Representative (if applicable) <span class="rs-ext-note">* Please include extension number if applicable.</span></h4>
+      <div class="rs-field-row full"><div class="rs-field-group"><label>Name:</label><input type="text" name="rs_bio_rep_name"></div></div>
+      <div class="rs-field-row"><div class="rs-field-group"><label>Telephone*:</label><input type="tel" name="rs_bio_rep_phone"></div><div class="rs-field-group"><label>E-mail:</label><input type="email" name="rs_bio_rep_email"></div></div>
+    </div>
+
+    <div class="rs-signature-block">
+      <h4>Contact Request Form Completion</h4>
+      <div class="rs-signature-row">
+        <div class="rs-signature-field"><div class="sig-line"></div><div class="sig-label">Signature</div></div>
+        <div class="rs-date-field"><input type="date" name="rs_sig_date"><div class="sig-label">Date</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rs-page-footer"><span>Page 2 of 2</span><span></span></div>
+
+<!-- ── PM ACTION BAR ── -->
+<div class="pm-action-bar">
+  <button class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+    <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+    Save Progress
+  </button>
+  <button class="pm-pill pm-pill-save" onclick="pmClearForm()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+    Clear Form
+  </button>
+  <span class="pm-autosave" id="pmAutosave"></span>
+  <div class="pm-export-wrap" id="pmExportWrap">
+    <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Export
+      <svg class="pm-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+    </button>
+    <div class="pm-export-menu">
+      <button class="pm-export-item" onclick="pmExport('pdf')">
+        <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+        Export as PDF
+      </button>
+      <button class="pm-export-item" onclick="pmExport('excel')">
+        <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        Export as Excel
+      </button>
+      <button class="pm-export-item" onclick="pmExport('csv')">
+        <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+        Export as CSV
+      </button>
+    </div>
+  </div>
+  <button class="pm-pill pm-pill-submit" onclick="pmSubmit()">
+    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+    Submit to PaceMate
+  </button>
+</div>
+
+</div><!-- /.form-container -->
+
+<div class="toast" id="toast"></div>
+
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4L6 8l4 4"/></svg>
+  Back
+</button>
+
+<script>
+function showToast(m,t){var e=document.getElementById('toast');e.textContent=m;e.className='toast '+(t||'');setTimeout(function(){e.classList.add('show')},10);setTimeout(function(){e.classList.remove('show');setTimeout(function(){e.className='toast'},300)},3000)}
+
+var PM_WORKSTREAM='csm',PM_STORAGE_KEY='form_vendor_biotronik',PM_FORM_ID='vendor-biotronik',PM_FORM_NAME='Biotronik Vendor Form',PM_FORM_FILE='form-vendor-biotronik-v1.html';
+function pmGetData(){var d={};document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name||'field';if(el.type==='radio'){if(el.checked)d[el.name]=el.value;}else if(el.type==='checkbox'){if(el.checked)d[k]=(d[k]?d[k]+', ':''+(el.value||'checked'));}else if(el.value){d[k]=el.value;}});return d;}
+function pmSave(){try{localStorage.setItem(PM_STORAGE_KEY,JSON.stringify(pmGetData()));}catch(e){}}
+function pmLoad(){try{var r=localStorage.getItem(PM_STORAGE_KEY);if(!r)return;var s=JSON.parse(r);document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name;if(!k||!(k in s))return;if(el.type==='radio'){el.checked=(s[el.name]===el.value);}else if(el.type==='checkbox'){el.checked=!!(s[k]&&s[k].indexOf(el.value||'checked')>-1);}else{el.value=s[k];}});}catch(e){}}
+function pmSetAutosave(msg){var el=document.getElementById('pmAutosave');if(!el)return;var t=new Date();var ts=t.getHours()+':'+String(t.getMinutes()).padStart(2,'0');el.innerHTML='<span class="pm-autosave-dot"></span>'+(msg||('Auto-saved at '+ts));el.classList.add('active');setTimeout(function(){el.classList.remove('active');},3000);}
+function pmSaveProgress(){pmSave();pmSetAutosave('Saved');showToast('Progress saved!','success');}
+function pmClearForm(){if(confirm('Clear all fields in both sections?')){document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='radio'||el.type==='checkbox'){el.checked=false;}else{el.value='';}});try{localStorage.removeItem(PM_STORAGE_KEY);}catch(e){}showToast('Form cleared','');}}
+function pmToggleExport(e){e.stopPropagation();document.getElementById('pmExportWrap').classList.toggle('open');}
+document.addEventListener('click',function(){var w=document.getElementById('pmExportWrap');if(w)w.classList.remove('open');});
+function pmExport(t){document.getElementById('pmExportWrap').classList.remove('open');if(t==='pdf')pmExportPDF();else if(t==='excel')pmExportExcel();else if(t==='csv')pmExportCSV();}
+function pmExportPDF(){showToast('Generating PDF...','info');var bar=document.querySelector('.pm-action-bar');var back=document.querySelector('.pm-back-btn');if(bar)bar.style.display='none';if(back)back.style.display='none';var el=document.querySelector('.form-container')||document.body;html2canvas(el,{scale:2,useCORS:true,logging:false}).then(function(canvas){if(bar)bar.style.display='';if(back)back.style.display='';var img=canvas.toDataURL('image/png');var pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),iw=pw,ih=(canvas.height*pw)/canvas.width,y=0;while(y<ih){if(y>0)pdf.addPage();pdf.addImage(img,'PNG',0,-y,iw,ih);y+=ph;}pdf.save(PM_FORM_NAME.replace(/\s+/g,'-')+'.pdf');showToast('PDF downloaded!','success');}).catch(function(){if(bar)bar.style.display='';if(back)back.style.display='';showToast('PDF failed','error');});}
+function pmExportExcel(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:30},{wch:50}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Form Data');XLSX.writeFile(wb,PM_FORM_NAME.replace(/\s+/g,'-')+'.xlsx');showToast('Excel downloaded!','success');}
+function pmExportCSV(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var csv=rows.map(function(r){return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(',')}).join('\n');var blob=new Blob([csv],{type:'text/csv'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=PM_FORM_NAME.replace(/\s+/g,'-')+'.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},5000);showToast('CSV downloaded!','success');}
+function pmSubmit(){
+  var missing=[];
+  document.querySelectorAll('input.field.required').forEach(function(el){
+    if(!el.value.trim()){missing.push(el);el.style.borderColor='#DC3545';el.style.boxShadow='0 0 0 3px rgba(220,53,69,0.15)';}
+    else{el.style.borderColor='';el.style.boxShadow='';}
+  });
+  if(missing.length>0){showToast('Please complete all required fields (*)','error');missing[0].scrollIntoView({behavior:'smooth',block:'center'});missing[0].focus();return;}
+  pmSave();var WS_KEYS={'csm':'csm_inbox_submissions','integration':'integration_inbox_submissions','clinical':'clinical_inbox_submissions','patientsvcs':'patientsvcs_inbox_submissions','support':'support_inbox_submissions'};var key=WS_KEYS[PM_WORKSTREAM];if(!key){showToast('Submitted to PaceMate!','success');return;}var data=[];try{data=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}var now=Date.now();var existing=data.find(function(e){return e.id===PM_FORM_ID;});if(existing){existing.history[existing.history.length-1].statusAtReview=existing.status;existing.history.push({submittedAt:now,statusAtReview:null});existing.status='submitted';existing.glowStart=now;}else{data.push({id:PM_FORM_ID,formName:PM_FORM_NAME,formFile:PM_FORM_FILE,status:'submitted',glowStart:now,history:[{submittedAt:now,statusAtReview:null}]});}try{localStorage.setItem(key,JSON.stringify(data));}catch(e){}showToast('Submitted to PaceMate!','success');
+}
+document.addEventListener('input',function(e){var el=e.target;if(el.classList&&el.classList.contains('required')){el.style.borderColor='';el.style.boxShadow='';}});
+setInterval(function(){pmSave();pmSetAutosave();},30000);
+document.addEventListener('DOMContentLoaded',function(){var vKey=PM_STORAGE_KEY+'_v';if(localStorage.getItem(vKey)!=='v1'){localStorage.removeItem(PM_STORAGE_KEY);localStorage.setItem(vKey,'v1');}else{pmLoad();}});
+
+/* ── ZIP AUTO-POPULATE ── */
+function lookupZip(zipVal, cityName, stateName) {
+  if (!/^\d{5}$/.test(zipVal)) return;
+  fetch('https://api.zippopotam.us/us/' + zipVal)
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (!data || !data.places || !data.places[0]) return;
+      var place = data.places[0];
+      var cityEl = document.querySelector('[name="rs_city"]');
+      var stateEl = document.querySelector('[name="rs_state"]');
+      if (cityEl) { cityEl.value = place['place name']; flashZipField(cityEl); }
+      if (stateEl) { stateEl.value = place['state abbreviation']; flashZipField(stateEl); }
+    }).catch(function(){});
+}
+function flashZipField(el) {
+  el.classList.add('zip-autofilled');
+  setTimeout(function(){ el.classList.remove('zip-autofilled'); }, 1000);
+}
+document.addEventListener('DOMContentLoaded', function(){
+  var zipEl = document.querySelector('[name="rs_zip_code"]');
+  if (zipEl) zipEl.addEventListener('blur', function(){ lookupZip(this.value, 'rs_city', 'rs_state'); });
+});
+
+
+</script>
+</body>
+</html>

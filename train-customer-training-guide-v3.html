@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceMate — Customer Training Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--pm-red:#C8102E;--pm-red-dark:#A00D24;--pm-red-light:#E8394F;
+--text-primary:#212529;--text-secondary:#495057;--text-tertiary:#868E96;
+--bg-white:#FFFFFF;--bg-light:#F8F9FA;--bg-warm:#FFF8F9;
+--border-light:#DEE2E6;--border-med:#CED4DA;
+--shadow-sm:0 1px 3px rgba(0,0,0,0.08);--shadow-md:0 4px 12px rgba(0,0,0,0.1);--shadow-lg:0 8px 24px rgba(0,0,0,0.12);
+--radius-sm:8px;--radius-md:12px;--radius-lg:16px;
+--success:#28A745;--info:#17A2B8;--warning:#F59F00;--purple:#7048E8;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--bg-light);color:var(--text-primary);line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* ===== HERO ===== */
+.hero{background:linear-gradient(135deg,var(--pm-red) 0%,var(--pm-red-dark) 100%);color:#fff;padding:48px 0 56px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-8%;width:600px;height:600px;background:radial-gradient(circle,rgba(255,255,255,0.07) 0%,transparent 70%);border-radius:50%}
+.hero-inner{max-width:940px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+.hero-badge{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:4px 14px;font-size:0.78rem;font-weight:600;letter-spacing:0.5px;margin-bottom:16px}
+.hero h1{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;margin-bottom:10px;line-height:1.2}
+.hero p{font-size:1rem;opacity:0.9;max-width:640px;line-height:1.7}
+
+/* ===== QUICK ACCESS BAR ===== */
+.quick-access{max-width:940px;margin:-24px auto 0;padding:0 24px;position:relative;z-index:10}
+.qa-bar{background:var(--bg-white);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);padding:16px 24px;border:1px solid rgba(200,16,46,0.12);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.qa-label{font-size:0.76rem;font-weight:700;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap}
+.qa-pill{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;border-radius:20px;font-size:0.82rem;font-weight:600;text-decoration:none;transition:all 0.2s;border:1.5px solid var(--border-light);color:var(--text-secondary);background:var(--bg-white)}
+.qa-pill:hover{border-color:var(--pm-red);color:var(--pm-red);transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.qa-pill .qa-icon{font-size:1rem}
+
+/* ===== MAIN ===== */
+.main{max-width:940px;margin:0 auto;padding:28px 24px 60px}
+
+/* ===== INTRO + ROLE SELECTOR ===== */
+.intro-card{background:var(--bg-white);border-radius:var(--radius-lg);padding:28px 32px;box-shadow:var(--shadow-md);margin-bottom:24px;border-left:4px solid var(--pm-red)}
+.intro-card h2{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--pm-red-dark);margin-bottom:10px}
+.intro-card p{font-size:0.9rem;color:var(--text-secondary);line-height:1.7}
+.role-label{font-weight:700;font-size:0.9rem;margin-bottom:12px;color:var(--text-secondary)}
+.role-selector{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.role-chip{background:var(--bg-white);border:2px solid var(--border-light);border-radius:var(--radius-md);padding:14px 18px;cursor:pointer;transition:all 0.2s;flex:1;min-width:140px;text-align:center}
+.role-chip:hover{border-color:var(--pm-red-light);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.role-chip.active{border-color:var(--pm-red);background:var(--bg-warm)}
+.role-chip .role-icon{font-size:1.5rem;margin-bottom:4px}
+.role-chip .role-name{font-weight:700;font-size:0.82rem;color:var(--text-primary)}
+.role-chip .role-desc{font-size:0.72rem;color:var(--text-tertiary);margin-top:2px}
+.show-all-row{text-align:center;margin-bottom:20px}
+.show-all-link{background:none;border:none;color:var(--pm-red);font-family:'DM Sans',sans-serif;font-size:0.86rem;font-weight:600;cursor:pointer;padding:6px 16px;border-radius:20px;transition:all 0.2s}
+.show-all-link:hover{background:var(--bg-warm);text-decoration:underline}
+.show-all-link.active{background:var(--pm-red);color:#fff}
+.show-all-link.active:hover{background:var(--pm-red-dark);text-decoration:none}
+.role-prompt{text-align:center;padding:24px;color:var(--text-tertiary);font-size:0.88rem;font-weight:500;display:flex;align-items:center;justify-content:center;gap:8px}
+.role-prompt.hidden{display:none}
+
+/* ===== PROGRESS STRIP ===== */
+.progress-strip{background:var(--bg-white);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);border:1px solid var(--border-light);padding:16px 20px;margin:0 0 20px;display:none}
+.progress-strip.visible{display:block}
+.ps-inner{display:flex;align-items:center;gap:16px}
+.ps-label{font-weight:600;font-size:0.86rem;color:var(--text-primary);white-space:nowrap}
+.ps-bar-bg{flex:1;height:6px;background:#EDEDED;border-radius:3px;overflow:hidden;min-width:80px}
+.ps-bar-fill{height:100%;background:linear-gradient(90deg,var(--pm-red),var(--pm-red-light));border-radius:3px;transition:width 0.4s;width:0%}
+.ps-stat{font-size:0.78rem;color:var(--text-tertiary);white-space:nowrap}
+.ps-stat strong{color:var(--text-primary)}
+
+/* ===== SECTION ACCORDIONS ===== */
+.main-section{margin-bottom:6px}
+.sec-acc{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:var(--bg-white);border-radius:var(--radius-md);box-shadow:var(--shadow-sm);border:1px solid var(--border-light);cursor:pointer;transition:all 0.2s}
+.sec-acc:hover{box-shadow:var(--shadow-md);border-color:var(--border-med)}
+.sec-acc.open{border-radius:var(--radius-md) var(--radius-md) 0 0;border-bottom-color:transparent}
+.sec-acc-left{display:flex;align-items:center;gap:12px}
+.sec-icon{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--pm-red),var(--pm-red-dark));display:flex;align-items:center;justify-content:center;color:#fff;font-size:1rem;flex-shrink:0}
+.sec-acc h2{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--text-primary);margin:0}
+.sec-acc-right{display:flex;align-items:center;gap:10px}
+.sec-count{font-size:0.76rem;font-weight:600;color:var(--pm-red);background:rgba(200,16,46,0.08);padding:3px 10px;border-radius:12px}
+.sec-chevron{color:var(--text-tertiary);transition:transform 0.3s;font-size:0.9rem}
+.sec-acc.open .sec-chevron{transform:rotate(180deg)}
+.sec-body{background:var(--bg-white);border:1px solid var(--border-light);border-top:1px solid #F0F0F0;border-radius:0 0 var(--radius-md) var(--radius-md);padding:20px;box-shadow:var(--shadow-sm);display:none}
+.sec-intro{font-size:0.88rem;color:var(--text-secondary);margin-bottom:20px;line-height:1.7}
+
+/* ===== TRAINING CARDS ===== */
+.tcard{background:var(--bg-light);border-radius:var(--radius-md);margin-bottom:12px;overflow:hidden;border:1px solid var(--border-light);transition:all 0.25s}
+.tcard:hover{box-shadow:var(--shadow-sm);border-color:var(--border-med)}
+.tcard-hdr{padding:16px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tcard-hdr:hover{background:var(--bg-warm)}
+.tcard-left{display:flex;align-items:center;gap:14px;flex:1;min-width:0}
+.tcard-icon{width:40px;height:40px;border-radius:var(--radius-sm);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;background:#FFF0F3;color:var(--pm-red)}
+.tcard-icon.vendor{background:#F0F4FF;color:#4263EB}
+.tcard-icon.provider{background:#F3F0FF;color:var(--purple)}
+.tcard-icon.admin{background:#FFF8E1;color:var(--warning)}
+.tcard-icon.billing{background:#F0FFF4;color:var(--success)}
+.tcard-info{flex:1;min-width:0}
+.tcard-title{font-weight:700;font-size:0.88rem;color:var(--text-primary)}
+.tcard-meta{font-size:0.76rem;color:var(--text-tertiary);margin-top:2px}
+.tcard-badges{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.tcard-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:0.68rem;font-weight:600}
+.tcard-badge.required{background:#FFF0F3;color:var(--pm-red)}
+.tcard-badge.recommended{background:#F0F4FF;color:#4263EB}
+.tcard-badge.if-applicable{background:#FFF3E0;color:#E67E22}
+.tcard-toggle{font-size:1.1rem;color:var(--text-tertiary);transition:transform 0.3s;flex-shrink:0}
+.tcard-toggle.open{transform:rotate(180deg)}
+.tcard-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease}
+.tcard-body.open{max-height:20000px}
+.tcard-content{padding:0 20px 20px;border-top:1px solid var(--border-light)}
+
+/* ===== TOPIC ROWS ===== */
+.topic-row{padding:14px 0;border-bottom:1px solid #F0F0F0}
+.topic-row:last-child{border-bottom:none}
+.topic-name{font-weight:600;font-size:0.86rem;color:var(--text-primary);margin-bottom:6px}
+.topic-resources{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
+.tr-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:16px;font-size:0.74rem;font-weight:600;text-decoration:none;transition:all 0.15s}
+.tr-pill:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.tr-pill.course{background:#EBF5FF;color:#1D4ED8;border:1px solid #BFDBFE}
+.tr-pill.course:hover{background:#DBEAFE}
+.tr-pill.pdf{background:#FFF0F0;color:#C62828;border:1px solid #FFCDD2}
+.tr-pill.pdf:hover{background:#FFEBEE}
+.tr-pill.wg{background:#FFF5EB;color:#BF5700;border:1px solid #FFE0B2}
+.tr-pill.wg:hover{background:#FFF0E0}
+.tr-pill.gap{background:#FFF0F0;color:#C62828;border:1px solid #FFCDD2;cursor:default}
+.tr-pill .pill-icon{font-size:0.8rem}
+.topic-desc{font-size:0.78rem;color:var(--text-tertiary);line-height:1.5;margin-top:2px}
+.topic-note{font-size:0.76rem;color:var(--text-secondary);background:#FAFAFA;padding:6px 10px;border-radius:6px;margin-top:6px;border-left:3px solid var(--border-light)}
+
+/* ===== SUBSECTION ACCORDIONS ===== */
+.subsec-acc{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:2px solid rgba(200,16,46,0.1);cursor:pointer;margin-top:14px;transition:all 0.15s;user-select:none}
+.subsec-acc:hover{border-bottom-color:var(--pm-red-light)}
+.subsec-acc:first-child{margin-top:8px}
+.subsec-acc .subsec-title{font-weight:700;font-size:0.78rem;color:var(--pm-red-dark);text-transform:uppercase;letter-spacing:0.5px}
+.subsec-acc .subsec-meta{font-size:0.72rem;color:var(--text-tertiary);font-weight:500}
+.subsec-acc .subsec-chev{color:var(--text-tertiary);font-size:0.75rem;transition:transform 0.25s;margin-left:8px}
+.subsec-acc.open .subsec-chev{transform:rotate(180deg)}
+.subsec-body{max-height:0;overflow:hidden;transition:max-height 0.35s ease}
+.subsec-body.open{max-height:8000px}
+
+/* ===== CALLOUTS ===== */
+.callout{padding:14px 18px;border-radius:var(--radius-sm);border-left:4px solid;margin:14px 0;font-size:0.85rem;line-height:1.65}
+.callout.info{background:#EBF5FB;border-color:var(--info);color:#0C5460}
+.callout.tip{background:#FFF8E1;border-color:var(--warning);color:#856404}
+.callout.important{background:#FFF0F3;border-color:var(--pm-red);color:var(--pm-red-dark)}
+.callout.dependency{background:#F3E5F5;border-color:var(--purple);color:#4A148C}
+.callout strong{font-weight:700}
+.callout a{color:inherit;font-weight:700}
+
+/* ===== THREE-STATE TRACKER ===== */
+.sec-tracker{background:var(--bg-white);border:1px solid var(--border-light);border-radius:var(--radius-md);padding:16px 20px;margin-top:18px;box-shadow:var(--shadow-sm)}
+.trk-title{font-weight:700;font-size:0.84rem;color:var(--text-primary);margin-bottom:10px}
+.trk-btns{display:flex;gap:8px;flex-wrap:wrap}
+.trk-btn{padding:8px 18px;border-radius:var(--radius-sm);border:2px solid var(--border-light);background:var(--bg-white);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;transition:all 0.2s;display:flex;align-items:center;gap:6px}
+.trk-btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.trk-btn.sel{border-width:2px}
+.trk-btn.t-ns.sel{background:#F5F5F5;border-color:var(--border-med);color:var(--text-secondary)}
+.trk-btn.t-done{color:var(--success)}
+.trk-btn.t-done.sel{background:#E8F5E9;border-color:var(--success);color:#1B5E20}
+.trk-btn.t-q{color:var(--warning)}
+.trk-btn.t-q.sel{background:#FFF8E1;border-color:var(--warning);color:#7F6003}
+.q-area{max-height:0;overflow:hidden;transition:max-height 0.35s ease}
+.q-area.open{max-height:300px;margin-top:12px}
+.q-area textarea{width:100%;min-height:70px;padding:12px 14px;border:1px solid var(--border-med);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.84rem;resize:vertical;line-height:1.6}
+.q-area textarea:focus{outline:none;border-color:var(--warning);box-shadow:0 0 0 3px rgba(245,159,0,0.15)}
+
+/* ===== TIMELINE ===== */
+.timeline-grid{display:grid;gap:16px}
+.tl-phase{background:var(--bg-light);border-radius:var(--radius-md);padding:20px 24px;border:1px solid var(--border-light)}
+.tl-badge{display:inline-block;padding:4px 12px;border-radius:16px;font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.5px;margin-bottom:10px}
+.tl-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;margin-bottom:10px;color:var(--text-primary)}
+.tl-items{display:flex;flex-direction:column;gap:6px}
+.tl-item{font-size:0.84rem;color:var(--text-secondary);line-height:1.5}
+
+/* ===== COMPLETION ===== */
+.completion-card{background:var(--bg-light);border-radius:var(--radius-md);padding:28px;border:1px solid var(--border-light)}
+.compl-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--pm-red-dark);margin-bottom:10px}
+.compl-desc{font-size:0.88rem;color:var(--text-secondary);line-height:1.7;margin-bottom:20px}
+.compl-states{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:28px}
+.compl-state{display:flex;align-items:flex-start;gap:10px}
+.compl-dot{width:14px;height:14px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.compl-state strong{font-size:0.84rem;display:block}
+.compl-hint{font-size:0.76rem;color:var(--text-tertiary)}
+.compl-signoff{border-top:1px solid var(--border-light);padding-top:20px}
+.signoff-row{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.signoff-label{font-weight:700;font-size:0.84rem;min-width:140px;color:var(--text-primary)}
+.signoff-fields{display:flex;gap:10px;flex:1}
+.signoff-input{padding:8px 14px;border:1px solid var(--border-med);border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.84rem;flex:1}
+.signoff-input:focus{outline:none;border-color:var(--pm-red);box-shadow:0 0 0 3px rgba(200,16,46,0.1)}
+
+/* ===== SAVE BAR ===== */
+.save-bar{position:fixed;bottom:0;left:0;right:0;background:var(--bg-white);border-top:1px solid var(--border-light);box-shadow:0 -2px 8px rgba(0,0,0,0.08);padding:12px 24px;z-index:200;display:flex;justify-content:center;gap:12px}
+.save-btn{padding:10px 24px;border-radius:var(--radius-sm);font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.2s;border:none;background:var(--pm-red);color:#fff}
+.save-btn:hover{background:var(--pm-red-dark);transform:translateY(-1px)}
+.save-toast{position:fixed;bottom:70px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 24px;border-radius:8px;font-size:0.84rem;font-weight:600;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:300}
+.save-toast.show{opacity:1}
+
+/* ===== FOOTER ===== */
+.spacer{height:70px}
+.guide-footer{max-width:940px;margin:0 auto;padding:24px;text-align:center;font-size:0.78rem;color:var(--text-tertiary);border-top:1px solid var(--border-light)}
+.clear-link{color:var(--text-tertiary);font-size:0.76rem;cursor:pointer;border:none;background:none;font-family:'DM Sans',sans-serif;text-decoration:underline;margin-top:8px}
+.clear-link:hover{color:var(--pm-red)}
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){
+.hero h1{font-size:1.6rem}
+.role-selector{flex-direction:column}
+.role-chip{min-width:auto}
+.qa-bar{flex-direction:column;align-items:flex-start}
+.trk-btns{flex-direction:column}
+.compl-states{flex-direction:column}
+.signoff-row{flex-direction:column;align-items:flex-start}
+.signoff-fields{width:100%}
+}
+@media print{
+.save-bar,.qa-bar,.role-selector,.show-all-row,.trk-btns,.q-area,.signoff-row{display:none!important}
+.hero{background:var(--pm-red)!important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:24px 0}
+.tcard-body{max-height:none!important;overflow:visible!important}
+.sec-body{display:block!important}
+.subsec-body{max-height:none!important;overflow:visible!important}
+.main-section{display:block!important}
+.tcard{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+body{background:#fff}
+.spacer{display:none}
+}
+
+/* ===== TOPIC DESCRIPTION LISTS ===== */
+.topic-desc ul{margin:6px 0 0 16px;padding:0;list-style:none}
+.topic-desc ul li{position:relative;padding:2px 0 2px 14px;font-size:0.78rem;color:var(--text-tertiary);line-height:1.5}
+.topic-desc ul li::before{content:"\2022";position:absolute;left:0;color:var(--pm-red-light);font-weight:700}
+</style>
+</head>
+<body>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+<div class="hero-inner">
+<div class="hero-badge">TRAINING &amp; RESOURCES</div>
+<h1>Your PaceMate Training Guide</h1>
+<p>Everything your team needs to get up and running with PaceMateLIVE&#8482;. Select your role below, explore your training plan, and track your progress as you go.</p>
+</div>
+</header>
+
+<!-- ===== QUICK ACCESS BAR ===== -->
+<div class="quick-access">
+<div class="qa-bar">
+<span class="qa-label">Quick Access</span>
+<a href="https://learn.pacemate.com" target="_blank" class="qa-pill"><span class="qa-icon">&#127891;</span> Learning Center</a>
+<a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="qa-pill"><span class="qa-icon">&#128214;</span> Workflow Guide (84 pg)</a>
+<a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMate%20Support%20%26%20Contact%20List_12.25.pdf" target="_blank" class="qa-pill"><span class="qa-icon">&#128222;</span> Support Contacts</a>
+</div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div class="main">
+
+<!-- Intro -->
+<div class="intro-card">
+<h2>How Training Works</h2>
+<p>Your PaceMate&#174; training has two parts: <strong>self-paced eLearning courses</strong> in the PaceMate Learning Center that you complete on your own schedule, and <strong>live training sessions</strong> led by your Customer Success Manager tailored to your team&#8217;s workflows. Complete the eLearning first so your live sessions can focus on your clinic&#8217;s specific configuration.</p>
+</div>
+
+<!-- Role Selector -->
+<p class="role-label">Select your role(s) to see what&#8217;s relevant to you:</p>
+<div class="role-selector">
+<div class="role-chip" data-role="device-nurse" onclick="toggleRole(this)"><div class="role-icon">&#129657;</div><div class="role-name">Device Nurse / Tech</div><div class="role-desc">Clinical staff</div></div>
+<div class="role-chip" data-role="physician" onclick="toggleRole(this)"><div class="role-icon">&#129658;</div><div class="role-name">Physician / Provider</div><div class="role-desc">e-Signing &amp; approvals</div></div>
+<div class="role-chip" data-role="admin" onclick="toggleRole(this)"><div class="role-icon">&#128188;</div><div class="role-name">Clinic Admin</div><div class="role-desc">Setup &amp; management</div></div>
+<div class="role-chip" data-role="billing" onclick="toggleRole(this)"><div class="role-icon">&#128176;</div><div class="role-name">Billing Staff</div><div class="role-desc">Charges &amp; claims</div></div>
+</div>
+<div class="show-all-row"><button class="show-all-link" onclick="toggleShowAll()">Or, show all training &#8594;</button></div>
+<div class="role-prompt" id="rolePrompt"><span>&#9757;</span> Select at least one role above to see your training plan.</div>
+<div class="progress-strip" id="progressStrip"><div class="ps-inner"><span class="ps-label">Training Progress</span><div class="ps-bar-bg"><div class="ps-bar-fill" id="psFill"></div></div><span class="ps-stat"><strong id="psDone">0</strong> of <strong id="psTotal">0</strong> sections addressed</span></div></div>
+
+<div id="sec-elearning" class="main-section" data-roles="device-nurse,physician,admin,billing">
+<div class="sec-acc" onclick="toggleSec(this)">
+<div class="sec-acc-left"><div class="sec-icon">&#127891;</div><h2>eLearning Courses</h2></div>
+<div class="sec-acc-right"><span class="sec-count">6 sections</span><span class="sec-chevron">&#9660;</span></div>
+</div>
+<div class="sec-body">
+<p class="sec-intro">Self-paced courses available 24/7 in the PaceMate Learning Center. Complete these <strong>before</strong> your scheduled live training sessions. Each topic below links directly to its training course and supporting materials.</p>
+<div class="tcard" data-roles="device-nurse,admin" data-track-id="elearn-remote">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#128147;</div>
+<div class="tcard-info">
+<div class="tcard-title">Remote Monitoring &amp; Report Processing</div>
+<div class="tcard-meta">Core workflow for processing remote transmissions in PaceMateLIVE&#8482;</div>
+<div class="tcard-badges"><span class="tcard-badge required">Required</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout info"><strong>Primary Workflow:</strong> The Report Viewer is your standard interface for 99% of daily work. Master this section first.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Dashboard &amp; Navigation</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Report Viewer Workflow (primary workflow &#8212; learn this first)</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/learn/course/29b6d40d-c85c-4724-9976-eaf7f50ca94f" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Remotes for Approval Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.6&#8211;11</a></div>
+<div class="topic-desc">Complete walkthrough of the Report Viewer: observations, patient info, alerts, tabs, and approval actions.</div>
+</div>
+
+<div class="topic-row">
+<div class="topic-name">Remotes for Approval dashboard navigation</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/learn/course/29b6d40d-c85c-4724-9976-eaf7f50ca94f" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Remotes for Approval Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.6&#8211;7</a></div>
+<div class="topic-desc">Navigate the Remotes for Approval queue, understand color-coded severity flags, and manage your daily workflow.</div>
+</div><div class="topic-row">
+<div class="topic-name">Filter Bar: severity, groups, vendors, providers, device types</div>
+<div class="topic-resources"><a href="https://pacemate.portal.trainn.co/share/K6YqLaVayEREAXv79bwXWw" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Filter &amp; Navigation Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Reports%20for%20e-Signing_RevB_12.25.pdf?csf=1&web=1&e=ygngYC" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> e-Signing Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.7, 34</a></div>
+<div class="topic-desc">Set up and save filters to customize your dashboard view. Apply vs. save filter behavior.</div>
+</div><div class="topic-row">
+<div class="topic-name">Report Search, Patient Search &amp; Transmission ID Search</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Viewing%20%26%20Searching%20Report%20History_11.25.pdf?csf=1&web=1&e=OlfZGP" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Report History Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.10&#8211;11, 29</a></div>
+<div class="topic-desc">Locate records using Report Search (clock icon), Patient Search, and Transmission ID lookup. Customize visible columns.</div>
+</div></div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Lifecycle Understanding</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Lifecycle of remote transmission (vendor site through billing)</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.6&#8211;8</a></div>
+<div class="topic-desc">Follow a remote transmission from the vendor website all the way through clinical review, approval, e-signature, and billing.</div>
+</div><div class="topic-row">
+<div class="topic-name">Lifecycle of in-clinic report (documentation through billing)</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/4a75e2bf-82e9-42cb-95d4-3cba5bec0f0b" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> In-Clinic CIED Workflow Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/In-Clinic%20CIED%20Workflow_9.25.pdf?csf=1&web=1&e=3fuGXo" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> In-Clinic CIED Workflow</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.17, 30&#8211;32</a></div>
+<div class="topic-desc">End-to-end in-clinic workflow: from programmer data upload through report processing and e-signature.</div>
+</div><div class="topic-row">
+<div class="topic-name">Report workflow stages</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.12, 16</a></div>
+<div class="topic-desc">Understand report statuses: New, Under Review, Reviewed, Approved, Ignored, Hold &#8212; and when to use Approve vs. Archive.</div>
+</div></div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Transmission Processing</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="topic-row">
+<div class="topic-name">Evaluation form generation &amp; Unified Report PDF</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/learn/course/3d76b522-c918-4846-8754-f8c3ff9216ab" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Evaluation Form Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.8, 12, 15</a></div>
+<div class="topic-desc">Generate evaluation forms using the button or custom templates. The Unified Report PDF is created automatically after report approval.</div>
+</div><div class="topic-row">
+<div class="topic-name">Process and complete transmissions</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/learn/course/29b6d40d-c85c-4724-9976-eaf7f50ca94f" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Remotes for Approval Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.8&#8211;14</a></div>
+<div class="topic-desc">Core steps for processing each remote transmission:<ul><li>Edit patient demographics</li><li>Review/edit the Clinical Information Box (anticoagulant, EF, dependency, MRI status)</li><li>Manage alert flags (add, edit, delete)</li><li>Save and Approve to send to e-signature, or Archive when no physician review is needed</li></ul></div>
+</div>
+</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Report Details &amp; Patient Management</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Report Details Page (secondary workflow)</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/learn/course/3d76b522-c918-4846-8754-f8c3ff9216ab" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Report Details Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Report%20Details_5.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Report Details Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.12&#8211;16</a></div>
+<div class="topic-desc">Used for adding lead information or locking transmissions. Report Viewer is more efficient for all other tasks.</div>
+<div class="topic-note">Report Details is a <em>secondary</em> workflow. Use Report Viewer for standard daily processing.</div>
+</div><div class="topic-row">
+<div class="topic-name">Notes: Pending, Pinned &amp; Dismissed</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/d1a3b8cb-506e-45b2-85d9-bfead460f060" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Notes Collaboration Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Using%20Notes%20to%20Collaborate_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Using Notes to Collaborate</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.11, 15</a></div>
+<div class="topic-desc">Clinical and Call My Patient note categories. Manage Pending, Pinned, and Dismissed statuses to coordinate with your team.</div>
+</div><div class="topic-row">
+<div class="topic-name">Patient details, groups &amp; LOPBD amendments</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/First%20Eligible%20Bill%20Date%20Using%20Last%20Off-Platform%20Billing%20Date.pdf?csf=1&web=1&e=ydzijD" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> LOPBD Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.13&#8211;15, 60&#8211;61</a></div>
+<div class="topic-desc">Navigate patient detail tabs (Summary, Reports, Notes, Comm History). Edit patient info, manage group assignments, and amend LOPBD.</div>
+<div class="topic-note">If you don&#8217;t have admin privileges, submit a support ticket for LOPBD amendments.</div>
+</div></div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Additional Features</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="topic-row">
+<div class="topic-name">Recall/Advisory lookup &amp; billing schedule</div>
+<div class="topic-resources"><a href="https://pacemate.portal.trainn.co/share/K6YqLaVayEREAXv79bwXWw" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Filter &amp; Navigation Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.11&#8211;12, 62&#8211;65</a></div>
+<div class="topic-desc">Two key reference features:<ul><li>Recall/Advisory Search &#8212; red indicators flag active recalls, blue pencil shows cleared items</li><li>Billing items and schedule &#8212; identify scheduled billing tied to each transmission type</li></ul></div>
+</div><div class="topic-row">
+<div class="topic-name">Columns customization, breadcrumbs &amp; report statuses</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.10&#8211;12</a></div>
+<div class="topic-desc">Navigation and display customization:<ul><li>Show/hide dashboard columns for your preferred view</li><li>Use breadcrumbs to navigate back to your queue from any sub-page</li><li>Report statuses: New, Under Review, Reviewed, Approved, Ignored, Hold</li><li>Status History tracks all changes</li></ul></div>
+</div>
+</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Analytics</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="topic-row">
+<div class="topic-name">Analytics Clinical</div>
+<div class="topic-resources"><a href="https://pacemate.portal.trainn.co/share/jXclaNHvzEvUBkC5rndYnw" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Practice Management Overview</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Practice%20Management%20Analytics_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Practice Management Analytics</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.35&#8211;41</a></div>
+<div class="topic-desc">Patient management dashboards: Advisory Management &amp; Mitigation, AF Management, BSX Battery Safety, BSX Reliance Lead Advisory, Frequent Flier with Benchmarking, Guideline Directed Medical Therapy, Upcoming &amp; Overdue Patients, VT Management.</div>
+</div>
+</div>
+<div class="sec-tracker" data-section-id="elearn-remote">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="elearn-remote"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="device-nurse,admin" data-track-id="elearn-inclinic">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon vendor">&#127973;</div>
+<div class="tcard-info">
+<div class="tcard-title">In-Clinic Workflow</div>
+<div class="tcard-meta">Programmer setup, file upload, and in-clinic report processing</div>
+<div class="tcard-badges"><span class="tcard-badge required">Required</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Programmer Setup (by Manufacturer)</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Abbott/St. Jude programmer configuration</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/963e40a5-08d8-4f57-a789-2eea3d66c8a2" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Abbott In-Clinic Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Programmer%20Data%20Transfer%20to%20PaceMateLIVE_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Programmer Data Transfer Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.22</a></div>
+<div class="topic-desc">Configure the Abbott/St. Jude programmer for SessionSync data export to PaceMateLIVE&#8482;.</div>
+</div><div class="topic-row">
+<div class="topic-name">Boston Scientific programmer configuration</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/986f3834-4bbb-45b8-966c-8e49b027ca12" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Boston Scientific In-Clinic Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Programmer%20Data%20Transfer%20to%20PaceMateLIVE_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Programmer Data Transfer Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.21</a></div>
+<div class="topic-desc">Set up LATITUDE Link and configure the BSC 3300/3120 programmer for data transfer.</div>
+<div class="topic-note">Integration document in progress &#8212; additional resources coming soon.</div>
+</div><div class="topic-row">
+<div class="topic-name">Biotronik programmer configuration</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/629a6ea4-8213-43cc-b5c9-72aef65a4fc2" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Biotronik In-Clinic Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Programmer%20Data%20Transfer%20to%20PaceMateLIVE_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Programmer Data Transfer Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.23&#8211;24</a></div>
+<div class="topic-desc">Configure Renamic Neo and legacy Biotronik programmers for Report Share export.</div>
+<div class="topic-note">Integration document in progress &#8212; additional resources coming soon.</div>
+</div><div class="topic-row">
+<div class="topic-name">Medtronic programmer and iPad configuration</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/9c588ce2-4226-47c0-b442-4489b65867dc" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Medtronic In-Clinic Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Programmer%20Data%20Transfer%20to%20PaceMateLIVE_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Programmer Data Transfer Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.18&#8211;20</a></div>
+<div class="topic-desc">Set up SmartSync, Encore, and 2090 programmers. Configure iPad for Medtronic data export via SessionSync.</div>
+</div></div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">USB &amp; File Management</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="topic-row">
+<div class="topic-name">USB setup and file compression by manufacturer</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/In-Clinic%20CIED%20Workflow_9.25.pdf?csf=1&web=1&e=3fuGXo" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> In-Clinic Workflow</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.25&#8211;26</a></div>
+<div class="topic-desc">Prepare your files before uploading:<ul><li>One USB per manufacturer recommended (sharing is OK with proper file management)</li><li>Abbott: PDF folder + log files zipped together</li><li>Boston Scientific: entire BSC file zipped</li><li>Biotronik: ICS3000 folder and all listed files</li><li>Medtronic: PDFs zipped (tablet .pkg files are already compressed)</li><li>Always compress from the furthest point in the file structure</li></ul></div>
+<div class="topic-note">Clinics can share USBs across manufacturers with proper file management between uses.</div>
+</div>
+</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Upload Process</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="topic-row">
+<div class="topic-name">Upload clinic files to PaceMateLIVE&#8482;</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/4a75e2bf-82e9-42cb-95d4-3cba5bec0f0b" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> In-Clinic CIED Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/In-Clinic%20CIED%20Workflow_9.25.pdf?csf=1&web=1&e=3fuGXo" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> In-Clinic Workflow</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.27&#8211;28</a></div>
+<div class="topic-desc">Complete upload workflow:<ul><li>Select your clinic and location</li><li>Choose the zipped manufacturer file</li><li>Set date range (specific range or &#8220;all&#8221;)</li><li>Select reports to upload</li><li>Verify patient details (add DOB or remove special characters if needed)</li><li>Submit and confirm the green &#8220;Files sent for processing&#8221; banner</li><li>Allow processing time before reports appear in your worklist</li></ul></div>
+<div class="topic-note">Medtronic iPad uploads may require manually entering patient name, date of birth, or serial number.</div>
+</div>
+</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Manual Upload (Special Devices)</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="callout important"><strong>Prerequisite:</strong> The patient must be created in PaceMateLIVE&#8482; before performing a manual upload. If the patient doesn&#8217;t exist, <a href="#" onclick="scrollToCard('elearn-remote');return false;">create them first</a> using the Patient Details section.</div><div class="topic-row">
+<div class="topic-name">Avier manual upload process</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/4a75e2bf-82e9-42cb-95d4-3cba5bec0f0b" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> In-Clinic CIED Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/In-Clinic%20CIED%20Workflow_9.25.pdf?csf=1&web=1&e=3fuGXo" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> In-Clinic Workflow p.7</a></div>
+<div class="topic-desc">Avier devices require manual upload via the Manually Create Report process. See the In-Clinic CIED Workflow guide for step-by-step instructions.</div>
+</div><div class="topic-row">
+<div class="topic-name">Altrua manual upload process</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/4a75e2bf-82e9-42cb-95d4-3cba5bec0f0b" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> In-Clinic CIED Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/In-Clinic%20CIED%20Workflow_9.25.pdf?csf=1&web=1&e=3fuGXo" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> In-Clinic Workflow p.7</a></div>
+<div class="topic-desc">Altrua devices require manual upload via the Manually Create Report process. See the In-Clinic CIED Workflow guide for step-by-step instructions.</div>
+</div><div class="topic-row">
+<div class="topic-name">S-ICD manual upload process</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/4a75e2bf-82e9-42cb-95d4-3cba5bec0f0b" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> In-Clinic CIED Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/In-Clinic%20CIED%20Workflow_9.25.pdf?csf=1&web=1&e=3fuGXo" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> In-Clinic Workflow p.7</a></div>
+<div class="topic-desc">S-ICD devices require manual upload via the Manually Create Report process. See the In-Clinic CIED Workflow guide for step-by-step instructions.</div>
+</div><div class="topic-row">
+<div class="topic-name">Sorin manual upload process</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/4a75e2bf-82e9-42cb-95d4-3cba5bec0f0b" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> In-Clinic CIED Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/In-Clinic%20CIED%20Workflow_9.25.pdf?csf=1&web=1&e=3fuGXo" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> In-Clinic Workflow p.7</a></div>
+<div class="topic-desc">Sorin devices require manual upload via the Manually Create Report process. See the In-Clinic CIED Workflow guide for step-by-step instructions.</div>
+</div><div class="topic-row">
+<div class="topic-name">Boston Sub-Q manual upload and PDF addition</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/4a75e2bf-82e9-42cb-95d4-3cba5bec0f0b" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> In-Clinic CIED Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/In-Clinic%20CIED%20Workflow_9.25.pdf?csf=1&web=1&e=3fuGXo" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> In-Clinic Workflow p.7</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.29</a></div>
+<div class="topic-desc">Boston Sub-Q devices require manual upload and PDF attachment. Use the Manually Create Report process (In-Clinic Workflow p.7) and add PDFs via the blue pencil icon in the Reports section.</div>
+</div></div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">In-Clinic Report Processing</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="topic-row">
+<div class="topic-name">Navigate and configure in-clinic reports</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/4a75e2bf-82e9-42cb-95d4-3cba5bec0f0b" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> In-Clinic CIED Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.30</a></div>
+<div class="topic-desc">Set up each in-clinic report for processing:<ul><li>Filter your In-Clinic Worklist (tip: use &#8220;Uploaded by me&#8221;)</li><li>Open Report Details and select Provider and EMR Department</li><li>Choose the CPT Code or No Charge for each report</li><li>Select Location if applicable</li><li>Apply the 26 modifier when a manufacturer rep performed the interrogation</li></ul></div>
+</div><div class="topic-row">
+<div class="topic-name">Complete evaluation and approve</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/4a75e2bf-82e9-42cb-95d4-3cba5bec0f0b" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> In-Clinic CIED Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.31&#8211;32</a></div>
+<div class="topic-desc">Finalize the in-clinic report:<ul><li>Generate the evaluation form (&#8220;Generate Template&#8221; for preset text or &#8220;Evaluation Form&#8221; for free text)</li><li>Write your technical interpretation in the Observations box</li><li>Add a CSN for Epic-integrated clinics if applicable</li><li>Save &amp; Approve to send to the e-signature board</li></ul></div>
+<div class="topic-note">If you have eSign permissions, Save &amp; Approve automatically signs the report.</div>
+</div>
+</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">API/Integration Understanding (EMR Only)</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="callout tip"><strong>Skip this section</strong> if your implementation uses manual entry only (no EMR integration).</div>
+<div class="topic-row">
+<div class="topic-name">How EMR integration works</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.11, 14, 52</a></div>
+<div class="topic-desc">Key concepts for EMR-integrated clinics:<ul><li>Demographics, medications, diagnosis codes, hospitalizations, and MRN pull automatically within 15 minutes</li><li>Never manually enter a Medical Record Number</li><li>If there&#8217;s a mismatch, delete the incorrect ID and resubmit to trigger automatic rematching</li><li>Submit a support ticket for repull requests if data doesn&#8217;t update</li></ul></div>
+</div><div class="topic-row">
+<div class="topic-name">Patient mismatch causes and resolution</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/EMR%20Sync%20Error%20Guide_8.25.pdf?csf=1&web=1&e=dGtM0g" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> EMR Sync Error Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.9, 50&#8211;52</a></div>
+<div class="topic-desc">Common causes: name variations between vendor and EMR, DOB discrepancies, MRN format differences. The EMR Sync Error Guide walks through resolution steps. Submit a support ticket for repull requests if data doesn&#8217;t update.</div>
+</div>
+</div><div class="sec-tracker" data-section-id="elearn-inclinic">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="elearn-inclinic"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="physician" data-track-id="elearn-esign">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon provider">&#129658;</div>
+<div class="tcard-info">
+<div class="tcard-title">Provider e-Signing</div>
+<div class="tcard-meta">How physicians review reports and apply electronic signatures</div>
+<div class="tcard-badges"><span class="tcard-badge required">Required</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Initial Setup</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Login and password creation (Standard Login only)</div>
+<div class="topic-resources"><span class="tr-pill gap"><span class="pill-icon">&#9888;</span> Customer Guide Coming Soon</span></div>
+<div class="topic-desc">Your PaceMate&#174; Customer Success team creates all initial user accounts and sends you a welcome email with your login link and password reset instructions. SSO users log in automatically through your organization&#8217;s identity provider.</div>
+<div class="topic-note">Standard login passwords require 12+ characters with at least one capital letter, one number, and one special character. Contact your CSM if you need account assistance.</div>
+</div><div class="topic-row">
+<div class="topic-name">Browser PDF viewer settings configuration</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Reports%20for%20e-Signing_RevB_12.25.pdf?csf=1&web=1&e=ygngYC" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> e-Signing Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.33</a></div>
+<div class="topic-desc">Configure Edge and other browsers to prevent PDFs from opening at the last viewed position. This improves workflow efficiency when reviewing multiple reports.</div>
+</div><div class="topic-row">
+<div class="topic-name">Filter setup (by physician name)</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.34</a></div>
+<div class="topic-desc">Set up and save a filter by your name so the e-signing dashboard shows only reports assigned to you by default.</div>
+</div></div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Core Physician Workflow</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Reports for e-signing dashboard navigation</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/learn/course/bbb2aff0-07f3-459c-b5e8-786c8a638d77" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> e-Signing Course (Primary)</a><a href="https://learn.pacemate.com/share/course/c62bb709-ee8f-4f69-af08-edf00314211e" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> e-Signing Course (Part 2)</a><a href="https://learn.pacemate.com/share/course/a956502f-51b0-4bc5-8ab4-3619c385d905" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> e-Signing Course (Part 3)</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Reports%20for%20e-Signing_RevB_12.25.pdf?csf=1&web=1&e=ygngYC" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> e-Signing Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.33&#8211;34</a></div>
+<div class="topic-desc">Navigate the Reports for e-Signing queue. Three eLearning courses cover the complete workflow from different angles.</div>
+</div><div class="topic-row">
+<div class="topic-name">Report Viewer workflow &amp; Batch Sign</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/learn/course/bbb2aff0-07f3-459c-b5e8-786c8a638d77" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> e-Signing Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.33&#8211;34</a></div>
+<div class="topic-desc">Physician report review workflow:<ul><li>Review observations, unified report, medications, hospitalizations (FHIR only), presenting rhythm, diagnostics, and notes</li><li>Use &#8220;E-Sign and Next&#8221; to sign and advance in one click</li><li>Use Batch Sign for high-volume signing sessions</li></ul></div>
+</div><div class="topic-row">
+<div class="topic-name">&#8220;Next&#8221; and &#8220;E-Sign and Next&#8221; buttons</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.33</a></div>
+<div class="topic-desc">Use &#8220;Next&#8221; to skip to the next report, or &#8220;E-Sign and Next&#8221; to sign the current report and advance in one click.</div>
+</div></div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Report Review &amp; Editing</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="topic-row">
+<div class="topic-name">Review, edit, and sign reports</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.8, 12, 33</a></div>
+<div class="topic-desc">Complete physician report workflow:<ul><li>Scroll through the full report using the PDF viewer with page controls</li><li>Edit the evaluation form or observation box as needed</li><li>Save your work and apply your electronic signature</li><li>Once signed, the report moves to Approved and triggers any configured EMR export</li><li>Use Batch Sign for high-volume signing sessions</li><li>Dragon dictation available in the observation box if configured</li></ul></div>
+<div class="topic-note">Batch Sign is available for high-volume signing sessions when clinical review is complete.</div>
+</div>
+</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Search &amp; Analytics</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="callout dependency"><strong>Report Search, Patient Search, and Transmission ID Search</strong> work the same way across all roles. These are covered in <a href="#" onclick="scrollToCard('elearn-remote');return false;">Remote Monitoring &gt; Dashboard &amp; Navigation</a>.</div>
+<div class="topic-row">
+<div class="topic-name">Analytics Clinical</div>
+<div class="topic-resources"><a href="https://pacemate.portal.trainn.co/share/jXclaNHvzEvUBkC5rndYnw" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Practice Management Overview</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Practice%20Management%20Analytics_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Practice Management Analytics</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.35&#8211;41</a></div>
+<div class="topic-desc">Patient management dashboards: Advisory Management &amp; Mitigation, AF Management, BSX Battery Safety, BSX Reliance Lead Advisory, Frequent Flier with Benchmarking, Guideline Directed Medical Therapy, Upcoming &amp; Overdue Patients, VT Management.</div>
+</div>
+<div class="topic-row">
+<div class="topic-name">Analytics Business</div>
+<div class="topic-resources"><a href="https://pacemate.portal.trainn.co/share/jXclaNHvzEvUBkC5rndYnw" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Practice Management Overview</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Practice%20Management%20Analytics_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Practice Management Analytics</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.35&#8211;41</a></div>
+<div class="topic-desc">Operational and financial dashboards: Pending Transmissions, Processing History, eSign History, Billing/RVUs, Device Demographics, Partnership Performance, Patient &amp; CPT Code Details.</div>
+</div></div><div class="sec-tracker" data-section-id="elearn-esign">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="elearn-esign"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="device-nurse,admin" data-track-id="elearn-wearables">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#9201;</div>
+<div class="tcard-info">
+<div class="tcard-title">Wearables &amp; External Monitors</div>
+<div class="tcard-meta">Event review, EOS alerts, and external monitor workflows</div>
+<div class="tcard-badges"><span class="tcard-badge if-applicable">If Applicable</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout info"><strong>Same workflow pattern:</strong> Wearables follow the same Red/Yellow/Green flag workflow as remote transmissions.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Wearable &amp; External Monitor Workflows</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Wearable event review</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.66&#8211;69</a></div>
+<div class="topic-desc">Review wearable events using the same severity flag system as remote transmissions.</div>
+</div><div class="topic-row">
+<div class="topic-name">EOS (End of Service) alerts</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.66</a></div>
+<div class="topic-desc">Monitor and manage End of Service alerts for wearable devices approaching battery depletion or service end.</div>
+</div><div class="topic-row">
+<div class="topic-name">External monitor workflow</div>
+<div class="topic-resources"><a href="https://pacemate.portal.trainn.co/share/Lkr4GoJpUkyz4GU4VhanrA" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> External Monitors Course (Part 1)</a><a href="https://pacemate.portal.trainn.co/share/9d6x1UIoh2AcKMxT5XM2LA" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> External Monitors Course (Part 2)</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/External%20Monitors%20for%20Approval_7.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> External Monitors for Approval</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/External%20Monitors%20for%20e-Signing_7.25.pdf?csf=1&web=1&e=OT3YFI" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> External Monitors for e-Signing</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.66&#8211;69</a></div>
+<div class="topic-desc">Complete external monitor workflow: review, approve, and route to e-signature. Two courses and two PDFs cover the full process.</div>
+</div></div><div class="sec-tracker" data-section-id="elearn-wearables">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="elearn-wearables"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="device-nurse,physician,admin" data-track-id="elearn-amb">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#10084;&#65039;</div>
+<div class="tcard-info">
+<div class="tcard-title">Ambulatory &amp; Heart Failure Monitoring</div>
+<div class="tcard-meta">Specialized workflows for ambulatory and HF patient populations</div>
+<div class="tcard-badges"><span class="tcard-badge if-applicable">If Applicable</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout tip"><strong>If applicable:</strong> This section applies to clinics with ambulatory monitoring or heart failure programs. Skip if your implementation doesn&#8217;t include these services.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Ambulatory &amp; HF Workflows</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Role-specific workflow training</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/5293592c-d023-4dce-ab7f-a50c9f9bddbf" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Ambulatory Course</a><a href="https://learn.pacemate.com/share/course/a98dd26f-c9c5-402b-bc9b-07fc5a693ea3" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Heart Failure Course</a><a href="https://learn.pacemate.com/share/course/c62bb709-ee8f-4f69-af08-edf00314211e" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> e-Signing (Ambulatory context)</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.70&#8211;80</a></div>
+<div class="topic-desc">Dedicated eLearning courses cover ambulatory and heart failure workflows. Three courses address different aspects of these specialized populations.</div>
+</div><div class="topic-row">
+<div class="topic-name">Alert management for specialized populations</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/share/course/a98dd26f-c9c5-402b-bc9b-07fc5a693ea3" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Heart Failure Course</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.75, 77</a></div>
+<div class="topic-desc">Configure and manage alert thresholds tailored to ambulatory and HF patients. Adjust patient-level settings as clinical needs evolve.</div>
+</div><div class="topic-row">
+<div class="topic-name">Reporting requirements</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.76</a></div>
+<div class="topic-desc">Ambulatory monitoring uses CPT 93264 with 30-day billing cycles. Understand the specific reporting cadence and documentation requirements.</div>
+</div></div><div class="sec-tracker" data-section-id="elearn-amb">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="elearn-amb"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="admin,device-nurse" data-track-id="elearn-comms">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon admin">&#128222;</div>
+<div class="tcard-info">
+<div class="tcard-title">Patient Services &amp; Communications</div>
+<div class="tcard-meta">Vendor site cleanup and scheduling support for full-service implementations</div>
+<div class="tcard-badges"><span class="tcard-badge if-applicable">If Applicable</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout tip"><strong>Full-service implementations:</strong> This role typically applies to clinics using PaceMate&#174; full-service offerings. Skip if not applicable.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Patient Communications</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Patient services vendor site cleanup</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/learn/course/c6a464a8-06e6-407f-a34d-c93d63f90c01" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Communications/Patient Services Course</a></div>
+<div class="topic-desc">Learn the process for cleaning up patient data on vendor monitoring websites as part of the implementation transition.</div>
+</div><div class="topic-row">
+<div class="topic-name">Scheduling support process</div>
+<div class="topic-resources"><a href="https://learn.pacemate.com/learn/course/c6a464a8-06e6-407f-a34d-c93d63f90c01" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Communications/Patient Services Course</a></div>
+<div class="topic-desc">Understand the scheduling support workflow available through PaceMate&#174; patient services.</div>
+</div></div><div class="sec-tracker" data-section-id="elearn-comms">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="elearn-comms"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div>
+</div>
+</div><div id="sec-live" class="main-section" data-roles="device-nurse,physician,admin,billing">
+<div class="sec-acc" onclick="toggleSec(this)">
+<div class="sec-acc-left"><div class="sec-icon">&#127908;</div><h2>Live Training Sessions</h2></div>
+<div class="sec-acc-right"><span class="sec-count">6 sessions</span><span class="sec-chevron">&#9660;</span></div>
+</div>
+<div class="sec-body">
+<p class="sec-intro">Instructor-led sessions with your Customer Success Manager, tailored to your clinic&#8217;s specific configuration. Complete the related eLearning courses <strong>before</strong> each live session so your time together can focus on hands-on practice and your team&#8217;s workflows.</p>
+<div class="tcard" data-roles="device-nurse,admin" data-track-id="live-clinical">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#128187;</div>
+<div class="tcard-info">
+<div class="tcard-title">Clinical Workflow Training</div>
+<div class="tcard-meta">Hands-on session covering your clinic&#8217;s specific remote and in-clinic workflows</div>
+<div class="tcard-badges"><span class="tcard-badge required">Required</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout dependency"><strong>Prerequisite:</strong> Complete <a href="#" onclick="scrollToCard('elearn-remote');return false;">Remote Monitoring eLearning</a> and <a href="#" onclick="scrollToCard('elearn-inclinic');return false;">In-Clinic Workflow eLearning</a> before this session.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Session Topics</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Remote workflow walkthrough with your clinic&#8217;s configuration</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Workflow Guide (full reference)</a></div>
+<div class="topic-desc">Your CSM tailors this session to your specific setup: filter presets, group structures, provider assignments, and approval workflows.</div>
+</div><div class="topic-row">
+<div class="topic-name">In-clinic workflow with your programmer setup</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Programmer%20Data%20Transfer%20to%20PaceMateLIVE_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Programmer Data Transfer Guide</a></div>
+<div class="topic-desc">Practice the complete upload-to-approval workflow using your actual programmer configuration and clinic settings.</div>
+</div><div class="topic-row">
+<div class="topic-name">Q&amp;A and hands-on practice</div>
+<div class="topic-resources"></div>
+<div class="topic-desc">Dedicated time to practice independently with your CSM available for questions. Address any items from your eLearning that need clarification.</div>
+</div></div><div class="sec-tracker" data-section-id="live-clinical">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="live-clinical"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="billing,admin" data-track-id="live-billing">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon billing">&#128176;</div>
+<div class="tcard-info">
+<div class="tcard-title">Billing &amp; Charge Management</div>
+<div class="tcard-meta">Billing events, charge review, and failed billing resolution</div>
+<div class="tcard-badges"><span class="tcard-badge required">Required</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Session Topics</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Billing events for review</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Managing%20Billing%20Events%20in%20PaceMateLIVE_11.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Managing Billing Events</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.62&#8211;65</a></div>
+<div class="topic-desc">Navigate the billing events queue, understand billing statuses, and review charges before submission.</div>
+</div><div class="topic-row">
+<div class="topic-name">Billing search functionality</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.62</a></div>
+<div class="topic-desc">Search for billing records by patient, date, or billing status from the left navigation menu.</div>
+</div><div class="topic-row">
+<div class="topic-name">Failed Billing queue resolution</div>
+<div class="topic-resources"></div>
+<div class="topic-desc">For EMR-integrated clinics, failed billing resolution is covered in <a href="#" onclick="scrollToCard('live-emr');return false;" style="color:var(--purple);font-weight:700">EMR Workflow Training &#8594;</a></div>
+</div><div class="topic-row">
+<div class="topic-name">CPT code validation</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.30, 62&#8211;65</a></div>
+<div class="topic-desc">Verify CPT codes are correctly assigned for each transmission type and encounter. Reference the CPT dropdown selections for accuracy.</div>
+</div><div class="topic-row">
+<div class="topic-name">Modifier application (26 modifier for rep-performed)</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.30</a></div>
+<div class="topic-desc">Apply the 26 modifier when a manufacturer representative performed the interrogation. This affects billing routing and reimbursement.</div>
+</div></div><div class="sec-tracker" data-section-id="live-billing">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="live-billing"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="physician" data-track-id="live-esign">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon provider">&#9999;&#65039;</div>
+<div class="tcard-info">
+<div class="tcard-title">Provider e-Signing Live Session</div>
+<div class="tcard-meta">Hands-on practice with the e-signing workflow in your environment</div>
+<div class="tcard-badges"><span class="tcard-badge required">Required</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout dependency"><strong>Prerequisite:</strong> Complete the <a href="#" onclick="scrollToCard('elearn-esign');return false;">Provider e-Signing eLearning</a> before this session.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Session Topics</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Live walkthrough of your e-signing dashboard</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Reports%20for%20e-Signing_RevB_12.25.pdf?csf=1&web=1&e=ygngYC" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> e-Signing Guide</a></div>
+<div class="topic-desc">Your CSM walks through the e-signing workflow using your actual patient queue and clinic configuration.</div>
+</div><div class="topic-row">
+<div class="topic-name">Practice: review, edit, and sign reports</div>
+<div class="topic-resources"></div>
+<div class="topic-desc">Hands-on practice signing reports, editing observations, and using Batch Sign with your CSM observing and coaching.</div>
+</div><div class="topic-row">
+<div class="topic-name">Browser and workflow optimization</div>
+<div class="topic-resources"></div>
+<div class="topic-desc">Fine-tune your browser settings, filter defaults, and keyboard shortcuts for maximum efficiency during signing sessions.</div>
+</div></div><div class="sec-tracker" data-section-id="live-esign">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="live-esign"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="admin" data-track-id="live-admin">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon admin">&#128295;</div>
+<div class="tcard-info">
+<div class="tcard-title">Administrator Training</div>
+<div class="tcard-meta">User management, workflow overview, and problem resolution</div>
+<div class="tcard-badges"><span class="tcard-badge required">Required</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">User Management</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Admin UI navigation</div>
+<div class="topic-resources"></div>
+<div class="topic-desc">Overview of the administrator interface including all management screens and configuration options.</div>
+</div><div class="topic-row">
+<div class="topic-name">User provisioning (adding/removing non-physician users)</div>
+<div class="topic-resources"><span class="tr-pill gap"><span class="pill-icon">&#9888;</span> Admin Guide Coming Soon</span></div>
+<div class="topic-desc">Administrators can add and remove non-physician user accounts through the Admin UI. Your CSM will walk you through this during your admin training session.</div>
+<div class="topic-note">Admin UI cannot independently create physician accounts (requires ordering/following/interpreting provider selection). Contact PaceMate&#174; support for MD account creation.</div>
+</div><div class="topic-row">
+<div class="topic-name">Role assignment and permissions</div>
+<div class="topic-resources"></div>
+<div class="topic-desc">Understand the permission levels for each role type and assign appropriate access based on job function.</div>
+</div></div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Workflow Overview</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">High-level device team workflow understanding</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.6</a></div>
+<div class="topic-desc">Administrators should understand the 3-step remote monitoring workflow at a high level to support their teams effectively.</div>
+</div><div class="topic-row">
+<div class="topic-name">High-level physician workflow understanding</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG p.33</a></div>
+<div class="topic-desc">Understand the e-signing workflow overview so you can support physicians and troubleshoot common issues.</div>
+</div></div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Problem Resolution</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="callout dependency"><strong>EMR error resolution</strong> (failed reports, failed billing, and patient mismatches) is covered in detail in <a href="#" onclick="scrollToCard('live-emr');return false;">EMR Workflow Training</a>. Administrators should complete that section to support their team&#8217;s troubleshooting.</div>
+</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Reporting &amp; Analytics</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Billing search functionality</div>
+<div class="topic-resources"></div>
+<div class="topic-desc">Billing search and queue management are covered in <a href="#" onclick="scrollToCard('live-billing');return false;" style="color:var(--purple);font-weight:700">Billing &amp; Charge Management &#8594;</a></div>
+</div>
+<div class="topic-row">
+<div class="topic-name">Analytics Business</div>
+<div class="topic-resources"><a href="https://pacemate.portal.trainn.co/share/jXclaNHvzEvUBkC5rndYnw" target="_blank" class="tr-pill course"><span class="pill-icon">&#127891;</span> Practice Management Overview</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Practice%20Management%20Analytics_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Practice Management Analytics</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.35&#8211;41</a></div>
+<div class="topic-desc">Operational and financial dashboards: Pending Transmissions, Processing History, eSign History, Billing/RVUs, Device Demographics, Partnership Performance, Patient &amp; CPT Code Details.</div>
+</div><div class="topic-row">
+<div class="topic-name">Schedule post-Go Live analytics education</div>
+<div class="topic-resources"></div>
+<div class="topic-desc">Your CSM will schedule a follow-up analytics session after Go-Live once you have real data to review.</div>
+</div></div><div class="sec-tracker" data-section-id="live-admin">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="live-admin"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="device-nurse,admin,billing" data-track-id="live-amb">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#10084;&#65039;</div>
+<div class="tcard-info">
+<div class="tcard-title">Ambulatory &amp; HF Live Session</div>
+<div class="tcard-meta">Hands-on training for ambulatory and heart failure workflows</div>
+<div class="tcard-badges"><span class="tcard-badge if-applicable">If Applicable</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout dependency"><strong>Prerequisite:</strong> Complete the <a href="#" onclick="scrollToCard('elearn-amb');return false;">Ambulatory &amp; HF eLearning</a> before this session.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Session Topics</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Ambulatory and HF workflow walkthrough</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.70&#8211;80</a></div>
+<div class="topic-desc">Your CSM walks through the ambulatory and heart failure workflows specific to your clinic&#8217;s configuration and patient population.</div>
+</div><div class="topic-row">
+<div class="topic-name">Alert threshold configuration and management</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.75, 77</a></div>
+<div class="topic-desc">Set up and adjust alert thresholds for your HF patients. Review patient-level alert customization options.</div>
+</div></div><div class="sec-tracker" data-section-id="live-amb">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="live-amb"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="admin,device-nurse" data-track-id="live-emr">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#128196;</div>
+<div class="tcard-info">
+<div class="tcard-title">EMR Workflow Training</div>
+<div class="tcard-meta">Failed billing, failed reports, and patient mismatch resolution for EMR-integrated clinics</div>
+<div class="tcard-badges"><span class="tcard-badge if-applicable">If Applicable</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout tip"><strong>EMR-integrated clinics only.</strong> Skip if your implementation uses manual entry.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">EMR Queue Management</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Failed Billing queue management</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/EMR%20Sync%20Error%20Guide_8.25.pdf?csf=1&web=1&e=dGtM0g" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> EMR Sync Error Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.54, 57&#8211;58</a></div>
+<div class="topic-desc">Navigate and resolve entries in the Failed Billing queue. Reference error tables for Athena-specific error codes.</div>
+</div><div class="topic-row">
+<div class="topic-name">Failed Reports queue processing</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/EMR%20Sync%20Error%20Guide_8.25.pdf?csf=1&web=1&e=dGtM0g" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> EMR Sync Error Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.53, 55&#8211;57</a></div>
+<div class="topic-desc">Process reports that failed EMR export. Use the error tables to identify root causes and apply the correct fix.</div>
+</div><div class="topic-row">
+<div class="topic-name">Patient Mismatch resolution</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/EMR%20Sync%20Error%20Guide_8.25.pdf?csf=1&web=1&e=dGtM0g" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> EMR Sync Error Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.50&#8211;52</a></div>
+<div class="topic-desc">Resolve patient identity mismatches between PaceMateLIVE&#8482; and your EMR. Delete incorrect IDs and resubmit for automatic matching.</div>
+</div></div><div class="sec-tracker" data-section-id="live-emr">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="live-emr"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div>
+</div>
+</div><div id="sec-resources" class="main-section" data-roles="device-nurse,physician,admin,billing">
+<div class="sec-acc" onclick="toggleSec(this)">
+<div class="sec-acc-left"><div class="sec-icon">&#128218;</div><h2>Guides &amp; Resources</h2></div>
+<div class="sec-acc-right"><span class="sec-count">3 resources</span><span class="sec-chevron">&#9660;</span></div>
+</div>
+<div class="sec-body">
+<p class="sec-intro">Reference materials you&#8217;ll use throughout your PaceMate&#174; experience. Bookmark the Workflow Guide and Support contacts for quick access.</p>
+<div class="tcard" data-roles="device-nurse,physician,admin,billing" data-track-id="res-wg">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#128214;</div>
+<div class="tcard-info">
+<div class="tcard-title">Consolidated Workflow Guide (84 pages)</div>
+<div class="tcard-meta">The complete PaceMateLIVE&#8482; reference manual covering every workflow</div>
+<div class="tcard-badges"><span class="tcard-badge recommended">Recommended</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">What&#8217;s Inside</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Full workflow reference for all roles</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Download Workflow Guide (84 pg PDF)</a></div>
+<div class="topic-desc">The Workflow Guide is the single comprehensive reference document covering remote monitoring, in-clinic, e-signing, billing, ambulatory, HF, EMR integration, and more.</div>
+</div><div class="topic-row">
+<div class="topic-name">Quick reference sections</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/New%20In-Clinic%20Experience%20Quick%20Reference_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> In-Clinic Quick Reference</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/New%20In-Clinic%20Experience%20%26%20Workflow%20Guide_RevA_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> New In-Clinic Experience Guide</a></div>
+<div class="topic-desc">Shorter quick-reference documents for common workflows. Print-friendly for clinic workstations.</div>
+</div><div class="topic-row">
+<div class="topic-name">Export verification</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Verifying%20Remote%20Report%20Exports_8.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Verifying Remote Report Exports</a></div>
+<div class="topic-desc">Step-by-step guide to verify that remote reports exported correctly to your EMR. Reference when troubleshooting missing reports.</div>
+</div></div><div class="sec-tracker" data-section-id="res-wg">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="res-wg"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="device-nurse,physician,admin,billing" data-track-id="res-support">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#128222;</div>
+<div class="tcard-info">
+<div class="tcard-title">Support &amp; Help Resources</div>
+<div class="tcard-meta">Contact information, ticket submission, and help desk access</div>
+<div class="tcard-badges"><span class="tcard-badge recommended">Recommended</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Support Resources</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">PaceMate&#174; Support &amp; Contact List</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMate%20Support%20%26%20Contact%20List_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Support &amp; Contact List</a></div>
+<div class="topic-desc">Complete directory of PaceMate&#174; support contacts including your CSM, technical support, and escalation paths.</div>
+</div><div class="topic-row">
+<div class="topic-name">Submitting a Technical Support Ticket</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Submitting%20a%20Technical%20Support%20Ticket_RevB_1.2026.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Support Ticket Guide</a></div>
+<div class="topic-desc">Step-by-step guide to submitting tickets through PaceMateLIVE&#8482;. Includes category and subcategory selection guidance.</div>
+</div><div class="topic-row">
+<div class="topic-name">When to call 66-PACEMATE vs. submit a ticket</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMate%20Support%20%26%20Contact%20List_12.25.pdf" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Support &amp; Contact List</a></div>
+<div class="topic-desc">Phone support (66-PACEMATE) for urgent issues. Tickets for non-urgent requests, feature questions, or scheduled changes. Contact your CSM for implementation-related items.</div>
+</div></div><div class="sec-tracker" data-section-id="res-support">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="res-support"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="admin,device-nurse" data-track-id="res-emrsync">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#9888;&#65039;</div>
+<div class="tcard-info">
+<div class="tcard-title">EMR Sync Error Guide</div>
+<div class="tcard-meta">Troubleshooting failed reports, failed billing, and patient mismatches</div>
+<div class="tcard-badges"><span class="tcard-badge recommended">Recommended</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout info"><strong>For EMR-integrated clinics:</strong> This guide is your go-to reference for resolving sync errors between PaceMateLIVE&#8482; and your EMR.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Guide Contents</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body"><div class="topic-row">
+<div class="topic-name">Complete EMR Sync Error reference</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/EMR%20Sync%20Error%20Guide_8.25.pdf?csf=1&web=1&e=dGtM0g" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> EMR Sync Error Guide</a></div>
+<div class="topic-desc">Covers failed reports, failed billing, and patient mismatch resolution. Includes error code tables, step-by-step resolution workflows, and Athena-specific guidance.</div>
+</div></div><div class="sec-tracker" data-section-id="res-emrsync">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="res-emrsync"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div>
+</div>
+</div><div id="sec-timeline" class="main-section" data-roles="device-nurse,physician,admin,billing">
+<div class="sec-acc" onclick="toggleSec(this)">
+<div class="sec-acc-left"><div class="sec-icon">&#128197;</div><h2>Recommended Training Timeline</h2></div>
+<div class="sec-acc-right"><span class="sec-count">3 phases</span><span class="sec-chevron">&#9660;</span></div>
+</div>
+<div class="sec-body">
+<p class="sec-intro">Follow this timeline leading up to your go-live date for the best preparation experience. Your CSM will help schedule live sessions within this framework.</p>
+
+<div class="timeline-grid">
+<div class="tl-phase">
+<div class="tl-badge" style="background:#1D4ED8">WEEKS 3&#8211;4 BEFORE GO-LIVE</div>
+<div class="tl-title">Access &amp; eLearning</div>
+<div class="tl-items">
+<div class="tl-item">&#9745; Receive login credentials and configure browser settings</div>
+<div class="tl-item">&#9745; Complete all eLearning courses assigned to your role</div>
+<div class="tl-item">&#9745; Review the Workflow Guide sections relevant to your role</div>
+<div class="tl-item">&#9745; Note any questions for your live training session</div>
+</div>
+</div>
+<div class="tl-phase">
+<div class="tl-badge" style="background:var(--pm-red)">WEEKS 2&#8211;3 BEFORE GO-LIVE</div>
+<div class="tl-title">Live Training Sessions</div>
+<div class="tl-items">
+<div class="tl-item">&#9745; Attend your scheduled live training session(s)</div>
+<div class="tl-item">&#9745; Practice workflows with CSM guidance</div>
+<div class="tl-item">&#9745; Address all questions from eLearning</div>
+<div class="tl-item">&#9745; Complete any role-specific setup (filters, preferences)</div>
+</div>
+</div>
+<div class="tl-phase">
+<div class="tl-badge" style="background:#28A745">WEEK BEFORE GO-LIVE</div>
+<div class="tl-title">Practice &amp; Final Prep</div>
+<div class="tl-items">
+<div class="tl-item">&#9745; Independent practice in PaceMateLIVE&#8482; using test data</div>
+<div class="tl-item">&#9745; Verify all programmer configurations work end-to-end</div>
+<div class="tl-item">&#9745; Confirm support contacts and escalation paths</div>
+<div class="tl-item">&#9745; Final check-in with your CSM</div>
+</div>
+</div>
+</div>
+</div>
+</div><div id="sec-alacarte" class="main-section" data-roles="all">
+<div class="sec-acc" onclick="toggleSec(this)">
+<div class="sec-acc-left"><div class="sec-icon">&#127800;</div><h2>&#192; La Carte Learning</h2></div>
+<div class="sec-acc-right"><span class="sec-count">2 options</span><span class="sec-chevron">&#9660;</span></div>
+</div>
+<div class="sec-body">
+<p class="sec-intro">Cross-training options for additional roles or advanced capabilities. These sections are available to all users regardless of role selection.</p>
+<div class="tcard" data-roles="all" data-track-id="alc-readonly">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#128065;</div>
+<div class="tcard-info">
+<div class="tcard-title">Read-Only Access Training</div>
+<div class="tcard-meta">5&#8211;10 minute session for limited access roles</div>
+<div class="tcard-badges"><span class="tcard-badge if-applicable">If Applicable</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Read-Only Basics</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="topic-row">
+<div class="topic-name">Read-only navigation essentials (5&#8211;10 minutes)</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/Viewing%20%26%20Searching%20Report%20History_11.25.pdf?csf=1&web=1&e=OlfZGP" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> Report History Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.6&#8211;7, 10&#8211;11</a></div>
+<div class="topic-desc">Quick orientation for limited-access users:<ul><li>Sidebar menu and Report Viewer basic navigation</li><li>Set up a filter for your assigned patients or groups</li><li>Search reports using the clock icon (Report History)</li><li>Understand color-coded severity flags and alert indicators</li></ul></div>
+</div>
+</div><div class="sec-tracker" data-section-id="alc-readonly">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="alc-readonly"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div><div class="tcard" data-roles="all" data-track-id="alc-superuser">
+<div class="tcard-hdr" onclick="toggleCard(this)">
+<div class="tcard-left">
+<div class="tcard-icon ">&#11088;</div>
+<div class="tcard-info">
+<div class="tcard-title">Superuser Training (Advanced)</div>
+<div class="tcard-meta">Advanced capabilities for designated clinic power users</div>
+<div class="tcard-badges"><span class="tcard-badge recommended">Recommended</span></div>
+</div>
+</div>
+<span class="tcard-toggle">&#9660;</span>
+</div>
+<div class="tcard-body">
+<div class="tcard-content"><div class="callout info"><strong>Designate 1&#8211;2 superusers</strong> per clinic for advanced troubleshooting and peer support. Superuser training builds on all standard training.</div><div class="subsec-acc" onclick="toggleSubsec(this)"><div><span class="subsec-title">Advanced Capabilities</span></div><span class="subsec-chev">&#9660;</span></div><div class="subsec-body">
+<div class="topic-row">
+<div class="topic-name">Comprehensive platform mastery</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.4&#8211;16, 60&#8211;61</a></div>
+<div class="topic-desc">Deep knowledge of every platform feature:<ul><li>All remote monitoring features including edge cases and advanced filters</li><li>Every patient detail tab: Summary, Reports, Notes, Comm History, Calls, Meds, Hospitalizations</li><li>Complete patient editing across all tabs including LOPBD amendments</li><li>Every section accessible from the left sidebar menu</li></ul></div>
+</div><div class="topic-row">
+<div class="topic-name">Advanced troubleshooting</div>
+<div class="topic-resources"><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/EMR%20Sync%20Error%20Guide_8.25.pdf?csf=1&web=1&e=dGtM0g" target="_blank" class="tr-pill pdf"><span class="pill-icon">&#128196;</span> EMR Sync Error Guide</a><a href="https://pacemate.sharepoint.com/:b:/r/sites/CustomerSuccessTeam/Shared%20Documents/General/5.%20Training%20%26%20Education%20Content/Approved%20Customer%20PML%20Resources/PaceMateLIVE%20Workflow%20Guide_RevA_12.25.pdf?csf=1&web=1&e=0xrzXy" target="_blank" class="tr-pill wg"><span class="pill-icon">&#128214;</span> WG pp.50&#8211;58</a></div>
+<div class="topic-desc">Independently resolve EMR sync errors, patient mismatches, failed billing, and failed reports before escalating to support.</div>
+</div>
+</div><div class="sec-tracker" data-section-id="alc-superuser">
+<div class="trk-title">Your Progress</div>
+<div class="trk-btns">
+<button class="trk-btn t-ns sel" onclick="setTrack(this,'not-started')">&#9898; Not Started</button>
+<button class="trk-btn t-done" onclick="setTrack(this,'completed')">&#9989; Completed</button>
+<button class="trk-btn t-q" onclick="setTrack(this,'questions')">&#10067; I Have Questions</button>
+</div>
+<div class="q-area" data-qa="alc-superuser"><textarea placeholder="What questions do you have? Your CSM will review these before your next session."></textarea></div>
+</div>
+</div></div></div>
+</div>
+</div><div id="sec-completion" class="main-section" data-roles="device-nurse,physician,admin,billing">
+<div class="sec-acc" onclick="toggleSec(this)">
+<div class="sec-acc-left"><div class="sec-icon">&#9989;</div><h2>Training Completion</h2></div>
+<div class="sec-acc-right"><span class="sec-count">Summary</span><span class="sec-chevron">&#9660;</span></div>
+</div>
+<div class="sec-body">
+<div class="completion-card">
+<h3 class="compl-title">Your Training Progress at a Glance</h3>
+<p class="compl-desc">Use the tracker below each training section to record your status. Your CSM can review your progress to prepare for upcoming sessions and address any open questions.</p>
+
+<div class="compl-states">
+<div class="compl-state">
+<span class="compl-dot" style="background:#E0E0E0"></span>
+<div><strong>Not Started</strong><br><span class="compl-hint">Haven&#8217;t begun this section yet</span></div>
+</div>
+<div class="compl-state">
+<span class="compl-dot" style="background:#28A745"></span>
+<div><strong>Completed</strong><br><span class="compl-hint">Finished all topics in this section</span></div>
+</div>
+<div class="compl-state">
+<span class="compl-dot" style="background:#F59F00"></span>
+<div><strong>I Have Questions</strong><br><span class="compl-hint">Completed but have items to discuss with CSM</span></div>
+</div>
+</div>
+
+<div class="compl-signoff">
+<div class="signoff-row">
+<label class="signoff-label">Customer Signoff</label>
+<div class="signoff-fields">
+<input type="text" class="signoff-input" placeholder="Name" aria-label="Customer name">
+<input type="date" class="signoff-input" aria-label="Customer signoff date">
+</div>
+</div>
+<div class="signoff-row">
+<label class="signoff-label">CSM Signoff</label>
+<div class="signoff-fields">
+<input type="text" class="signoff-input" placeholder="CSM Name" aria-label="CSM name">
+<input type="date" class="signoff-input" aria-label="CSM signoff date">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- end .main -->
+
+<div class="spacer"></div>
+<footer class="guide-footer">
+PaceMate&#174; &#8226; We never miss a beat &#8226; 66-PACEMATE &#8226; PaceMate.com<br>
+Customer Training &amp; Resources Guide &#8226; v3 &#8212; February 2026<br>
+<button class="clear-link" onclick="clearAll()">Clear all progress</button>
+</footer>
+
+<!-- SAVE BAR -->
+<div class="save-bar">
+<button class="save-btn" onclick="saveProgress()">&#128190; Save Progress</button>
+</div>
+<div class="save-toast" id="saveToast">Progress saved!</div>
+
+<script>
+// ===== Role multi-select =====
+let selectedRoles=[],showAll=false;
+const STORAGE_KEY='pm-train-v3';
+
+function toggleRole(chip){
+  if(showAll){showAll=false;document.querySelector('.show-all-link').classList.remove('active');document.querySelector('.show-all-link').innerHTML='Or, show all training \u2192';}
+  const role=chip.dataset.role,idx=selectedRoles.indexOf(role);
+  if(idx>-1){selectedRoles.splice(idx,1);chip.classList.remove('active')}
+  else{selectedRoles.push(role);chip.classList.add('active')}
+  applyFilter();
+}
+
+function toggleShowAll(){
+  showAll=!showAll;const btn=document.querySelector('.show-all-link');
+  if(showAll){btn.classList.add('active');btn.textContent='Showing all training \u2713';selectedRoles=[];document.querySelectorAll('.role-chip').forEach(c=>c.classList.remove('active'))}
+  else{btn.classList.remove('active');btn.innerHTML='Or, show all training \u2192'}
+  applyFilter();
+}
+
+function applyFilter(){
+  const has=showAll||selectedRoles.length>0;
+  document.getElementById('rolePrompt').classList.toggle('hidden',has);
+  document.getElementById('progressStrip').classList.toggle('visible',has);
+  document.querySelectorAll('.main-section').forEach(s=>{
+    if(!has){s.style.display='none';return}
+    const roles=(s.dataset.roles||'').split(',');
+    const vis=showAll||roles.includes('all')||selectedRoles.some(r=>roles.includes(r));
+    s.style.display=vis?'block':'none';
+  });
+  // Filter cards within visible sections
+  document.querySelectorAll('.tcard[data-roles]').forEach(card=>{
+    if(!has){card.style.display='';return}
+    const roles=(card.dataset.roles||'').split(',');
+    const vis=showAll||roles.includes('all')||selectedRoles.some(r=>roles.includes(r));
+    card.style.display=vis?'':'none';
+  });
+  updateProgress();
+}
+
+// ===== Accordions =====
+function toggleSec(acc){acc.classList.toggle('open');const b=acc.nextElementSibling;b.style.display=acc.classList.contains('open')?'block':'none'}
+function toggleSubsec(acc){acc.classList.toggle('open');acc.nextElementSibling.classList.toggle('open')}
+function toggleCard(hdr){
+  const body=hdr.nextElementSibling,tog=hdr.querySelector('.tcard-toggle');
+  const wasOpen=body.classList.contains('open');
+  body.classList.toggle('open');
+  if(tog)tog.classList.toggle('open');
+  // Auto-expand first subsection when card opens
+  if(!wasOpen&&body.classList.contains('open')){
+    const firstAcc=body.querySelector('.subsec-acc');
+    const firstBody=firstAcc?firstAcc.nextElementSibling:null;
+    if(firstAcc&&firstBody&&!firstAcc.classList.contains('open')){
+      firstAcc.classList.add('open');
+      firstBody.classList.add('open');
+    }
+  }
+}
+
+// ===== Scroll to card =====
+function scrollToCard(trackId){
+  const card=document.querySelector('[data-track-id="'+trackId+'"]');
+  if(!card)return;
+  // Ensure parent section is open
+  const sec=card.closest('.main-section');
+  if(sec){sec.style.display='block';const secAcc=sec.querySelector('.sec-acc');if(secAcc&&!secAcc.classList.contains('open')){secAcc.classList.add('open');secAcc.nextElementSibling.style.display='block'}}
+  // Open card
+  const body=card.querySelector('.tcard-body');if(body&&!body.classList.contains('open')){body.classList.add('open');const tog=card.querySelector('.tcard-toggle');if(tog)tog.classList.add('open')}
+  card.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// ===== Three-state tracker =====
+const trackStates={},trackQuestions={};
+function setTrack(btn,state){
+  const trk=btn.closest('.sec-tracker'),id=trk.dataset.sectionId;
+  trk.querySelectorAll('.trk-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');trackStates[id]=state;
+  const qa=trk.querySelector('.q-area');
+  if(qa){if(state==='questions'){qa.classList.add('open');qa.querySelector('textarea').focus()}else qa.classList.remove('open')}
+  updateProgress();
+}
+
+function updateProgress(){
+  const trackers=document.querySelectorAll('.sec-tracker');
+  let total=0,done=0;
+  trackers.forEach(trk=>{
+    const card=trk.closest('.tcard');
+    if(card&&card.style.display==='none')return;
+    const sec=trk.closest('.main-section');
+    if(sec&&sec.style.display==='none')return;
+    total++;
+    const st=trackStates[trk.dataset.sectionId];
+    if(st==='completed'||st==='questions')done++;
+  });
+  document.getElementById('psTotal').textContent=total;
+  document.getElementById('psDone').textContent=done;
+  document.getElementById('psFill').style.width=total?((done/total)*100)+'%':'0%';
+}
+
+// ===== Save/Load =====
+function saveProgress(){
+  const data={roles:selectedRoles,showAll:showAll,states:trackStates,questions:{}};
+  document.querySelectorAll('.q-area textarea').forEach(ta=>{
+    const id=ta.closest('.q-area').dataset.qa;
+    if(ta.value.trim())data.questions[id]=ta.value;
+  });
+  // Save signoff fields
+  data.signoffs={};
+  document.querySelectorAll('.signoff-input').forEach((inp,i)=>{
+    if(inp.value)data.signoffs[i]=inp.value;
+  });
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data));showToast('Progress saved!')}
+  catch(e){showToast('Progress saved (session only)')}
+}
+
+function loadProgress(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return;
+    const data=JSON.parse(raw);
+    if(data.showAll){showAll=true;document.querySelector('.show-all-link').classList.add('active');document.querySelector('.show-all-link').textContent='Showing all training \u2713'}
+    else if(data.roles&&data.roles.length){
+      selectedRoles=data.roles;
+      document.querySelectorAll('.role-chip').forEach(c=>{if(selectedRoles.includes(c.dataset.role))c.classList.add('active')});
+    }
+    if(data.states){
+      Object.entries(data.states).forEach(([id,state])=>{
+        const trk=document.querySelector('[data-section-id="'+id+'"]');
+        if(!trk)return;
+        trackStates[id]=state;
+        trk.querySelectorAll('.trk-btn').forEach(b=>b.classList.remove('sel'));
+        if(state==='completed')trk.querySelector('.t-done').classList.add('sel');
+        else if(state==='questions'){trk.querySelector('.t-q').classList.add('sel');const qa=trk.querySelector('.q-area');if(qa)qa.classList.add('open')}
+        else trk.querySelector('.t-ns').classList.add('sel');
+      });
+    }
+    if(data.questions){
+      Object.entries(data.questions).forEach(([id,val])=>{
+        const qa=document.querySelector('[data-qa="'+id+'"] textarea');
+        if(qa)qa.value=val;
+      });
+    }
+    if(data.signoffs){
+      const inps=document.querySelectorAll('.signoff-input');
+      Object.entries(data.signoffs).forEach(([i,val])=>{if(inps[i])inps[i].value=val});
+    }
+    applyFilter();
+  }catch(e){}
+}
+
+function clearAll(){
+  if(!confirm('Clear all progress? This will remove all your responses and cannot be undone.'))return;
+  document.querySelectorAll('.trk-btn').forEach(b=>b.classList.remove('sel'));
+  document.querySelectorAll('.trk-btn.t-ns').forEach(b=>b.classList.add('sel'));
+  document.querySelectorAll('.q-area').forEach(a=>{a.classList.remove('open');a.querySelector('textarea').value=''});
+  document.querySelectorAll('.signoff-input').forEach(i=>i.value='');
+  Object.keys(trackStates).forEach(k=>delete trackStates[k]);
+  selectedRoles=[];showAll=false;
+  document.querySelectorAll('.role-chip').forEach(c=>c.classList.remove('active'));
+  const btn=document.querySelector('.show-all-link');btn.classList.remove('active');btn.innerHTML='Or, show all training \u2192';
+  try{localStorage.removeItem(STORAGE_KEY)}catch(e){}
+  applyFilter();showToast('All progress cleared');
+}
+
+function showToast(msg){const t=document.getElementById('saveToast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+
+// ===== Init =====
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.main-section').forEach(s=>s.style.display='none');
+  loadProgress();
+});
+</script>
+
+<!-- PaceMate Back Button -->
+<style>
+.pm-back-btn{
+  position:fixed;top:16px;left:16px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px 8px 12px;
+  background:#fff;
+  border:1.5px solid #DEE2E6;
+  border-radius:20px;
+  font-family:'DM Sans',sans-serif;
+  font-size:0.78rem;font-weight:600;
+  color:#495057;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.09);
+  transition:all 0.15s;
+  line-height:1;
+}
+.pm-back-btn:hover{
+  background:#C8102E;color:#fff;
+  border-color:#C8102E;
+  box-shadow:0 3px 12px rgba(200,16,46,0.25);
+  transform:translateX(-2px);
+}
+.pm-back-btn svg{transition:transform 0.15s;}
+.pm-back-btn:hover svg{transform:translateX(-2px);}
+@media print{.pm-back-btn{display:none!important}}
+</style>
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 4L6 8l4 4"/>
+  </svg>
+  Back
+</button>
+
+</body>
+</html>

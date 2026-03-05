@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPT Code Charge Router Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --pm-red: #EA0044;
+  --pm-red-dark: #C9003C;
+  --pm-red-light: #FF2255;
+  --teal: #2E7D8C;
+  --teal-dark: #1B5E6B;
+  --plum: #6B5B95;
+  --plum-dark: #524578;
+  --sage: #2D8659;
+  --sage-dark: #1F6B44;
+  --text-1: #212529;
+  --text-2: #495057;
+  --text-3: #868E96;
+  --bg: #F5F6F8;
+  --white: #FFFFFF;
+  --border: #DEE2E6;
+  --shadow: 0 4px 24px rgba(0,0,0,0.07);
+  --radius: 12px;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--bg);
+  color: var(--text-1);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.form-wrapper { max-width: 1100px; margin: 0 auto; padding: 32px 28px 60px; }
+
+/* === FORM CARD === */
+.form-card {
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* === HEADER === */
+.form-header {
+  background: #FFFFFF;
+  border-bottom: 3px solid var(--pm-red);
+  padding: 18px 40px 16px;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.header-title-block { flex: 1; }
+.form-title { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--text-1); margin-bottom: 2px; }
+.form-subtitle { font-size: 0.78rem; color: var(--text-3); font-weight: 400; line-height: 1.4; }
+
+/* === ACTION BAR === */
+.pm-action-bar {
+  background: #F8F9FA;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 40px;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+.pm-action-bar.visible { display: flex; }
+.pm-action-left { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.pm-action-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; margin-left: auto; }
+
+.pm-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 18px; border-radius: 20px; border: none;
+  font-family: 'Roboto', sans-serif; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.18s; white-space: nowrap;
+}
+.pm-pill svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
+.pm-pill-save { background: #F0F1F3; color: var(--text-2); border: 1.5px solid var(--border); }
+.pm-pill-save:hover { background: var(--pm-red); color: #fff; border-color: var(--pm-red); }
+.pm-pill-export { background: #F0F1F3; color: var(--text-2); border: 1.5px solid var(--border); }
+.pm-pill-export:hover { background: var(--pm-red); color: #fff; border-color: var(--pm-red); }
+.pm-autosave { font-size: 0.72rem; color: var(--text-3); font-style: italic; }
+
+.pm-export-wrap { position: relative; }
+.pm-export-menu {
+  display: none; position: absolute; bottom: calc(100% + 6px); right: 0;
+  background: #fff; border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.1); min-width: 180px; z-index: 200; overflow: hidden;
+}
+.pm-export-menu.open { display: block; }
+.pm-export-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 11px 16px; border: none; background: none;
+  font-family: 'Roboto', sans-serif; font-size: 0.82rem; font-weight: 500;
+  color: var(--text-2); cursor: pointer; transition: background 0.15s; text-align: left;
+}
+.pm-export-item:hover { background: #F5F6F8; }
+.pm-export-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+.pm-chevron { width: 14px !important; height: 14px !important; transition: transform 0.2s; }
+.pm-chevron.open { transform: rotate(180deg); }
+
+/* === BODY === */
+.form-body { background: white; padding: 32px 40px 48px; }
+
+/* === STEP LAYOUT === */
+.step-section { margin-bottom: 36px; }
+.step-label { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.step-number {
+  background: var(--pm-red); color: #fff;
+  width: 30px; height: 30px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 0.88rem; flex-shrink: 0;
+}
+.step-title { font-family: 'Poppins', sans-serif; font-size: 1.05rem; font-weight: 700; color: var(--text-1); }
+.step-desc { font-size: 0.86rem; color: var(--text-2); margin-bottom: 20px; padding-left: 40px; }
+
+/* === DEVICE CARDS === */
+.category-group { margin-bottom: 12px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.cat-accordion-trigger {
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; cursor: pointer; background: none; border: none;
+  padding: 13px 20px; font-family: 'Roboto', sans-serif; transition: background 0.2s;
+}
+.cat-accordion-trigger .category-label {
+  margin: 0; font-weight: 700; font-size: 0.82rem;
+  text-transform: uppercase; letter-spacing: 0.8px;
+}
+.cat-accordion-chevron { width: 18px; height: 18px; color: #ADB5BD; transition: transform 0.25s; flex-shrink: 0; }
+.category-group.open .cat-accordion-chevron { transform: rotate(180deg); }
+.cat-accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; padding: 0 20px; }
+.category-group.open .cat-accordion-body { max-height: 3000px; padding: 0 20px 20px; }
+
+.cat-cied .cat-accordion-trigger { background: #FDF0F2; }
+.cat-cied .category-label { color: var(--pm-red-dark); }
+.cat-cied.open .cat-accordion-chevron { color: var(--pm-red); }
+.cat-ambulatory .cat-accordion-trigger { background: #FFF3F6; }
+.cat-ambulatory .category-label { color: #8B0027; }
+.cat-ambulatory.open .cat-accordion-chevron { color: #8B0027; }
+.cat-ecg .cat-accordion-trigger { background: #FFE8EE; }
+.cat-ecg .category-label { color: #A8003A; }
+.cat-ecg.open .cat-accordion-chevron { color: #A8003A; }
+.cat-rpm .cat-accordion-trigger { background: #FFDCE6; }
+.cat-rpm .category-label { color: #C9003C; }
+.cat-rpm.open .cat-accordion-chevron { color: #C9003C; }
+
+.device-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 10px; padding-top: 12px; }
+.device-card {
+  background: #fff; border: 2px solid var(--border); border-radius: 10px;
+  padding: 14px 16px; cursor: pointer; transition: all 0.18s;
+  position: relative; user-select: none;
+}
+.device-card:hover { border-color: var(--pm-red); box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.device-card.selected { border-color: var(--pm-red); background: #FFF5F7; box-shadow: 0 0 0 1px var(--pm-red); }
+.device-card.selected::after {
+  content: ''; position: absolute; top: 10px; right: 10px;
+  width: 20px; height: 20px; background: var(--pm-red); border-radius: 50%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");
+  background-size: 12px; background-repeat: no-repeat; background-position: center;
+}
+.cat-ambulatory .device-card.selected { border-color: #8B0027; background: #FFF3F6; box-shadow: 0 0 0 1px #8B0027; }
+.cat-ambulatory .device-card.selected::after { background-color: #8B0027; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E"); background-size: 12px; background-repeat: no-repeat; background-position: center; }
+.cat-ecg .device-card.selected { border-color: #A8003A; background: #FFE8EE; box-shadow: 0 0 0 1px #A8003A; }
+.cat-ecg .device-card.selected::after { background-color: #A8003A; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E"); background-size: 12px; background-repeat: no-repeat; background-position: center; }
+.cat-rpm .device-card.selected { border-color: #C9003C; background: #FFDCE6; box-shadow: 0 0 0 1px #C9003C; }
+.cat-rpm .device-card.selected::after { background-color: #C9003C; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E"); background-size: 12px; background-repeat: no-repeat; background-position: center; }
+
+.device-name { font-weight: 600; font-size: 0.88rem; color: var(--text-1); padding-right: 24px; }
+.device-note { font-size: 0.75rem; color: var(--text-3); margin-top: 3px; }
+.code-count { font-size: 0.73rem; color: var(--pm-red); font-weight: 600; margin-top: 5px; }
+.cat-ambulatory .code-count { color: #8B0027; }
+.cat-ecg .code-count { color: #A8003A; }
+.cat-rpm .code-count { color: #C9003C; }
+
+/* === GENERATE BUTTON ROW === */
+.generate-row {
+  display: flex; align-items: center; gap: 14px;
+  margin-top: 24px; padding-top: 20px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.btn-generate {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 28px; border-radius: 24px; border: none;
+  font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700;
+  background: var(--pm-red); color: #fff; cursor: pointer;
+  transition: all 0.18s; box-shadow: 0 3px 12px rgba(234,0,68,0.25);
+}
+.btn-generate:hover { background: var(--pm-red-dark); transform: translateY(-1px); box-shadow: 0 5px 16px rgba(234,0,68,0.3); }
+.btn-generate:disabled { background: #CCC; cursor: not-allowed; transform: none; box-shadow: none; }
+.btn-generate svg { width: 16px; height: 16px; fill: currentColor; }
+.btn-clear-sel {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 10px 20px; border-radius: 24px;
+  border: 1.5px solid var(--border); background: #fff;
+  font-family: 'Roboto', sans-serif; font-size: 0.82rem; font-weight: 600;
+  color: var(--text-2); cursor: pointer; transition: all 0.18s;
+}
+.btn-clear-sel:hover { border-color: var(--text-2); background: #F5F6F8; }
+.selection-count { font-size: 0.82rem; color: var(--text-3); }
+
+/* === RESULTS === */
+.results-section { display: none; margin-top: 32px; }
+.results-section.visible { display: block; }
+.results-summary { border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.results-header {
+  background: linear-gradient(135deg, var(--pm-red) 0%, var(--pm-red-dark) 100%);
+  color: #fff; padding: 20px 28px;
+  display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+}
+.results-header h2 { font-family: 'Poppins', sans-serif; font-size: 1rem; font-weight: 700; }
+.results-stats { display: flex; gap: 20px; }
+.stat { text-align: center; }
+.stat-num { font-size: 1.5rem; font-weight: 700; line-height: 1; font-family: 'Poppins', sans-serif; }
+.stat-label { font-size: 0.68rem; opacity: 0.8; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.results-body { padding: 24px 28px; }
+.result-category { margin-bottom: 20px; }
+.result-category:last-child { margin-bottom: 0; }
+.result-cat-label {
+  font-family: 'Poppins', sans-serif; font-size: 0.9rem; font-weight: 700;
+  margin-bottom: 10px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 8px;
+}
+.cat-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.cat-dot-cied { background: var(--pm-red); }
+.cat-dot-ambulatory { background: #8B0027; }
+.cat-dot-ecg { background: #A8003A; }
+.cat-dot-rpm { background: #C9003C; }
+
+.result-device { margin-bottom: 14px; padding-left: 16px; }
+.result-device-name { font-weight: 600; font-size: 0.86rem; margin-bottom: 6px; color: var(--text-1); }
+.code-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+.code-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #F8F9FA; border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 5px 12px; font-size: 0.8rem; transition: box-shadow 0.15s;
+}
+.code-pill:hover { box-shadow: 0 2px 6px rgba(0,0,0,0.07); }
+.pill-code { font-family: 'Roboto Condensed', sans-serif; font-weight: 700; font-size: 0.86rem; color: var(--pm-red); }
+.pill-label { color: var(--text-2); font-size: 0.76rem; }
+.cat-ambulatory .pill-code { color: #8B0027; }
+.cat-ecg .pill-code { color: #A8003A; }
+.cat-rpm .pill-code { color: #C9003C; }
+
+.results-footnote {
+  font-size: 0.8rem; color: var(--text-3);
+  margin: 0 28px 20px; padding: 12px 16px;
+  background: #F8F9FA; border-radius: 8px; line-height: 1.6;
+}
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; right: 30px;
+  padding: 14px 24px; border-radius: 10px;
+  font-family: 'Roboto', sans-serif; font-size: 0.84rem; font-weight: 600; color: white;
+  transform: translateY(100px); opacity: 0;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-success { background: #2B8A3E; }
+.toast-info    { background: #1971C2; }
+.toast-error   { background: #C92A2A; }
+
+/* Print */
+@media print {
+  body { background: white; }
+  .form-wrapper { padding: 0; }
+  .form-card { box-shadow: none; border: none; }
+  .pm-action-bar { display: none !important; }
+  .pm-back-btn { display: none !important; }
+  .generate-row { display: none; }
+  .step-section { display: none; }
+  .results-section { display: block !important; }
+  .results-header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+@media (max-width: 640px) {
+  .form-header { padding: 14px 20px; flex-wrap: wrap; }
+  .form-body { padding: 24px 20px 36px; }
+  .pm-action-bar { padding: 10px 20px; }
+  .device-grid { grid-template-columns: 1fr; }
+  .results-header { flex-direction: column; }
+  .results-stats { justify-content: center; }
+  .step-desc { padding-left: 0; }
+}
+</style>
+</head>
+<body>
+
+<div class="form-wrapper">
+<div class="form-card">
+
+  <!-- HEADER -->
+  <div class="form-header">
+    <svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" overflow="visible" style="height:56px;width:158px;display:block;flex-shrink:0;" aria-label="PaceMate">
+      <g><path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.605 57.791 165.605 33.675 168.211 33.675 168.211 57.791Z" fill="#636569"/><path d="M173.285 54.717C174.354 55.686 176.025 56.388 177.628 56.388 179.5 56.388 180.803 55.385 180.803 53.882 180.803 52.513 180.035 51.745 177.629 50.877 174.788 49.807 173.151 48.638 173.151 46.167 173.151 43.561 175.289 40.088 179.198 40.088 181.002 40.088 182.672 40.722 183.608 41.49L182.672 43.428C181.803 42.726 180.501 42.16 179.131 42.16 177.028 42.16 175.756 43.295 175.756 44.898 175.756 46.301 176.558 47.002 178.965 47.905 181.871 48.975 183.408 50.244 183.408 52.949 183.408 56.321 180.903 58.459 177.562 58.459 175.423 58.459 173.619 57.691 172.416 56.722L173.285 54.718Z" fill="#636569"/><path d="M186.114 42.427 186.114 40.422 191.525 40.422 191.525 34.044 194.131 34.044 194.131 40.422 199.942 40.422 199.942 42.427 194.131 42.427 194.131 52.982C194.131 55.052 194.932 56.054 196.803 56.054 197.939 56.054 198.975 55.653 199.742 55.119L200.477 57.024C199.408 57.725 198.005 58.125 196.502 58.125 193.327 58.125 191.525 56.321 191.525 52.849L191.525 42.427Z" fill="#636569"/><path d="M218.108 54.083C216.973 56.054 215.369 58.125 211.428 58.125 207.553 58.125 203.879 55.452 203.879 49.106 203.879 43.494 206.685 40.089 210.96 40.089 214.568 40.089 217.574 42.426 217.574 47.972L217.574 49.574 206.284 49.574C206.284 53.383 208.555 56.055 211.428 56.055 213.566 56.055 215.235 54.918 216.237 53.115L218.108 54.084ZM215.169 47.503C215.169 44.296 213.633 42.159 211.028 42.159 208.122 42.159 206.552 44.297 206.351 47.503L215.169 47.503Z" fill="#636569"/><path d="M222.381 57.791 222.381 40.422 224.853 40.422 225.053 43.028C226.256 41.157 228.227 40.088 230.566 40.088 232.838 40.088 234.509 41.09 235.411 42.961 236.748 41.023 238.819 40.088 241.124 40.088 244.666 40.088 246.67 42.292 246.67 46.167L246.67 57.791 244.064 57.791 244.064 46.601C244.064 43.796 242.994 42.193 240.589 42.193 238.418 42.193 236.48 43.729 236.48 47.136L236.48 57.791 233.875 57.791 233.875 46.601C233.875 43.796 232.805 42.193 230.4 42.193 228.228 42.193 226.291 43.729 226.291 47.136L226.291 57.791Z" fill="#636569"/></g></g>
+    </svg>
+    <div class="header-title-block">
+      <div class="form-title">CPT Code Charge Router Tool</div>
+      <div class="form-subtitle">Select the device types your organization monitors to generate your exact CPT code list</div>
+    </div>
+  </div>
+
+  <!-- ACTION BAR — hidden until results generated -->
+  <div class="pm-action-bar" id="pmActionBar">
+    <div class="pm-action-left">
+      <button class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+        <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+        Save Progress
+      </button>
+      <button class="pm-pill pm-pill-save" onclick="pmClearForm()">
+        <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        Clear Form
+      </button>
+      <span class="pm-autosave" id="pmAutosave"></span>
+    </div>
+    <div class="pm-action-right">
+      <div class="pm-export-wrap" id="pmExportWrap">
+        <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+          <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+          Export
+          <svg class="pm-chevron" id="pmChevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+        </button>
+        <div class="pm-export-menu" id="pmExportMenu">
+          <button class="pm-export-item" onclick="pmExport('pdf')">
+            <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+            Export as PDF
+          </button>
+          <button class="pm-export-item" onclick="pmExport('excel')">
+            <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+            Export as Excel
+          </button>
+          <button class="pm-export-item" onclick="pmExport('csv')">
+            <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+            Export as CSV
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="form-body">
+
+    <!-- Step 1 -->
+    <div class="step-section">
+      <div class="step-label">
+        <div class="step-number">1</div>
+        <div class="step-title">Select Your Device Types</div>
+      </div>
+      <p class="step-desc">Check every device type and service your organization currently monitors or plans to monitor with PaceMateLIVE&#8482;.</p>
+
+      <!-- CIED -->
+      <div class="category-group cat-cied" id="acc-cat-cied">
+        <button type="button" class="cat-accordion-trigger" onclick="toggleCat('acc-cat-cied')">
+          <div class="category-label">CIED &mdash; Implantable Devices</div>
+          <svg class="cat-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="cat-accordion-body">
+          <div class="device-grid" id="cied-grid"></div>
+        </div>
+      </div>
+
+      <!-- Ambulatory -->
+      <div class="category-group cat-ambulatory" id="acc-cat-ambulatory">
+        <button type="button" class="cat-accordion-trigger" onclick="toggleCat('acc-cat-ambulatory')">
+          <div class="category-label">Ambulatory Cardiac Monitoring</div>
+          <svg class="cat-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="cat-accordion-body">
+          <div class="device-grid" id="amb-grid"></div>
+        </div>
+      </div>
+
+      <!-- ECG -->
+      <div class="category-group cat-ecg" id="acc-cat-ecg">
+        <button type="button" class="cat-accordion-trigger" onclick="toggleCat('acc-cat-ecg')">
+          <div class="category-label">ECG</div>
+          <svg class="cat-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="cat-accordion-body">
+          <div class="device-grid" id="ecg-grid"></div>
+        </div>
+      </div>
+
+      <!-- RPM -->
+      <div class="category-group cat-rpm" id="acc-cat-rpm">
+        <button type="button" class="cat-accordion-trigger" onclick="toggleCat('acc-cat-rpm')">
+          <div class="category-label">Remote Physiologic Monitoring</div>
+          <svg class="cat-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="cat-accordion-body">
+          <div class="device-grid" id="rpm-grid"></div>
+        </div>
+      </div>
+
+      <div class="generate-row">
+        <button class="btn-generate" id="generateBtn" disabled onclick="generateResults()">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 14l-5-5 1.41-1.41L12 14.17l7.59-7.59L21 8l-9 9z"/></svg>
+          Generate My CPT Code List
+        </button>
+        <button class="btn-clear-sel" onclick="clearAll()">Clear All</button>
+        <span class="selection-count" id="selectionCount">0 selected</span>
+      </div>
+    </div>
+
+    <!-- Step 2: Results -->
+    <div class="results-section" id="resultsSection">
+      <div class="step-label">
+        <div class="step-number">2</div>
+        <div class="step-title">Your CPT Codes</div>
+      </div>
+      <p class="step-desc">Add these codes to your charge router. This list is filtered to only the device types you selected.</p>
+
+      <div class="results-summary">
+        <div class="results-header">
+          <h2>Charge Router CPT Codes</h2>
+          <div class="results-stats">
+            <div class="stat"><div class="stat-num" id="totalDevices">0</div><div class="stat-label">Devices</div></div>
+            <div class="stat"><div class="stat-num" id="totalCodes">0</div><div class="stat-label">CPT Codes</div></div>
+            <div class="stat"><div class="stat-num" id="uniqueCodes">0</div><div class="stat-label">Unique Codes</div></div>
+          </div>
+        </div>
+        <div class="results-body" id="resultsBody"></div>
+        <div class="results-footnote" id="resultsFootnote" style="display:none;">
+          <strong>*</strong> In PaceMateLIVE&#8482;, CPT 93297-26 is only available when CPT 93296 is also billed.<br>
+          <strong>Note:</strong> Category III codes (0575T, 0576T, 0578T, 0579T, 0804T, 0826T) are temporary and may change. Verify current status with your payer.
+        </div>
+      </div>
+
+      <!-- Bottom action bar -->
+      <div class="pm-action-bar" id="pmActionBarBottom" style="display:none;margin-top:12px;">
+        <div class="pm-action-left">
+          <button class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+            <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+            Save Progress
+          </button>
+          <button class="pm-pill pm-pill-save" onclick="pmClearForm()">
+            <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            Clear Form
+          </button>
+          <span class="pm-autosave" id="pmAutosaveBottom"></span>
+        </div>
+        <div class="pm-action-right">
+          <div class="pm-export-wrap" id="pmExportWrapBottom">
+            <button class="pm-pill pm-pill-export" onclick="pmToggleExportBottom(event)">
+              <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+              Export
+              <svg class="pm-chevron" id="pmChevronBottom" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+            </button>
+            <div class="pm-export-menu" id="pmExportMenuBottom">
+              <button class="pm-export-item" onclick="pmExport('pdf')">
+                <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+                Export as PDF
+              </button>
+              <button class="pm-export-item" onclick="pmExport('excel')">
+                <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                Export as Excel
+              </button>
+              <button class="pm-export-item" onclick="pmExport('csv')">
+                <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+                Export as CSV
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /.form-body -->
+</div><!-- /.form-card -->
+
+<!-- Footer -->
+<div style="max-width:1100px;margin:0 auto;padding:10px 28px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;font-family:'Roboto Condensed',sans-serif;color:#868E96;">
+  <div style="font-weight:700;color:#626469;">PaceMate&reg; &bull; PaceMate.com</div>
+  <div>CPT Code Charge Router Tool &bull; v1 &bull; February 2026</div>
+</div>
+
+</div><!-- /.form-wrapper -->
+
+<!-- Toast -->
+<div class="toast" id="pmToast"></div>
+
+<!-- Back Button -->
+<style>
+.pm-back-btn {
+  position: fixed; top: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px 8px 12px; background: #fff;
+  border: 1.5px solid #DEE2E6; border-radius: 20px;
+  font-family: 'Roboto', sans-serif; font-size: 0.78rem; font-weight: 600;
+  color: #495057; cursor: pointer; text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09); transition: all 0.15s; line-height: 1;
+}
+.pm-back-btn:hover { background: #EA0044; color: #fff; border-color: #EA0044; box-shadow: 0 3px 12px rgba(234,0,68,0.25); transform: translateX(-2px); }
+.pm-back-btn:hover svg { transform: translateX(-2px); }
+.pm-back-btn svg { transition: transform 0.15s; }
+@media print { .pm-back-btn { display: none !important; } }
+</style>
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4L6 8l4 4"/></svg>
+  Back
+</button>
+
+<script>
+const PM_FORM_NAME = 'CPT Code Charge Router Tool';
+const PM_LS_KEY = 'pm_charge_router_selections';
+
+/* ── DEVICE DATA ── */
+const deviceData = {
+  cied: [
+    {id:'pm-single',name:'Pacemaker Single Lead',codes:[{code:'93279',label:'In-Person Programming'},{code:'93288',label:'In-Person Interrogation'},{code:'93294',label:'Remote Professional'},{code:'93296',label:'Remote Technical'},{code:'93286',label:'Peri-Procedural'}]},
+    {id:'pm-dual',name:'Pacemaker Dual Lead',codes:[{code:'93280',label:'In-Person Programming'},{code:'93288',label:'In-Person Interrogation'},{code:'93294',label:'Remote Professional'},{code:'93296',label:'Remote Technical'},{code:'93286',label:'Peri-Procedural'}]},
+    {id:'pm-multi',name:'Pacemaker Multiple Lead',codes:[{code:'93281',label:'In-Person Programming'},{code:'93288',label:'In-Person Interrogation'},{code:'93294',label:'Remote Professional'},{code:'93296',label:'Remote Technical'},{code:'93286',label:'Peri-Procedural'}]},
+    {id:'pm-leadless-v',name:'Leadless Pacemaker \u2014 Ventricular',note:'e.g., Micra, AVEIR VR',codes:[{code:'93279',label:'In-Person Programming'},{code:'93288',label:'In-Person Interrogation'},{code:'93294',label:'Remote Professional (Micra only)'},{code:'93296',label:'Remote Technical'},{code:'93286',label:'Peri-Procedural'}]},
+    {id:'pm-leadless-a',name:'Leadless Pacemaker \u2014 Atrial',note:'e.g., AVEIR AR',codes:[{code:'0826T',label:'In-Person Programming'},{code:'93288',label:'In-Person Interrogation'},{code:'93296',label:'Remote Technical'},{code:'93286',label:'Peri-Procedural'}]},
+    {id:'pm-leadless-dr',name:'Leadless Pacemaker \u2014 Dual Chamber',note:'AVEIR DR',codes:[{code:'0804T',label:'In-Person Programming'},{code:'93288',label:'In-Person Interrogation'},{code:'93296',label:'Remote Technical'},{code:'93286',label:'Peri-Procedural'}]},
+    {id:'icd-single',name:'ICD Single Lead',codes:[{code:'93282',label:'In-Person Programming'},{code:'93289',label:'In-Person Interrogation'},{code:'93295',label:'Remote Professional'},{code:'93296',label:'Remote Technical'},{code:'93287',label:'Peri-Procedural'}]},
+    {id:'icd-dual',name:'ICD Dual Lead',codes:[{code:'93283',label:'In-Person Programming'},{code:'93289',label:'In-Person Interrogation'},{code:'93295',label:'Remote Professional'},{code:'93296',label:'Remote Technical'},{code:'93287',label:'Peri-Procedural'}]},
+    {id:'icd-multi',name:'ICD Multiple Lead',codes:[{code:'93284',label:'In-Person Programming'},{code:'93289',label:'In-Person Interrogation'},{code:'93295',label:'Remote Professional'},{code:'93296',label:'Remote Technical'},{code:'93287',label:'Peri-Procedural'}]},
+    {id:'sicd',name:'Subcutaneous ICD',codes:[{code:'93260',label:'In-Person Programming'},{code:'93261',label:'In-Person Interrogation'},{code:'93296',label:'Remote Professional'},{code:'93296',label:'Remote Technical'},{code:'93287',label:'Peri-Procedural'}]},
+    {id:'evidcd',name:'EV-ICD',codes:[{code:'0575T',label:'In-Person Programming'},{code:'0576T',label:'In-Person Interrogation'},{code:'0578T',label:'Remote Professional'},{code:'0579T',label:'Remote Technical'},{code:'93287',label:'Peri-Procedural'}]},
+    {id:'scrm',name:'Subcutaneous Cardiac Rhythm Monitor',note:'Loop Recorders',codes:[{code:'93285',label:'In-Person Programming'},{code:'93291',label:'In-Person Interrogation'},{code:'93298',label:'Remote Professional'}]},
+    {id:'icpm',name:'Implantable Cardiovascular Physiologic Monitor',codes:[{code:'93297',label:'Remote Professional*'}]},
+    {id:'iwpas',name:'Wireless Pulmonary Artery Sensor',note:'e.g., CardioMEMS',codes:[{code:'93264',label:'Remote Professional'}]}
+  ],
+  ambulatory: [
+    {id:'holter-48',name:'Holter \u2014 Up to 48 Hours',codes:[{code:'93225',label:'Tech/Hook-up'},{code:'93227',label:'Professional'}]},
+    {id:'holter-7d',name:'Holter \u2014 >48 Hours to 7 Days',codes:[{code:'93242',label:'Tech/Hook-up'},{code:'93244',label:'Professional'}]},
+    {id:'holter-15d',name:'Holter \u2014 >7 Days to 15 Days',codes:[{code:'93246',label:'Tech/Hook-up'},{code:'93248',label:'Professional'}]},
+    {id:'event',name:'Event Monitors',codes:[{code:'93270',label:'Tech/Hook-up'},{code:'93272',label:'Professional'}]},
+    {id:'mct',name:'Mobile Cardiac Telemetry',codes:[{code:'93229',label:'Professional'}]}
+  ],
+  ecg: [
+    {id:'alivecor',name:'AliveCor Kardia Station ECG',note:'1\u20133 Lead',codes:[{code:'93040',label:'ECG Rhythm'}]}
+  ],
+  rpm: [
+    {id:'rpm',name:'Remote Physiologic Monitoring',codes:[{code:'99091',label:'Minimum 20 min'},{code:'99457',label:'Minimum 30 min'}]}
+  ]
+};
+
+const selected = new Set();
+
+/* ── RENDER CARDS ── */
+function renderCards() {
+  [['cied','cied-grid'],['ambulatory','amb-grid'],['ecg','ecg-grid'],['rpm','rpm-grid']].forEach(function(pair) {
+    var grid = document.getElementById(pair[1]);
+    grid.innerHTML = deviceData[pair[0]].map(function(d) {
+      return '<div class="device-card" data-id="'+d.id+'" onclick="toggleDevice(\''+d.id+'\',this)">'
+        +'<div class="device-name">'+d.name+'</div>'
+        +(d.note?'<div class="device-note">'+d.note+'</div>':'')
+        +'<div class="code-count">'+d.codes.length+' CPT code'+(d.codes.length>1?'s':'')+'</div>'
+        +'</div>';
+    }).join('');
+  });
+}
+
+function toggleDevice(id, el) {
+  if (selected.has(id)) { selected.delete(id); el.classList.remove('selected'); }
+  else { selected.add(id); el.classList.add('selected'); }
+  updateCount();
+}
+
+function updateCount() {
+  var count = selected.size;
+  document.getElementById('selectionCount').textContent = count + ' selected';
+  document.getElementById('generateBtn').disabled = count === 0;
+}
+
+function clearAll() {
+  selected.clear();
+  document.querySelectorAll('.device-card').forEach(function(c){ c.classList.remove('selected'); });
+  document.getElementById('resultsSection').classList.remove('visible');
+  document.getElementById('pmActionBar').style.display = 'none';
+  document.getElementById('pmActionBarBottom').style.display = 'none';
+  updateCount();
+  localStorage.removeItem(PM_LS_KEY);
+}
+
+/* ── GENERATE ── */
+function generateResults() {
+  var catMap = {
+    cied:      {label:'CIED \u2014 Implantable Devices',dotClass:'cat-dot-cied',catClass:'cat-cied'},
+    ambulatory:{label:'Ambulatory Cardiac Monitoring',dotClass:'cat-dot-ambulatory',catClass:'cat-ambulatory'},
+    ecg:       {label:'ECG',dotClass:'cat-dot-ecg',catClass:'cat-ecg'},
+    rpm:       {label:'Remote Physiologic Monitoring',dotClass:'cat-dot-rpm',catClass:'cat-rpm'}
+  };
+  var html = ''; var totalDeviceCount = 0; var allCodes = []; var hasFootnote = false;
+
+  Object.keys(deviceData).forEach(function(catKey) {
+    var selDevices = deviceData[catKey].filter(function(d){ return selected.has(d.id); });
+    if (!selDevices.length) return;
+    var info = catMap[catKey];
+    html += '<div class="result-category '+info.catClass+'"><div class="result-cat-label"><span class="cat-dot '+info.dotClass+'"></span>'+info.label+'</div>';
+    selDevices.forEach(function(d) {
+      totalDeviceCount++;
+      html += '<div class="result-device"><div class="result-device-name">'+d.name+(d.note?' <span style="font-weight:400;color:#868E96;font-size:0.8rem">('+d.note+')</span>':'')+'</div><div class="code-pills">';
+      d.codes.forEach(function(c) {
+        allCodes.push(c.code);
+        if (c.label.includes('*')) hasFootnote = true;
+        html += '<div class="code-pill"><span class="pill-code">'+c.code+'</span><span class="pill-label">'+c.label+'</span></div>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div>';
+  });
+
+  var uniqueSet = new Set(allCodes);
+  if (allCodes.some(function(c){ return c.endsWith('T'); })) hasFootnote = true;
+
+  document.getElementById('resultsBody').innerHTML = html;
+  document.getElementById('totalDevices').textContent = totalDeviceCount;
+  document.getElementById('totalCodes').textContent = allCodes.length;
+  document.getElementById('uniqueCodes').textContent = uniqueSet.size;
+  document.getElementById('resultsFootnote').style.display = hasFootnote ? 'block' : 'none';
+
+  var section = document.getElementById('resultsSection');
+  section.classList.add('visible');
+  document.getElementById('pmActionBar').style.display = 'flex';
+  document.getElementById('pmActionBarBottom').style.display = 'flex';
+  section.scrollIntoView({behavior:'smooth', block:'start'});
+  pmSetAutosave();
+}
+
+/* ── SAVE / CLEAR ── */
+function pmSaveProgress() {
+  try {
+    localStorage.setItem(PM_LS_KEY, JSON.stringify(Array.from(selected)));
+    showToast('Progress saved!', 'success');
+    pmSetAutosave();
+  } catch(e) { showToast('Save failed', 'error'); }
+}
+
+function pmClearForm() {
+  if (!confirm('Clear all selections and results?')) return;
+  clearAll();
+  showToast('Form cleared', 'info');
+}
+
+function pmSetAutosave() {
+  var ts = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  var el = document.getElementById('pmAutosave');
+  var elB = document.getElementById('pmAutosaveBottom');
+  if (el) el.textContent = 'Autosaved ' + ts;
+  if (elB) elB.textContent = 'Autosaved ' + ts;
+}
+
+function pmToggleExportBottom(e) {
+  e.stopPropagation();
+  var menu = document.getElementById('pmExportMenuBottom');
+  var chevron = document.getElementById('pmChevronBottom');
+  var open = menu.classList.toggle('open');
+  chevron.classList.toggle('open', open);
+}
+
+function pmLoad() {
+  try {
+    var saved = JSON.parse(localStorage.getItem(PM_LS_KEY) || '[]');
+    if (saved.length) {
+      saved.forEach(function(id) {
+        selected.add(id);
+        var el = document.querySelector('[data-id="'+id+'"]');
+        if (el) el.classList.add('selected');
+      });
+      updateCount();
+    }
+  } catch(e) {}
+}
+
+/* ── EXPORT ── */
+function pmToggleExport(e) {
+  e.stopPropagation();
+  var menu = document.getElementById('pmExportMenu');
+  var chevron = document.getElementById('pmChevron');
+  var open = menu.classList.toggle('open');
+  chevron.classList.toggle('open', open);
+}
+document.addEventListener('click', function(){
+  var m = document.getElementById('pmExportMenu');
+  var ch = document.getElementById('pmChevron');
+  var mB = document.getElementById('pmExportMenuBottom');
+  var chB = document.getElementById('pmChevronBottom');
+  if (m) m.classList.remove('open');
+  if (ch) ch.classList.remove('open');
+  if (mB) mB.classList.remove('open');
+  if (chB) chB.classList.remove('open');
+});
+
+function pmExport(type) {
+  document.getElementById('pmExportMenu').classList.remove('open');
+  document.getElementById('pmChevron').classList.remove('open');
+  if (type === 'pdf') pmExportPDF();
+  else if (type === 'excel') pmExportExcel();
+  else if (type === 'csv') pmExportCSV();
+}
+
+function pmExportPDF() {
+  var resultsEl = document.getElementById('resultsSection');
+  if (!resultsEl.classList.contains('visible')) { showToast('Generate your list first', 'info'); return; }
+  var { jsPDF } = window.jspdf;
+  html2canvas(document.querySelector('.results-summary'), {scale:2, useCORS:true}).then(function(canvas) {
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jsPDF('p','mm','a4');
+    var pdfW = pdf.internal.pageSize.getWidth();
+    var imgH = (canvas.height * pdfW) / canvas.width;
+    var pageH = pdf.internal.pageSize.getHeight();
+    var pos = 0;
+    while (imgH > 0) {
+      pdf.addImage(imgData,'PNG',0,pos,pdfW,(canvas.height*pdfW)/canvas.width);
+      imgH -= pageH; pos -= pageH;
+      if (imgH > 0) pdf.addPage();
+    }
+    pdf.save(PM_FORM_NAME.replace(/\s+/g,'-')+'.pdf');
+    showToast('PDF downloaded!','success');
+  }).catch(function(){ showToast('PDF export failed','error'); });
+}
+
+function pmExportExcel() {
+  var rows = [['Device','CPT Code','Service Type','Category']];
+  Object.keys(deviceData).forEach(function(catKey) {
+    deviceData[catKey].filter(function(d){ return selected.has(d.id); }).forEach(function(d) {
+      d.codes.forEach(function(c) { rows.push([d.name, c.code, c.label, catKey.toUpperCase()]); });
+    });
+  });
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:40},{wch:10},{wch:30},{wch:20}];
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'CPT Codes');
+  XLSX.writeFile(wb, PM_FORM_NAME.replace(/\s+/g,'-')+'.xlsx');
+  showToast('Excel downloaded!','success');
+}
+
+function pmExportCSV() {
+  var rows = [['Device','CPT Code','Service Type','Category']];
+  Object.keys(deviceData).forEach(function(catKey) {
+    deviceData[catKey].filter(function(d){ return selected.has(d.id); }).forEach(function(d) {
+      d.codes.forEach(function(c) { rows.push([d.name, c.code, c.label, catKey.toUpperCase()]); });
+    });
+  });
+  var csv = rows.map(function(r){ return r.map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv],{type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a'); a.href=url; a.download=PM_FORM_NAME.replace(/\s+/g,'-')+'.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); },5000);
+  showToast('CSV downloaded!','success');
+}
+
+/* ── TOAST ── */
+function showToast(msg, type) {
+  var t = document.getElementById('pmToast');
+  t.textContent = msg;
+  t.className = 'toast toast-'+(type||'success');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+function toggleCat(id) { document.getElementById(id).classList.toggle('open'); }
+
+/* ── AUTOSAVE ── */
+setInterval(function(){
+  if (selected.size > 0) { pmSaveProgress(); pmSetAutosave(); }
+}, 30000);
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', function(){ renderCards(); pmLoad(); });
+</script>
+</body>
+</html>

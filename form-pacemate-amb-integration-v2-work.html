@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceMate® | Ambulatory Monitoring Integration Request</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F5F6F8;
+    color: #212529;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+.form-wrapper { max-width: 940px; margin: 0 auto; padding: 16px 20px 24px; }
+
+/* === HEADER === */
+.form-header {
+    background: #FFFFFF;
+    border-bottom: 3px solid #EA0044;
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-radius: 16px 16px 0 0;
+}
+.form-header::before { display:none; /*
+    content: '';
+    position: absolute;
+    top: -40%; right: -15%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+    border-radius: 50%;
+*/}
+.header-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 20px; position: relative; z-index: 1;
+}
+.header-logo { display: flex; align-items: center; gap: 12px; }
+.heart-icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+}
+.heart-icon svg { width: 20px; height: 20px; fill: white; }
+.brand-text { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.02em; }
+.brand-tagline { font-size: 0.65rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.7; }
+.header-badge {
+    background: rgba(255,255,255,0.15); padding: 6px 16px; border-radius: 20px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.05em;
+    text-transform: uppercase; backdrop-filter: blur(4px);
+}
+.form-title {
+    font-family: 'Playfair Display', serif; font-size: 1.55rem; font-weight: 700;
+    margin-bottom: 6px; position: relative; z-index: 1;
+}
+.form-subtitle { font-size: 0.88rem; opacity: 0.85; font-weight: 400; position: relative; z-index: 1; }
+
+/* === PROGRESS === */
+.progress-section{display:none}
+.progress-bar-track{display:none}
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, #EA0044, #E8394F); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+.progress-label { font-size: 0.78rem; font-weight: 600; color: #495057; white-space: nowrap; }
+
+/* === BODY === */
+.form-body {
+    background: white; padding: 20px 32px 24px;
+    border-radius: 0 0 16px 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+}
+
+/* === BLOCKS === */
+.purpose-block {
+    background: #FFF8F8; border: 1px solid #FECDD3; border-left: 4px solid #EA0044;
+    border-radius: 10px; padding: 14px 20px; margin-bottom: 16px;
+}
+.purpose-title {
+    font-weight: 700; font-size: 0.92rem; color: #212529; margin-bottom: 10px;
+}
+.purpose-text { font-size: 0.84rem; color: #495057; line-height: 1.7; }
+.purpose-text strong { color: #212529; }
+
+.info-callout {
+    background: #F8F9FA; border: 1px solid #E9ECEF; border-left: 4px solid #495057;
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 24px;
+    font-size: 0.82rem; color: #495057; line-height: 1.7;
+    display: flex; align-items: flex-start; gap: 10px;
+}
+.info-callout svg { flex-shrink: 0; margin-top: 2px; }
+.info-callout strong { color: #212529; }
+
+/* === SECTIONS === */
+.section-divider {
+    margin: 20px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #F1F3F5;
+    display: flex; align-items: center; gap: 10px;
+}
+.section-divider-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem; font-weight: 700; color: #212529;
+}
+.section-divider-num {
+    background: #EA0044; color: white;
+    font-family: 'Roboto', sans-serif; font-size: 0.7rem; font-weight: 700;
+    width: 24px; height: 24px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+}
+
+/* === FORM FIELDS === */
+.form-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+}
+.form-grid .full-width { grid-column: 1 / -1; }
+.field-group label {
+    display: block; font-size: 0.76rem; font-weight: 600; color: #495057;
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;
+}
+.field-group input, .field-group select, .field-group textarea {
+    width: 100%; padding: 8px 12px;
+    border: 1.5px solid #DEE2E6; border-radius: 8px;
+    font-family: 'Roboto', sans-serif; font-size: 0.86rem; color: #212529;
+    transition: border-color 0.2s, box-shadow 0.2s; background: #FAFBFC;
+}
+.field-group input:focus, .field-group select:focus {
+    outline: none; border-color: #EA0044;
+    box-shadow: 0 0 0 3px rgba(234,0,68,0.08); background: white;
+}
+.field-group input::placeholder { color: #ADB5BD; }
+.field-note { font-size: 0.72rem; color: #868E96; margin-top: 4px; font-style: italic; }
+
+/* === CHECKBOX CARDS === */
+.checkbox-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;
+}
+.checkbox-card {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px; border: 1.5px solid #DEE2E6; border-radius: 10px;
+    cursor: pointer; transition: all 0.2s; user-select: none;
+}
+.checkbox-card:hover { border-color: #ADB5BD; background: #F8F9FA; }
+.checkbox-card.checked { border-color: #EA0044; background: #FFF8F8; }
+.checkbox-card input[type="checkbox"] { display: none; }
+.checkbox-box {
+    width: 20px; height: 20px; border: 2px solid #CED4DA; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
+}
+.checkbox-card.checked .checkbox-box {
+    background: #EA0044; border-color: #EA0044;
+}
+.checkbox-box svg { width: 12px; height: 12px; fill: white; opacity: 0; transition: opacity 0.15s; }
+.checkbox-card.checked .checkbox-box svg { opacity: 1; }
+.checkbox-label { font-size: 0.84rem; font-weight: 500; color: #212529; }
+.checkbox-card.checked .checkbox-label { color: #EA0044; font-weight: 600; }
+
+/* Other vendor text input */
+.other-vendor-input {
+    margin-top: 10px; display: none;
+}
+.other-vendor-input.show { display: block; }
+
+/* Results checkboxes - 2 column */
+.checkbox-grid-2 { grid-template-columns: 1fr 1fr; }
+
+/* === CPT BILLING CARDS === */
+.cpt-cards { display: flex; flex-direction: column; gap: 16px; }
+.cpt-card {
+    border: 1.5px solid #E9ECEF; border-radius: 12px; overflow: hidden;
+    transition: border-color 0.2s;
+}
+.cpt-card.has-selections { border-color: #FECDD3; }
+.cpt-card-header {
+    padding: 14px 20px; display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer; transition: background 0.2s;
+}
+.cpt-card-header:hover { background: #FAFBFC; }
+.cpt-card-title {
+    font-weight: 700; font-size: 0.88rem; color: #212529;
+    display: flex; align-items: center; gap: 8px;
+}
+.cpt-card-title .monitor-icon {
+    width: 8px; height: 8px; border-radius: 50%; background: #EA0044;
+}
+.cpt-card-count {
+    font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 10px;
+}
+.cpt-card-count.none { background: #F1F3F5; color: #868E96; }
+.cpt-card-count.some { background: #FFF8F8; color: #EA0044; }
+.cpt-card-body {
+    padding: 0 20px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+}
+.cpt-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border: 1.5px solid #E9ECEF; border-radius: 8px;
+    cursor: pointer; transition: all 0.2s; user-select: none;
+}
+.cpt-item:hover { border-color: #ADB5BD; }
+.cpt-item.checked { border-color: #EA0044; background: #FFF8F8; }
+.cpt-item.na {
+    opacity: 0.45; cursor: default; background: #F8F9FA;
+}
+.cpt-item input[type="checkbox"] { display: none; }
+.cpt-check {
+    width: 18px; height: 18px; border: 2px solid #CED4DA; border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; flex-shrink: 0;
+}
+.cpt-item.checked .cpt-check { background: #EA0044; border-color: #EA0044; }
+.cpt-check svg { width: 10px; height: 10px; fill: white; opacity: 0; transition: opacity 0.15s; }
+.cpt-item.checked .cpt-check svg { opacity: 1; }
+.cpt-item-info { flex: 1; }
+.cpt-item-category { font-size: 0.78rem; font-weight: 600; color: #495057; }
+.cpt-item-code { font-size: 0.82rem; font-weight: 700; color: #212529; font-family: 'Roboto', monospace; }
+.cpt-item.na .cpt-item-code { color: #ADB5BD; }
+
+.cpt-summary {
+    margin-top: 16px; padding: 14px 20px;
+    background: #F8F9FA; border: 1px solid #E9ECEF; border-radius: 10px;
+    font-size: 0.82rem; color: #495057;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.cpt-summary-count { font-weight: 700; color: #EA0044; font-size: 0.88rem; }
+
+/* === ATHENA SECTION === */
+.athena-section {
+    margin-top: 32px; border: 2px solid #E67700; border-radius: 12px; overflow: hidden;
+}
+.athena-header {
+    background: linear-gradient(135deg, #E67700 0%, #D9480F 100%);
+    padding: 14px 24px; color: white;
+    font-weight: 700; font-size: 0.88rem;
+    display: flex; align-items: center; gap: 8px;
+}
+.athena-body { padding: 24px; }
+.athena-note {
+    font-size: 0.82rem; color: #495057; line-height: 1.7;
+    margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #E9ECEF;
+}
+
+/* === ACTIONS === */
+.form-actions {
+    display: flex; gap: 12px; justify-content: flex-end;
+    padding-top: 24px; border-top: 1px solid #E9ECEF; margin-top: 32px;
+}
+.btn {
+    padding: 11px 28px; border-radius: 10px;
+    font-family: 'Roboto', sans-serif; font-size: 0.84rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px; border: none;
+}
+.btn-primary { background: linear-gradient(135deg, #EA0044, #c8003b); color: white; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(234,0,68,0.3); }
+.btn-secondary { background: white; color: #495057; border: 1.5px solid #DEE2E6; }
+.btn-secondary:hover { background: #F8F9FA; border-color: #ADB5BD; }
+.btn-outline-red { background: white; color: #EA0044; border: 1.5px solid #FECDD3; }
+.btn-outline-red:hover { background: #FFF5F5; border-color: #EA0044; }
+.btn svg { width: 16px; height: 16px; }
+
+/* === FOOTER === */
+.form-footer { text-align: center; padding: 24px 40px; margin-top: 8px; }
+.footer-brand { font-size: 0.82rem; font-weight: 600; color: #495057; }
+.footer-brand span { color: #EA0044; }
+.footer-tagline { font-size: 0.72rem; color: #868E96; margin-top: 4px; }
+.footer-meta { font-size: 0.68rem; color: #ADB5BD; margin-top: 6px; }
+
+/* === TOAST === */
+.toast {
+    position: fixed; bottom: 30px; right: 30px;
+    padding: 14px 24px; border-radius: 10px;
+    font-family: 'Roboto', sans-serif; font-size: 0.84rem; font-weight: 600; color: white;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.toast-success { background: #2B8A3E; }
+.toast-info { background: #1971C2; }
+.toast-warning { background: #E67700; }
+
+/* === ACCORDION SECTIONS === */
+.acc-section { border: 1.5px solid #DEE2E6; border-radius: 10px; margin-bottom: 10px; overflow: hidden; transition: border-color 0.2s; }
+.acc-section:focus-within { border-color: rgba(234,0,68,0.3); }
+.acc-section-hdr {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 18px; cursor: pointer; user-select: none;
+    background: #F8F9FA; transition: background 0.15s;
+}
+.acc-section-hdr:hover { background: #F0F1F3; }
+.acc-section-hdr.open { background: #FFF5F7; }
+.acc-section-hdr-left { display: flex; align-items: center; gap: 12px; }
+.acc-section-hdr-right { display: flex; align-items: center; gap: 10px; }
+.acc-section-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #EA0044; color: white;
+    font-size: 0.75rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.acc-section-title { font-family: 'Poppins', sans-serif; font-size: 0.88rem; font-weight: 700; color: #212529; }
+.acc-section-hdr.open .acc-section-title { color: #c8003b; }
+.acc-badge {
+    font-size: 0.7rem; font-weight: 600; padding: 3px 10px;
+    border-radius: 10px; background: #EEE; color: #868E96; white-space: nowrap; transition: all 0.2s;
+}
+.acc-badge.has-data { background: rgba(40,167,69,0.12); color: #1E7E34; }
+.acc-chevron { width: 16px; height: 16px; color: #868E96; transition: transform 0.25s; flex-shrink: 0; }
+.acc-section-hdr.open .acc-chevron { transform: rotate(180deg); color: #EA0044; }
+.acc-section-body { display: none; padding: 20px 20px 24px; }
+.acc-section-body.open { display: block; }
+
+/* === ATHENA TOGGLE === */
+.athena-trigger {
+    margin-top: 32px;
+    border: 2.5px dashed #DEE2E6;
+    border-radius: 14px;
+    padding: 24px 28px;
+    transition: all 0.25s;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 20px;
+}
+.athena-trigger:hover { border-color: #E67700; background: #FFFBF5; }
+.athena-trigger.active { border-style: solid; border-color: #E67700; background: #FFF8F0; }
+.athena-trigger-icon {
+    width: 52px; height: 52px; border-radius: 12px;
+    background: #FFF3E0; border: 2px solid #FFD180;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem; flex-shrink: 0; transition: all 0.2s;
+}
+.athena-trigger.active .athena-trigger-icon { background: #E67700; border-color: #E67700; }
+.athena-trigger-text { flex: 1; }
+.athena-trigger-label { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #212529; margin-bottom: 3px; }
+.athena-trigger.active .athena-trigger-label { color: #E67700; }
+.athena-trigger-hint { font-size: 0.81rem; color: #868E96; line-height: 1.5; }
+.athena-trigger-check {
+    width: 28px; height: 28px; border-radius: 8px;
+    border: 2.5px solid #DEE2E6; background: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all 0.2s;
+}
+.athena-trigger.active .athena-trigger-check { background: #E67700; border-color: #E67700; }
+.athena-trigger-check svg { width: 14px; height: 14px; fill: white; opacity: 0; transition: opacity 0.15s; }
+.athena-trigger.active .athena-trigger-check svg { opacity: 1; }
+
+.athena-section-body {
+    display: none; margin-top: 12px;
+    border: 2px solid #E67700; border-radius: 12px; overflow: hidden;
+    animation: fadeSlide 0.3s ease;
+}
+.athena-section-body.visible { display: block; }
+@keyframes fadeSlide { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.athena-header {
+    background: linear-gradient(135deg, #E67700 0%, #D9480F 100%);
+    padding: 14px 24px; color: white;
+    font-weight: 700; font-size: 0.88rem;
+    display: flex; align-items: center; gap: 8px;
+}
+.athena-body { padding: 24px; }
+.athena-note { font-size: 0.82rem; color: #495057; line-height: 1.7; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #E9ECEF; }
+
+/* === PRINT === */
+@media print {
+    body { background: white; }
+    .form-wrapper { padding: 0; max-width: 100%; }
+    .form-header { border-radius: 0; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .progress-section, .form-actions { display: none !important; }
+    .form-body { box-shadow: none; border-radius: 0; padding: 24px; }
+    .field-group input, .field-group select {
+        border: none !important; padding: 4px 0; background: none !important;
+        box-shadow: none !important; border-bottom: 1px solid #ccc !important;
+    }
+    .checkbox-card, .cpt-item { break-inside: avoid; }
+    .cpt-card-header { cursor: default; }
+    .athena-header { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .athena-trigger { display: none !important; }
+    .athena-section-body { display: block !important; border: 1px solid #ccc; }
+    .acc-section-body { display: block !important; }
+    .acc-section-hdr { background: #f8f9fa !important; }
+    .toast { display: none !important; }
+}
+
+@media (max-width: 768px) {
+    .form-header { padding: 28px 24px 24px; }
+    .form-body { padding: 24px 20px 32px; }
+    .progress-section{display:none}
+    .form-grid { grid-template-columns: 1fr; }
+    .checkbox-grid { grid-template-columns: 1fr; }
+    .checkbox-grid-2 { grid-template-columns: 1fr; }
+    .cpt-card-body { grid-template-columns: 1fr; }
+    .form-title { font-size: 1.3rem; }
+    .form-actions { flex-direction: column; }
+    .form-actions .btn { width: 100%; justify-content: center; }
+}
+.pm-form-footer{display:none;text-align:center;padding:24px 20px 16px;font-size:0.75rem;color:#868E96;border-top:1px solid #F1F3F5;margin-top:8px;font-family:'Roboto',sans-serif;line-height:1.8;}
+.pm-form-footer strong{color:#495057;font-weight:600;}
+@media print{.pm-form-footer{display:none!important;}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div class="form-wrapper">
+    <!-- HEADER -->
+    <div class="form-header">
+        <div style="height:56px;width:158px;flex-shrink:0;display:flex;align-items:center;"><svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" style="height:56px;width:158px;display:block;" overflow="hidden"><g><path d="M64.413 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.601 57.79 165.601 33.675 172.08 33.675 176.723 50.509 176.79 50.509 181.467 33.675 188.014 33.675 188.014 57.79 184.005 57.79 184.005 38.818 183.938 38.818 178.528 57.79 175.02 57.79 169.676 38.818 169.609 38.818 169.609 57.79 165.601 57.79Z" fill="#636569"/><path d="M201.94 57.79 201.674 56.287C200.003 57.422 198.433 58.123 196.263 58.123 193.122 58.123 191.551 55.885 191.551 53.515 191.551 49.573 194.759 47.503 201.506 46.701L201.506 45.232C201.506 43.895 200.438 43.161 198.968 43.161 197.031 43.161 195.962 44.196 195.16 45.299L192.489 43.261C193.557 41.425 196.43 40.021 198.968 40.09 203.644 40.189 205.648 41.892 205.648 47.104L205.648 55.286C205.648 56.155 205.715 57.023 205.982 57.792L201.94 57.792ZM201.507 49.473C198.735 50.008 195.695 50.576 195.695 53.013 195.695 54.315 196.529 55.051 197.699 55.051 199.001 55.051 200.638 53.948 201.507 53.214L201.507 49.473Z" fill="#636569"/><path d="M210.689 40.421 210.689 34.676 214.83 34.676 214.83 40.421 218.238 40.421 218.238 43.762 214.83 43.762 214.83 53.582C214.83 54.517 215.299 54.785 216.334 54.785 216.969 54.785 217.636 54.584 218.238 54.45L218.238 57.857C217.101 57.991 216.099 58.125 214.965 58.125 211.892 58.125 210.689 56.588 210.689 54.116L210.689 43.762 208.284 43.762 208.284 40.421 210.689 40.421Z" fill="#636569"/><path d="M224.179 49.774C224.245 53.381 225.849 54.784 227.787 54.784 229.725 54.784 230.626 53.915 231.662 52.713L234.668 54.584C233.065 57.056 230.727 58.124 227.386 58.124 222.877 58.124 220.038 54.617 220.038 49.106 220.038 43.595 222.877 40.088 227.586 40.088 232.129 40.054 234.667 43.896 234.667 48.072L234.667 49.775 224.179 49.775ZM230.86 46.968C230.794 44.563 229.524 43.16 227.519 43.16 225.514 43.16 224.246 44.563 224.179 46.968L230.86 46.968Z" fill="#636569"/></g></g><g><circle cx="240.028" cy="40.004" r="3.659" stroke="#636569" stroke-width="0.48" stroke-miterlimit="10" fill="none"/><path d="M239.897 40.276 239.24 40.276 239.24 41.999 238.707 41.999 238.707 38.011 239.984 38.011C240.968 38.011 241.272 38.489 241.272 39.076 241.272 39.532 241.136 40.027 240.43 40.206L241.348 41.999 240.767 41.999 239.898 40.276ZM239.761 39.858C240.424 39.858 240.717 39.684 240.717 39.103 240.717 38.63 240.451 38.435 239.869 38.435L239.239 38.435 239.239 39.859 239.761 39.859Z" fill="#636569"/></g></svg></div>
+        <div style="margin-left:16px;">
+            <div style="font-family:'Poppins',sans-serif;font-weight:600;font-size:1.05rem;color:#2D2E32;">Ambulatory Monitoring Integration Request</div>
+            <div style="font-family:'Roboto',sans-serif;font-size:0.8rem;color:#8A8C90;margin-top:2px;">for PaceMateLIVE&trade;</div>
+        </div>
+    </div>
+    <!-- BODY -->
+    <div class="form-body">
+
+        <!-- PURPOSE -->
+        <div class="purpose-block">
+            <div class="purpose-title">Purpose</div>
+            <div class="purpose-text">
+                This form is your official request to <strong>integrate ambulatory monitoring</strong> into PaceMateLIVE&trade;. Complete it to tell us which vendors to connect, which results to import, and which billing codes to automate in your EMR.
+            </div>
+        </div>
+
+        <!-- SECTION 1: PRACTICE INFO -->
+        <div class="section-divider">
+            <div class="section-divider-num">1</div>
+            <div class="section-divider-title">Practice Information</div>
+        </div>
+        <div class="form-grid">
+            <div class="field-group full-width">
+                <label>Name of Clinic, Hospital, or Group</label>
+                <input type="text" id="practiceName" placeholder="Enter practice name" data-track oninput="updateProgress()">
+            </div>
+            <div class="field-group full-width">
+                <label>Street Address</label>
+                <input type="text" id="streetAddress" placeholder="Street address" data-track oninput="updateProgress()">
+            </div>
+            <div class="field-group">
+                <label>Zip Code</label>
+                <input type="text" id="zipCode" placeholder="00000" maxlength="10" data-track oninput="lookupZip(this.value); updateProgress()">
+            </div>
+            <div class="field-group">
+                <label>City</label>
+                <input type="text" id="cityField" placeholder="Auto-populated from zip" data-track oninput="updateProgress()">
+            </div>
+            <div class="field-group">
+                <label>State</label>
+                <input type="text" id="stateField" placeholder="Auto-populated from zip" data-track oninput="updateProgress()">
+            </div>
+        </div>
+
+        <!-- SECTION 2: WORKFLOW CONTACT -->
+        <div class="section-divider">
+            <div class="section-divider-num">2</div>
+            <div class="section-divider-title">Primary Contact for This Request</div>
+        </div>
+        <div class="form-grid">
+            <div class="field-group">
+                <label>Name</label>
+                <input type="text" id="contactName" placeholder="Contact name" data-track oninput="updateProgress(); syncAthenaContact()">
+            </div>
+            <div class="field-group">
+                <label>Title or Role</label>
+                <input type="text" id="contactTitle" placeholder="Title or role" data-track oninput="updateProgress(); syncAthenaContact()">
+            </div>
+            <div class="field-group">
+                <label>Telephone</label>
+                <input type="text" id="contactPhone" placeholder="(000) 000-0000" data-track oninput="updateProgress(); syncAthenaContact()">
+                <div class="field-note">Please include extension number if applicable.</div>
+            </div>
+            <div class="field-group">
+                <label>Email</label>
+                <input type="email" id="contactEmail" placeholder="email@organization.com" data-track oninput="updateProgress()">
+            </div>
+        </div>
+
+        <!-- SECTION 3: VENDOR SELECTION (accordion) -->
+        <div class="acc-section" id="acc-vendors">
+            <div class="acc-section-hdr" onclick="toggleAccSection('vendors')">
+                <div class="acc-section-hdr-left">
+                    <div class="acc-section-num">3</div>
+                    <div class="acc-section-title">Company to Be Integrated to PaceMateLIVE&trade;</div>
+                </div>
+                <div class="acc-section-hdr-right">
+                    <span class="acc-badge" id="badge-vendors">None selected</span>
+                    <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="acc-section-body" id="body-vendors">
+                <p style="font-size:0.84rem; color:#495057; margin-bottom:14px;">Select all ambulatory monitoring vendors that should be integrated with PaceMateLIVE&trade;.</p>
+                <div class="checkbox-grid" id="vendorGrid">
+                    <label class="checkbox-card" style="border-left:3px solid #7B2D8E;" onclick="toggleCard(this); updateVendorBadge()">
+                        <input type="checkbox" name="vendor" value="bsx">
+                        <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                        <span class="checkbox-label">Boston Scientific Cardiac Diagnostics</span>
+                    </label>
+                    <label class="checkbox-card" style="border-left:3px solid #0066A1;" onclick="toggleCard(this); updateVendorBadge()">
+                        <input type="checkbox" name="vendor" value="philips">
+                        <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                        <span class="checkbox-label">Philips ECG Solutions</span>
+                    </label>
+                    <label class="checkbox-card" style="border-left:3px solid #00843D;" onclick="toggleCard(this); updateVendorBadge()">
+                        <input type="checkbox" name="vendor" value="bardy">
+                        <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                        <span class="checkbox-label">Baxter BardyDX</span>
+                    </label>
+                    <label class="checkbox-card" style="border-left:3px solid #E4572E;" onclick="toggleCard(this); updateVendorBadge()">
+                        <input type="checkbox" name="vendor" value="irhythm">
+                        <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                        <span class="checkbox-label">iRhythm Zio</span>
+                    </label>
+                    <label class="checkbox-card" style="border-left:3px solid #0091BD;" onclick="toggleCard(this); updateVendorBadge()">
+                        <input type="checkbox" name="vendor" value="vital">
+                        <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                        <span class="checkbox-label">VitalConnect</span>
+                    </label>
+                    <label class="checkbox-card" style="border-left:3px solid #868E96;" onclick="toggleCard(this); toggleOtherVendor(); updateVendorBadge()">
+                        <input type="checkbox" name="vendor" value="other" id="otherVendorCheck">
+                        <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                        <span class="checkbox-label">Other</span>
+                    </label>
+                </div>
+                <div class="other-vendor-input" id="otherVendorField">
+                    <div class="field-group" style="margin-top:12px;">
+                        <label>Specify Other Vendor</label>
+                        <input type="text" placeholder="Enter vendor name" data-track oninput="updateProgress()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: RESULTS (accordion) -->
+        <div class="acc-section" id="acc-results">
+            <div class="acc-section-hdr" onclick="toggleAccSection('results')">
+                <div class="acc-section-hdr-left">
+                    <div class="acc-section-num">4</div>
+                    <div class="acc-section-title">Results</div>
+                </div>
+                <div class="acc-section-hdr-right">
+                    <span class="acc-badge" id="badge-results">None selected</span>
+                    <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="acc-section-body" id="body-results">
+                <p style="font-size:0.84rem; color:#495057; margin-bottom:14px;">Select which results you would like to come into PaceMateLIVE&trade; (one or both).</p>
+                <div class="checkbox-grid checkbox-grid-2" id="resultsGrid">
+                    <label class="checkbox-card" onclick="toggleCard(this); updateResultsBadge(); updateProgress()">
+                        <input type="checkbox" name="results" value="alert">
+                        <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                        <span class="checkbox-label">Alert Reports</span>
+                    </label>
+                    <label class="checkbox-card" onclick="toggleCard(this); updateResultsBadge(); updateProgress()">
+                        <input type="checkbox" name="results" value="summary">
+                        <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                        <span class="checkbox-label">Summary Reports</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: EMR / CPT (accordion) -->
+        <div class="acc-section" id="acc-cpt">
+            <div class="acc-section-hdr" onclick="toggleAccSection('cpt')">
+                <div class="acc-section-hdr-left">
+                    <div class="acc-section-num">5</div>
+                    <div class="acc-section-title">EMR Configuration &mdash; Automated Billing</div>
+                </div>
+                <div class="acc-section-hdr-right">
+                    <span class="acc-badge" id="badge-cpt">None selected</span>
+                    <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="acc-section-body" id="body-cpt">
+                <p style="font-size:0.84rem; color:#495057; margin-bottom:16px;">Select the CPT codes to automate in your billing system. Items marked N/A do not apply.</p>
+                <div class="cpt-cards" id="cptCards"></div>
+                <div class="cpt-summary" id="cptSummary">
+                    <span>Total charges selected for automation</span>
+                    <span class="cpt-summary-count" id="cptCount">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: ATHENA EHR CONFIGURATION -->
+        <div class="acc-section" id="acc-athena">
+            <div class="acc-section-hdr" onclick="toggleAccSection('athena')">
+                <div class="acc-section-hdr-left">
+                    <div class="acc-section-num">6</div>
+                    <div class="acc-section-title">Athena EHR Configuration</div>
+                </div>
+                <div class="acc-section-hdr-right">
+                    <span class="acc-badge" style="color:#D97706;background:#FFFBF0;border-color:#F5D97A;">Required if using Athena</span>
+                    <svg class="acc-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="acc-section-body" id="body-athena" style="display:none;">
+                <p style="font-size:0.84rem;color:#495057;margin-bottom:16px;">Complete this section only if your practice uses <strong>athenahealth</strong> as your EHR. These settings control how PaceMate&reg; categorizes and delivers data within the Athena system.</p>
+                
+            <div class="athena-header">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                Athena Configuration
+            </div>
+            <div class="athena-body">
+                <div class="form-grid">
+                    <div class="field-group">
+                        <label>Document / Subclass</label>
+                        <div class="checkbox-grid checkbox-grid-2" style="margin-top:4px;">
+                            <label class="checkbox-card" onclick="toggleCard(this)" style="padding:10px 14px;">
+                                <input type="checkbox" name="athena_doc" value="imaging">
+                                <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                                <span class="checkbox-label">Imaging / Results</span>
+                            </label>
+                            <label class="checkbox-card" onclick="toggleCard(this)" style="padding:10px 14px;">
+                                <input type="checkbox" name="athena_doc" value="clinical">
+                                <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                                <span class="checkbox-label">Clinical Document</span>
+                            </label>
+                        </div>
+                        <div class="field-note" style="margin-top:8px;">These selections allow PaceMate&reg; to properly categorize your data within the Athena system.</div>
+                    </div>
+                    <div class="field-group">
+                        <label>Final Document Status</label>
+                        <div class="checkbox-grid checkbox-grid-2" style="margin-top:4px;">
+                            <label class="checkbox-card" onclick="toggleCard(this)" style="padding:10px 14px;">
+                                <input type="checkbox" name="athena_status" value="open">
+                                <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                                <span class="checkbox-label">Open</span>
+                            </label>
+                            <label class="checkbox-card" onclick="toggleCard(this)" style="padding:10px 14px;">
+                                <input type="checkbox" name="athena_status" value="closed">
+                                <div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+                                <span class="checkbox-label">Closed</span>
+                            </label>
+                        </div>
+                        <div class="field-note" style="margin-top:8px;"><strong>Open</strong> = review or finalization is still needed.<br><strong>Closed</strong> = the document is completed.</div>
+                    </div>
+                </div>
+
+                <div style="margin-top:20px; padding-top:20px; border-top:1px solid #E9ECEF;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                        <div style="font-weight:700; font-size:0.86rem; color:#212529;">Requester</div>
+                        <span style="font-size:0.72rem;color:#868E96;font-style:italic;">Auto-filled from Section 2</span>
+                    </div>
+                    <div class="form-grid">
+                        <div class="field-group">
+                            <label>Name</label>
+                            <input type="text" id="athenaName" placeholder="Auto-filled from Primary Contact">
+                        </div>
+                        <div class="field-group">
+                            <label>Title / Role</label>
+                            <input type="text" id="athenaTitle" placeholder="Auto-filled from Primary Contact">
+                        </div>
+                        <div class="field-group">
+                            <label>Telephone</label>
+                            <input type="text" id="athenaPhone" placeholder="Auto-filled from Primary Contact">
+                        </div>
+                        <div class="field-group">
+                            <label>Date</label>
+                            <input type="date" id="athenaDate">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            </div>
+        </div>
+
+    </div><!-- /form-body -->
+</div><!-- /form-wrapper -->
+
+<div style="max-width:940px;margin:0 auto;padding:0 20px;">
+<!-- ── PM STANDARD ACTION BAR ── -->
+<div class="pm-action-bar">
+  <div class="pm-action-left">
+    <button class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+      <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+      Save Progress
+    </button>
+    <button class="pm-pill pm-pill-clear" onclick="pmClearForm()">Clear Form</button>
+  </div>
+  <div class="pm-action-right">
+    <div class="pm-export-wrap" id="pmExportWrap">
+      <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Export &#9660;
+      </button>
+      <div class="pm-export-menu">
+        <button class="pm-export-item" onclick="pmExport('pdf')">
+          <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+          Export as PDF
+        </button>
+        <button class="pm-export-item" onclick="pmExport('excel')">
+          <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          Export as Excel
+        </button>
+        <button class="pm-export-item" onclick="pmExport('csv')">
+          <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+          Export as CSV
+        </button>
+      </div>
+    </div>
+    <button class="pm-pill pm-pill-submit" onclick="pmHandleSubmit()">
+      <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      Submit to PaceMate&#174;
+    </button>
+  </div>
+</div><!-- /pm-action-bar -->
+</div><!-- /action-bar-wrapper -->
+
+<div style="max-width:860px;margin:0 auto;padding:14px 40px;border-top:1px solid #D9D9D6;display:flex;align-items:center;justify-content:space-between;font-family:'Poppins',sans-serif;font-weight:300;font-size:10px;color:#8A8C90;">
+  <div>PaceMate<sup>&#174;</sup> <span style="color:#D9D9D6;margin:0 6px;">|</span> PaceMate.com</div>
+  <div><strong style="font-weight:600;color:#2D2E32;">Ambulatory Monitoring Integration</strong> <span style="color:#D9D9D6;margin:0 6px;">|</span> v2 <span style="color:#D9D9D6;margin:0 6px;">|</span> February 2026</div>
+</div>
+
+
+<script>
+/* =========================================================
+   ACCORDION SECTIONS
+   ========================================================= */
+function toggleAccSection(id) {
+    const hdr = document.querySelector(`#acc-${id} .acc-section-hdr`);
+    const body = document.getElementById(`body-${id}`);
+    const chevron = hdr.querySelector('.acc-chevron');
+    const isOpen = body.classList.contains('open');
+    hdr.classList.toggle('open', !isOpen);
+    body.classList.toggle('open', !isOpen);
+    chevron.classList.toggle('open', !isOpen);
+}
+
+function updateVendorBadge() {
+    const n = document.querySelectorAll('input[name="vendor"]:checked').length;
+    const el = document.getElementById('badge-vendors');
+    el.textContent = n > 0 ? `${n} selected` : 'None selected';
+    el.classList.toggle('has-data', n > 0);
+    updateProgress();
+}
+
+function updateResultsBadge() {
+    const n = document.querySelectorAll('input[name="results"]:checked').length;
+    const el = document.getElementById('badge-results');
+    el.textContent = n > 0 ? `${n} selected` : 'None selected';
+    el.classList.toggle('has-data', n > 0);
+}
+
+function updateCPTBadge() {
+    let total = 0;
+    CPT_DATA.forEach((_, i) => {
+        const b = document.getElementById('cptCardBody_' + i);
+        if (b) total += b.querySelectorAll('input[type="checkbox"]:checked').length;
+    });
+    const el = document.getElementById('badge-cpt');
+    el.textContent = total > 0 ? `${total} codes selected` : 'None selected';
+    el.classList.toggle('has-data', total > 0);
+}
+
+/* =========================================================
+   ATHENA TOGGLE
+   ========================================================= */
+let athenaActive = false;
+function toggleAthena() { toggleAccSection('athena'); }
+
+function syncAthenaContact() {
+    const name = document.getElementById('contactName')?.value || '';
+    const title = document.getElementById('contactTitle')?.value || '';
+    const phone = document.getElementById('contactPhone')?.value || '';
+    const an = document.getElementById('athenaName');
+    const at = document.getElementById('athenaTitle');
+    const ap = document.getElementById('athenaPhone');
+    if (an && !an.dataset.edited) an.value = name;
+    if (at && !at.dataset.edited) at.value = title;
+    if (ap && !ap.dataset.edited) ap.value = phone;
+}
+
+// Allow manual override without losing auto-sync on future edits
+document.addEventListener('DOMContentLoaded', () => {
+    ['athenaName','athenaTitle','athenaPhone'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => el.dataset.edited = 'true');
+    });
+});
+
+/* =========================================================
+   ZIP CODE LOOKUP
+   ========================================================= */
+function lookupZip(zip) {
+    if (!zip || zip.length < 5) return;
+    const clean = zip.replace(/\D/g, '').substring(0, 5);
+    if (clean.length < 5) return;
+    fetch(`https://api.zippopotam.us/us/${clean}`)
+        .then(r => { if (r.ok) return r.json(); throw new Error(); })
+        .then(data => {
+            if (data.places && data.places.length > 0) {
+                document.getElementById('cityField').value = data.places[0]['place name'];
+                document.getElementById('stateField').value = data.places[0]['state abbreviation'];
+                updateProgress();
+                showToast('City and state filled from zip code', 'success');
+            }
+        })
+        .catch(() => {});
+}
+
+/* =========================================================
+   CPT CARDS
+   ========================================================= */
+const CPT_DATA = [
+    { type: "Holter &mdash; Up to 48 Hours", codes: [
+        { category: "Hook-up", code: "93225", na: false },
+        { category: "Technical", code: "93226", na: false },
+        { category: "Professional", code: "93227", na: false },
+        { category: "Global", code: "93224", na: false }]},
+    { type: "Holter &mdash; >48 Hours up to 7 Days", codes: [
+        { category: "Hook-up", code: "93242", na: false },
+        { category: "Technical", code: "93243", na: false },
+        { category: "Professional", code: "93244", na: false },
+        { category: "Global", code: "93241", na: false }]},
+    { type: "Holter &mdash; >7 Days up to 15 Days", codes: [
+        { category: "Hook-up", code: "93246", na: false },
+        { category: "Technical", code: "93247", na: false },
+        { category: "Professional", code: "93248", na: false },
+        { category: "Global", code: "93245", na: false }]},
+    { type: "30 Day Event", codes: [
+        { category: "Hook-up", code: "93270", na: false },
+        { category: "Technical", code: "93271", na: false },
+        { category: "Professional", code: "93272", na: false },
+        { category: "Global", code: "93268", na: false }]},
+    { type: "MCT (Mobile Cardiac Telemetry)", codes: [
+        { category: "Hook-up", code: "N/A", na: true },
+        { category: "Technical", code: "93229", na: false },
+        { category: "Professional", code: "93228", na: false },
+        { category: "Global", code: "N/A", na: true }]}
+];
+
+function buildCPTCards() {
+    const container = document.getElementById('cptCards');
+    let html = '';
+    CPT_DATA.forEach((monitor, idx) => {
+        html += `<div class="cpt-card" id="cptCard_${idx}">`;
+        html += `<div class="cpt-card-header" onclick="toggleCPTCard(${idx})">`;
+        html += `<div class="cpt-card-title"><span class="monitor-icon"></span>${monitor.type}</div>`;
+        html += `<span class="cpt-card-count none" id="cptCardCount_${idx}">0 selected</span>`;
+        html += `</div><div class="cpt-card-body" id="cptCardBody_${idx}">`;
+        monitor.codes.forEach((code) => {
+            const naClass = code.na ? ' na' : '';
+            const click = code.na ? '' : ` onclick="toggleCPTItem(this); updateCPTCount(${idx}); updateCPTBadge(); updateProgress();"`;
+            html += `<label class="cpt-item${naClass}"${click}>`;
+            html += `<input type="checkbox" name="cpt_${idx}" value="${code.code}"${code.na ? ' disabled' : ''}>`;
+            html += `<div class="cpt-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>`;
+            html += `<div class="cpt-item-info"><div class="cpt-item-category">${code.category}</div><div class="cpt-item-code">${code.code}</div></div></label>`;
+        });
+        html += `</div></div>`;
+    });
+    container.innerHTML = html;
+}
+
+function toggleCard(el) {
+    const cb = el.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    el.classList.toggle('checked', cb.checked);
+    updateProgress();
+}
+
+function toggleOtherVendor() {
+    const checked = document.getElementById('otherVendorCheck').checked;
+    document.getElementById('otherVendorField').classList.toggle('show', checked);
+}
+
+function toggleCPTItem(el) {
+    const cb = el.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    el.classList.toggle('checked', cb.checked);
+}
+
+function updateCPTCount(cardIdx) {
+    const body = document.getElementById('cptCardBody_' + cardIdx);
+    const checked = body.querySelectorAll('input[type="checkbox"]:checked').length;
+    const countEl = document.getElementById('cptCardCount_' + cardIdx);
+    countEl.textContent = checked + ' selected';
+    countEl.className = 'cpt-card-count ' + (checked > 0 ? 'some' : 'none');
+    document.getElementById('cptCard_' + cardIdx).classList.toggle('has-selections', checked > 0);
+    let total = 0;
+    CPT_DATA.forEach((_, i) => {
+        const b = document.getElementById('cptCardBody_' + i);
+        total += b.querySelectorAll('input[type="checkbox"]:checked').length;
+    });
+    document.getElementById('cptCount').textContent = total;
+}
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+function updateProgress() {
+    const textInputs = document.querySelectorAll('input[data-track]');
+    let textFilled = 0;
+    textInputs.forEach(f => { if (f.value.trim()) textFilled++; });
+    const vendorChecked = document.querySelectorAll('input[name="vendor"]:checked').length > 0 ? 1 : 0;
+    const resultsChecked = document.querySelectorAll('input[name="results"]:checked').length > 0 ? 1 : 0;
+    let cptChecked = 0;
+    CPT_DATA.forEach((_, i) => {
+        const b = document.getElementById('cptCardBody_' + i);
+        if (b && b.querySelectorAll('input[type="checkbox"]:checked').length > 0) cptChecked++;
+    });
+    const textPct = textInputs.length > 0 ? (textFilled / textInputs.length) * 40 : 40;
+    const pct = Math.round(textPct + (vendorChecked * 20) + (resultsChecked * 15) + (cptChecked > 0 ? 25 : 0));
+    var _pf=document.getElementById('progressFill');if(_pf)_pf.style.width = pct + '%';
+    var _pl=document.getElementById('progressLabel');if(_pl)_pl.textContent = pct + '% Complete';
+}
+
+/* =========================================================
+   SAVE / CLEAR / TOAST
+   ========================================================= */
+function saveForm() {
+    try {
+        const data = {};
+        document.querySelectorAll('input[id]').forEach(inp => { data[inp.id] = inp.value; });
+        // Checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+            if (cb.name) data['cb_' + cb.name + '_' + cb.value] = cb.checked;
+        });
+        data['_athenaActive'] = athenaActive;
+        localStorage.setItem('ambIntFormSave', JSON.stringify(data));
+        showToast('Progress saved successfully', 'success');
+    } catch(e) {
+        showToast('Save unavailable — use Print / Save PDF', 'warning');
+    }
+}
+
+function clearForm() {
+    if (!confirm('Clear all form data? This cannot be undone.')) return;
+    document.querySelectorAll('input[type="text"], input[type="email"], input[type="date"]').forEach(f => f.value = '');
+    document.querySelectorAll('.checkbox-card.checked').forEach(el => {
+        el.classList.remove('checked');
+        el.querySelector('input').checked = false;
+    });
+    document.querySelectorAll('.cpt-item.checked').forEach(el => {
+        el.classList.remove('checked');
+        el.querySelector('input').checked = false;
+    });
+    document.getElementById('otherVendorField').classList.remove('show');
+    if (athenaActive) toggleAthena();
+    CPT_DATA.forEach((_, i) => updateCPTCount(i));
+    updateVendorBadge(); updateResultsBadge(); updateCPTBadge(); updateProgress();
+    showToast('Form cleared', 'warning');
+}
+
+function showToast(msg, type) {
+  clearTimeout(window._pmToastTimer);
+  var ex = document.getElementById('_pmToast'); if(ex) ex.parentNode.removeChild(ex);
+  var t = document.createElement('div'); t.id = '_pmToast'; t.textContent = msg;
+  var bg = type==='error'?'#DC3545':type==='success'?'#00B140':type==='warning'?'#F59E0B':'#212529';
+  t.setAttribute('style','position:fixed;top:20px;left:50%;transform:translateX(-50%);background:'+bg+';color:white;padding:11px 24px;border-radius:24px;font-family:Poppins,sans-serif;font-size:13px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:999999;white-space:nowrap;pointer-events:none;');
+  document.body.appendChild(t);
+  window._pmToastTimer = setTimeout(function(){ var el=document.getElementById('_pmToast'); if(el) el.parentNode.removeChild(el); }, type==='error'?5000:3000);
+}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+document.addEventListener('DOMContentLoaded', () => {
+    buildCPTCards();
+    updateProgress();
+    ['athenaName','athenaTitle','athenaPhone'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('input', () => el.dataset.edited = 'true');
+    });
+});
+</script>
+
+
+<!-- PaceMate Back Button -->
+<style>
+.pm-back-btn{
+  position:fixed;top:16px;left:16px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px 8px 12px;
+  background:#fff;
+  border:1.5px solid #DEE2E6;
+  border-radius:20px;
+  font-family:'Roboto',sans-serif;
+  font-size:0.78rem;font-weight:600;
+  color:#495057;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.09);
+  transition:all 0.15s;
+  line-height:1;
+}
+.pm-back-btn:hover{
+  background:#EA0044;color:#fff;
+  border-color:#EA0044;
+  box-shadow:0 3px 12px rgba(234,0,68,0.25);
+  transform:translateX(-2px);
+}
+.pm-back-btn svg{transition:transform 0.15s;}
+.pm-back-btn:hover svg{transform:translateX(-2px);}
+@media print{.pm-back-btn{display:none!important}}
+
+/* ── PM STANDARD ACTION BAR ─────────────────────────── */
+.pm-action-bar{display:flex;align-items:center;padding:16px 0 8px;border-top:1px solid #E8E8E6;margin-top:24px;flex-wrap:nowrap;width:100%;}
+.pm-action-left{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.pm-action-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0;}
+.pm-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:20px;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s;border:none;outline:none;white-space:nowrap;line-height:1;}
+.pm-pill svg{width:14px;height:14px;flex-shrink:0;fill:currentColor;}
+.pm-pill-save{background:white;color:#2D2E32;border:1.5px solid #D9D9D6;}
+.pm-pill-save:hover{border-color:#626469;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.pm-pill-clear{background:white;color:#2D2E32;border:1.5px solid #D9D9D6;}
+.pm-pill-clear:hover{border-color:#626469;}
+.pm-export-wrap{position:relative;}
+.pm-pill-export{background:white;color:#2D2E32;border:1.5px solid #D9D9D6;}
+.pm-pill-export:hover{border-color:#626469;}
+.pm-export-menu{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:white;border:1.5px solid #E8E8E6;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,0.1);min-width:180px;z-index:200;overflow:hidden;}
+.pm-export-wrap.open .pm-export-menu{display:block;}
+.pm-export-item{display:flex;align-items:center;gap:10px;padding:10px 14px;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:600;color:#2D2E32;cursor:pointer;transition:background 0.1s;border:none;background:none;width:100%;text-align:left;}
+.pm-export-item:hover{background:#FAFAFA;}
+.pm-export-item+.pm-export-item{border-top:1px solid #F0F0EE;}
+.pm-export-item svg{width:15px;height:15px;flex-shrink:0;}
+.pm-pill-submit{background:#EA0044;color:white;}
+.pm-pill-submit:hover{background:#c8003b;box-shadow:0 2px 8px rgba(234,0,68,0.25);}
+.pm-autosave{font-size:0.72rem;color:#ADB5BD;display:flex;align-items:center;gap:5px;}
+.pm-autosave.active{color:#2B8A3E;}
+.pm-autosave-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+@media print{.pm-action-bar{display:none!important;}}
+@media(max-width:600px){.pm-action-bar{gap:8px;}.pm-export-wrap{margin-left:0;}.pm-pill-submit{width:100%;justify-content:center;}}
+</style>
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 4L6 8l4 4"/>
+  </svg>
+  Back
+</button>
+
+
+<script>
+/* PM STANDARD ACTION BAR */
+var PM_WORKSTREAM='csm',PM_STORAGE_KEY='form_pacemate_amb_integration',PM_FORM_ID='ambulatory-integration',PM_FORM_NAME='PaceMate Ambulatory Integration Form',PM_FORM_FILE='form-pacemate-amb-integration-v2__1_.html';
+function pmGetData(){var d={};document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name||'field';if(el.type==='radio'){if(el.checked)d[el.name]=el.value;}else if(el.type==='checkbox'){if(el.checked)d[k]=(d[k]?d[k]+', ':''+(el.value||'checked'));}else if(el.value){d[k]=el.value;}});return d;}
+function pmSave(){try{localStorage.setItem(PM_STORAGE_KEY,JSON.stringify(pmGetData()));}catch(e){}}
+function pmClearForm(){if(!confirm('Clear all form data? This cannot be undone.'))return;document.querySelectorAll('input[type="text"],input[type="email"],input[type="tel"],input[type="date"],input[type="number"]').forEach(function(el){el.value='';});document.querySelectorAll('input[type="checkbox"],input[type="radio"]').forEach(function(el){el.checked=false;});document.querySelectorAll('.checkbox-card.checked,.checked').forEach(function(el){el.classList.remove('checked');});localStorage.removeItem(PM_STORAGE_KEY);showToast('Form cleared','success');}
+function pmLoad(){try{if(localStorage.getItem(PM_STORAGE_KEY+'_version')!=='v2-brand-rebuild'){localStorage.removeItem(PM_STORAGE_KEY);localStorage.setItem(PM_STORAGE_KEY+'_version','v2-brand-rebuild');}var r=localStorage.getItem(PM_STORAGE_KEY);if(!r)return;var s=JSON.parse(r);document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name;if(!k||!(k in s))return;if(el.type==='radio'){el.checked=(s[el.name]===el.value);}else if(el.type==='checkbox'){el.checked=!!(s[k]&&s[k].indexOf(el.value||'checked')>-1);}else{el.value=s[k];}});}catch(e){}}
+function pmSetAutosave(msg){var el=document.getElementById('pmAutosave');if(!el)return;var t=new Date();var ts=t.getHours()+':'+String(t.getMinutes()).padStart(2,'0');el.innerHTML='<span class="pm-autosave-dot"></span>'+(msg||('Auto-saved at '+ts));el.classList.add('active');setTimeout(function(){el.classList.remove('active');},3000);}
+function pmSaveProgress(){pmSave();pmSetAutosave('Saved');if(typeof showToast==='function')showToast('Progress saved!','success');}
+function pmToggleExport(e){e.stopPropagation();document.getElementById('pmExportWrap').classList.toggle('open');}
+document.addEventListener('click',function(){var w=document.getElementById('pmExportWrap');if(w)w.classList.remove('open');});
+function pmExport(t){document.getElementById('pmExportWrap').classList.remove('open');if(t==='pdf')pmExportPDF();else if(t==='excel')pmExportExcel();else if(t==='csv')pmExportCSV();}
+function pmExportPDF(){if(typeof showToast==='function')showToast('Generating PDF...','info');var el=document.querySelector('.form-body,.form-wrapper,.pdf-form,.form-card,.main-content,form')||document.body;html2canvas(el,{scale:2,useCORS:true,logging:false}).then(function(canvas){var img=canvas.toDataURL('image/png');var pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),iw=pw,ih=(canvas.height*pw)/canvas.width,y=0;while(y<ih){if(y>0)pdf.addPage();pdf.addImage(img,'PNG',0,-y,iw,ih);y+=ph;}pdf.save(PM_FORM_NAME.replace(/\s+/g,'-')+'.pdf');if(typeof showToast==='function')showToast('PDF downloaded!','success');}).catch(function(){if(typeof showToast==='function')showToast('PDF failed','error');});}
+function pmExportExcel(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:30},{wch:50}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Form Data');XLSX.writeFile(wb,PM_FORM_NAME.replace(/\s+/g,'-')+'.xlsx');if(typeof showToast==='function')showToast('Excel downloaded!','success');}
+function pmExportCSV(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var csv=rows.map(function(r){return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(',')}).join('\n');var blob=new Blob([csv],{type:'text/csv'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=PM_FORM_NAME.replace(/\s+/g,'-')+'.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},5000);if(typeof showToast==='function')showToast('CSV downloaded!','success');}
+function pmHandleSubmit(){
+  // Validate practice name (Section 1)
+  var pname = document.getElementById('practiceName');
+  if(!pname || !pname.value.trim()){
+    showToast('Please enter a practice name in Section 1 before submitting','error');
+    if(pname){pname.style.borderColor='#EA0044';pname.style.boxShadow='0 0 0 3px rgba(234,0,68,0.15)';pname.addEventListener('input',function(){pname.style.borderColor='';pname.style.boxShadow='';},{once:true});}
+    setTimeout(function(){if(pname)pname.scrollIntoView({behavior:'smooth',block:'center'});},100);
+    return;
+  }
+  // Validate contact name (Section 2)
+  var cname = document.getElementById('contactName');
+  if(!cname || !cname.value.trim()){
+    showToast('Please enter a primary contact name in Section 2 before submitting','error');
+    if(cname){cname.style.borderColor='#EA0044';cname.style.boxShadow='0 0 0 3px rgba(234,0,68,0.15)';cname.addEventListener('input',function(){cname.style.borderColor='';cname.style.boxShadow='';},{once:true});}
+    setTimeout(function(){if(cname)cname.scrollIntoView({behavior:'smooth',block:'center'});},100);
+    return;
+  }
+  // Validate vendor selection (Section 3)
+  if(!document.querySelector('input[name="vendor"]:checked')){
+    showToast('Please select at least one vendor in Section 3 before submitting','error');
+    var sec3 = document.getElementById('acc-vendors');
+    if(sec3 && !sec3.classList.contains('open')) toggleAccSection('vendors');
+    return;
+  }
+  // Validate results selection (Section 4)
+  if(!document.querySelector('input[name="results"]:checked')){
+    showToast('Please select at least one result type in Section 4 before submitting','error');
+    var sec4 = document.getElementById('acc-results');
+    if(sec4 && !sec4.classList.contains('open')) toggleAccSection('results');
+    return;
+  }
+  pmSubmit();
+}
+function pmSubmit(){pmSave();var WS_KEYS={'csm':'csm_inbox_submissions','integration':'integration_inbox_submissions','clinical':'clinical_inbox_submissions','patientsvcs':'patientsvcs_inbox_submissions','support':'support_inbox_submissions'};var key=WS_KEYS[PM_WORKSTREAM];if(!key){var _btn=document.querySelector('.pm-pill-submit');if(_btn){_btn.textContent='\u2713 Submitted';_btn.disabled=true;_btn.style.opacity='0.6';}showToast('Submitted to PaceMate\u00AE!','success');return;}var data=[];try{data=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}var now=Date.now();var existing=data.find(function(e){return e.id===PM_FORM_ID;});if(existing){existing.history[existing.history.length-1].statusAtReview=existing.status;existing.history.push({submittedAt:now,statusAtReview:null});existing.status='submitted';existing.glowStart=now;}else{data.push({id:PM_FORM_ID,formName:PM_FORM_NAME,formFile:PM_FORM_FILE,status:'submitted',glowStart:now,history:[{submittedAt:now,statusAtReview:null}]});}try{localStorage.setItem(key,JSON.stringify(data));}catch(e){}var _btn2=document.querySelector('.pm-pill-submit');if(_btn2){_btn2.textContent='\u2713 Submitted';_btn2.disabled=true;_btn2.style.opacity='0.6';}showToast('Submitted to PaceMate\u00AE!','success');}
+setInterval(function(){pmSave();pmSetAutosave();},30000);
+document.addEventListener('DOMContentLoaded',function(){pmLoad();});
+</script>
+</body>
+</html>

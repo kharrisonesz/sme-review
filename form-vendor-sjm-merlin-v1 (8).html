@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merlin.net Patient Care Network (PCN) - EHR Integration Interest Form</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--sjm-green:#00785A;--sjm-green-dark:#005A42;--sjm-gray-dark:#333;--sjm-gray-med:#666;--sjm-gray-lt:#999;--sjm-border:#CCC;--sjm-bg:#F5F5F5;--sjm-red:#CC0000;--font:'Segoe UI','Helvetica Neue',Arial,sans-serif}
+html{font-size:16px}
+body{font-family:var(--font);color:var(--sjm-gray-dark);background:var(--sjm-bg);line-height:1.4;-webkit-font-smoothing:antialiased}
+@media print{body{background:white}.form-container{box-shadow:none;margin:0;max-width:100%}.no-print{display:none!important}.page-break{page-break-before:always}input{border:none!important;border-bottom:1px solid #999!important;background:transparent!important}}
+.form-container{max-width:850px;margin:20px auto;background:white;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
+
+
+
+
+.form-header{display:flex;justify-content:space-between;align-items:flex-start;padding:30px 40px 20px}
+.sjm-logo img{height:50px;width:auto}
+.form-title{text-align:right;max-width:400px}
+.form-title h1{font-size:1.05rem;font-weight:700;color:var(--sjm-gray-dark);line-height:1.3}
+.form-body{padding:0 40px 30px}
+.instructions{margin-bottom:12px}
+.instructions h3{font-size:0.85rem;font-weight:700;text-decoration:underline;margin-bottom:6px}
+.instructions ol{margin-left:24px;font-size:0.82rem;line-height:1.6}
+.instructions ol li{margin-bottom:3px}
+.instructions a{color:var(--sjm-green)}
+.important-note{background:#FFF8E1;border:1px solid #E6D28C;border-left:4px solid #D4A017;padding:10px 14px;margin-bottom:20px;font-size:0.75rem;font-style:italic;line-height:1.4}
+.important-note strong{color:var(--sjm-red);font-style:italic}
+.important-note a{color:var(--sjm-green)}
+.section-divider{border:none;border-top:2px solid var(--sjm-gray-dark);margin:20px 0 16px}
+.section-header{font-size:0.95rem;font-weight:700;margin-bottom:12px}
+.section-header .note{font-weight:400;font-style:italic;font-size:0.82rem;color:var(--sjm-gray-med)}
+.ext-note{float:right;font-size:0.72rem;font-weight:400;font-style:italic;color:var(--sjm-gray-med)}
+
+/* Portal Selection */
+.portal-selection{margin-bottom:20px;padding:12px 16px;background:#F8FBF9;border:1px solid #D6E8DF;border-radius:6px}
+.portal-selection h3{font-size:0.9rem;font-weight:700;margin-bottom:8px;color:var(--sjm-green)}
+.portal-selection .note{font-size:0.78rem;font-style:italic;color:var(--sjm-gray-med);margin-bottom:8px}
+.portal-checkboxes{display:flex;gap:30px;flex-wrap:wrap}
+.portal-checkboxes label{display:flex;align-items:center;gap:6px;font-size:0.85rem;cursor:pointer}
+.portal-checkboxes input{width:16px;height:16px;accent-color:var(--sjm-green)}
+
+.field-row{display:flex;gap:16px;margin-bottom:10px;align-items:flex-end}
+.field-row.full{display:block}
+.field-group{flex:1;display:flex;flex-direction:column}
+.field-group label{font-size:0.8rem;font-weight:500;margin-bottom:3px;white-space:nowrap}
+.field-group input{width:100%;padding:6px 8px;font-size:0.82rem;font-family:var(--font);border:none;border-bottom:1px solid var(--sjm-border);background:transparent;outline:none;transition:border-color 0.2s}
+.field-group input:focus{border-bottom-color:var(--sjm-green);background:#F8FBF9}
+.field-group textarea{width:100%;padding:6px 8px;font-size:0.82rem;font-family:var(--font);border:1px solid var(--sjm-border);border-radius:3px;background:transparent;outline:none;resize:vertical;min-height:50px}
+.field-group textarea:focus{border-color:var(--sjm-green)}
+.contact-subsection{margin-bottom:16px}
+.contact-subsection h4{font-size:0.85rem;font-weight:700;margin-bottom:8px}
+.contact-block{margin-bottom:6px;padding-bottom:6px}
+.contact-block+.contact-block{border-top:1px dotted #E0E0E0;padding-top:6px}
+
+/* Vendor Checkbox Grid */
+.checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 30px;margin-bottom:16px}
+.checkbox-grid label{display:flex;align-items:center;gap:6px;font-size:0.82rem;cursor:pointer;padding:2px 0}
+.checkbox-grid input[type="checkbox"]{width:14px;height:14px;accent-color:var(--sjm-green)}
+.other-specify{display:flex;align-items:center;gap:8px}
+.other-specify input[type="text"]{flex:1;border:none;border-bottom:1px solid var(--sjm-border);padding:4px 6px;font-size:0.82rem;font-family:var(--font);outline:none}
+.contractor-row{display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.radio-group{display:flex;align-items:center;gap:12px;font-size:0.82rem}
+.radio-group label{display:flex;align-items:center;gap:4px;cursor:pointer}
+.radio-group input{accent-color:var(--sjm-green)}
+
+.signature-block{margin-top:20px}
+.signature-row{display:flex;gap:40px;align-items:flex-end;margin-top:10px}
+.signature-field{flex:1}
+.signature-field .sig-line{border-bottom:2px solid var(--sjm-gray-dark);height:40px;margin-bottom:4px}
+.signature-field .sig-label{font-size:0.78rem;font-weight:600}
+.date-field{flex:0 0 200px}
+.date-field input{width:100%;padding:6px 8px;font-size:0.82rem;font-family:var(--font);border:none;border-bottom:2px solid var(--sjm-gray-dark);background:transparent;outline:none}
+.date-field input:focus{border-bottom-color:var(--sjm-green);background:#F8FBF9}
+.date-field .sig-label{font-size:0.78rem;font-weight:600;margin-top:4px}
+
+/* CTA Section */
+.cta-section{margin-top:24px;padding:16px;background:#F8FBF9;border:1px solid #D6E8DF;border-radius:6px;text-align:center}
+.cta-section h3{font-size:1rem;font-weight:700;color:var(--sjm-green);margin-bottom:4px}
+.cta-section p{font-size:0.85rem}
+.cta-section a{color:var(--sjm-green);font-weight:700}
+
+/* Legal */
+.legal-text{margin-top:20px;font-size:0.68rem;color:var(--sjm-gray-lt);line-height:1.5}
+.legal-text p{margin-bottom:6px}
+
+/* Read-only prefilled fields */
+input[readonly]{background:#F5F5F5!important;color:#555;cursor:default;border-bottom-style:dashed!important;}
+
+/* Wet Signature Modal */
+.wet-sig-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:9999;align-items:center;justify-content:center;}
+.wet-sig-overlay.active{display:flex;}
+.wet-sig-modal{background:#fff;border-radius:12px;max-width:480px;width:90%;padding:32px;box-shadow:0 12px 48px rgba(0,0,0,0.22);text-align:center;position:relative;}
+.wet-sig-icon{width:52px;height:52px;background:#FFF3CD;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;}
+.wet-sig-icon svg{width:26px;height:26px;fill:#D4A017;}
+.wet-sig-modal h2{font-size:1.05rem;font-weight:700;color:#333;margin-bottom:10px;}
+.wet-sig-modal p{font-size:0.85rem;color:#555;line-height:1.6;margin-bottom:8px;}
+.wet-sig-modal p strong{color:#CC0000;}
+.wet-sig-modal .steps{background:#F8F9FA;border-radius:8px;padding:14px 18px;text-align:left;margin:14px 0;font-size:0.82rem;color:#444;line-height:1.8;}
+.wet-sig-modal .steps ol{margin-left:18px;}
+.wet-sig-modal-btns{display:flex;gap:10px;justify-content:center;margin-top:20px;}
+.wet-sig-btn-print{background:#00785A;color:#fff;border:none;padding:10px 24px;border-radius:6px;font-size:0.85rem;font-weight:600;cursor:pointer;}
+.wet-sig-btn-print:hover{background:#005A42;}
+.wet-sig-btn-close{background:#fff;color:#555;border:1.5px solid #CCC;padding:10px 24px;border-radius:6px;font-size:0.85rem;font-weight:600;cursor:pointer;}
+.wet-sig-btn-close:hover{background:#F5F5F5;}
+@media print{.wet-sig-overlay{display:none!important;}}
+.page-break{border-top:3px solid var(--sjm-green)}
+.form-actions{display:flex;justify-content:center;gap:12px;padding:20px 40px;background:var(--sjm-bg);border-top:1px solid #E0E0E0}
+.btn{padding:10px 24px;font-size:0.85rem;font-family:var(--font);font-weight:600;border:none;border-radius:4px;cursor:pointer;transition:all 0.2s}
+.btn-primary{background:var(--sjm-green);color:white}.btn-primary:hover{background:var(--sjm-green-dark)}
+.btn-secondary{background:white;color:var(--sjm-green);border:1px solid var(--sjm-green)}.btn-secondary:hover{background:#F0F8F4}
+.btn-danger{background:white;color:var(--sjm-red);border:1px solid var(--sjm-red)}.btn-danger:hover{background:#FFF5F5}
+.toast{position:fixed;bottom:30px;right:30px;padding:14px 24px;background:var(--sjm-green);color:white;border-radius:6px;font-size:0.85rem;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,0.2);transform:translateY(100px);opacity:0;transition:all 0.3s;z-index:9999}.toast.show{transform:translateY(0);opacity:1}.toast.success{background:#28A745}
+@media(max-width:768px){.form-container{margin:10px}.form-header{flex-direction:column;gap:12px;padding:20px}.form-title{text-align:left;max-width:100%}.form-body{padding:0 20px 20px}.field-row{flex-direction:column;gap:8px}.checkbox-grid{grid-template-columns:1fr}.contractor-row{flex-direction:column;align-items:flex-start}.signature-row{flex-direction:column;gap:16px}.date-field{flex:1;width:100%}.portal-checkboxes{flex-direction:column;gap:8px}.form-actions{flex-direction:column;padding:15px 20px}.btn{width:100%;text-align:center}}
+
+
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+.pm-back-btn{
+  position:fixed;top:16px;left:16px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px 8px 12px;
+  background:#fff;
+  border:1.5px solid #DEE2E6;
+  border-radius:20px;
+  font-family:'DM Sans',sans-serif;
+  font-size:0.78rem;font-weight:600;
+  color:#495057;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.09);
+  transition:all 0.15s;
+  line-height:1;
+}
+.pm-back-btn:hover{
+  background:#EA0044;color:#fff;
+  border-color:#EA0044;
+  box-shadow:0 3px 12px rgba(200,16,46,0.25);
+  transform:translateX(-2px);
+}
+.pm-back-btn svg{transition:transform 0.15s;}
+.pm-back-btn:hover svg{transform:translateX(-2px);}
+@media print{.pm-back-btn{display:none!important}}
+
+/* ── PM STANDARD ACTION BAR ─────────────────────────── */
+.pm-action-bar{display:flex;align-items:center;gap:10px;padding:20px 0 8px;border-top:1px solid #E9ECEF;margin-top:24px;flex-wrap:wrap;}
+.pm-pill{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.18s;border:none;outline:none;white-space:nowrap;line-height:1;}
+.pm-pill svg{width:14px;height:14px;flex-shrink:0;fill:currentColor;}
+.pm-pill-save{background:white;color:#495057;border:1.5px solid #DEE2E6;}
+.pm-pill-save:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529;}
+.pm-export-wrap{position:relative;margin-left:auto;}
+.pm-pill-export{background:white;color:#495057;border:1.5px solid #DEE2E6;}
+.pm-pill-export:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529;}
+.pm-chevron{width:11px!important;height:11px!important;transition:transform 0.18s;margin-left:1px;}
+.pm-export-wrap.open .pm-pill-export{border-color:#ADB5BD;background:#F8F9FA;}
+.pm-export-wrap.open .pm-chevron{transform:rotate(180deg);}
+.pm-export-menu{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:white;border:1.5px solid #E9ECEF;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.12);min-width:190px;z-index:200;overflow:hidden;}
+.pm-export-wrap.open .pm-export-menu{display:block;}
+.pm-export-item{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:0.82rem;font-weight:500;color:#495057;cursor:pointer;transition:background 0.12s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif;}
+.pm-export-item:hover{background:#F8F9FA;color:#212529;}
+.pm-export-item+.pm-export-item{border-top:1px solid #F1F3F5;}
+.pm-export-item svg{width:15px;height:15px;flex-shrink:0;}
+.pm-pill-submit{background:#EA0044;color:white;box-shadow:0 3px 12px rgba(234,0,68,0.22);}
+.pm-pill-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,16,46,0.35);}
+.pm-autosave{font-size:0.72rem;color:#ADB5BD;display:flex;align-items:center;gap:5px;}
+.pm-autosave.active{color:#2B8A3E;}
+.pm-autosave-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+@media print{.pm-action-bar{display:none!important;}}
+@media(max-width:600px){.pm-action-bar{gap:8px;}.pm-export-wrap{margin-left:0;}.pm-pill-submit{width:100%;justify-content:center;}}
+</style>
+</head>
+<body>
+<div class="form-container">
+    <!-- PAGE 1 -->
+    <div class="form-header" style="position:relative;">
+
+
+        <div class="sjm-logo"><img src="data:image/png;base64,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" alt="St. Jude Medical"></div>
+        <div class="form-title"><h1>Merlin.net&trade; Patient Care Network (PCN)<br>Electronic Health Record (EHR) Integration Interest Form</h1></div>
+    </div>
+    <div class="form-body">
+        <div class="instructions">
+            <h3>Instructions:</h3>
+            <ol>
+                <li>Complete all applicable sections of the form.</li>
+                <li>Use a separate interest form for each Merlin.net&trade; PCN account.</li>
+                <li>Ensure that the interest form is signed by an Administrator user from the clinic or hospital.</li>
+                <li>Submit the completed form to <a href="/cdn-cgi/l/email-protection#f0bd95829c999eb5b8a2b0839a9dde939f9d"><span class="__cf_email__" data-cfemail="a9e4ccdbc5c0c7ece1fbe9dac3c487cac6c4">[email&#160;protected]</span></a>.</li>
+            </ol>
+        </div>
+        <div class="important-note">
+            <strong>Important Note:</strong> The latest version of Adobe&trade; Reader software is required to save this PDF with entered data. The latest version of Adobe Reader is available at: <a href="https://get.adobe.com/reader/">https://get.adobe.com/reader/</a>
+        </div>
+        <div class="portal-selection">
+            <h3>Merlin.net&trade; PCN Portal(s) to be integrated <span style="font-weight:400;font-style:italic;font-size:0.82rem;color:var(--sjm-gray-med)">(please select all that apply):</span></h3>
+            <div class="portal-checkboxes">
+                <label><input type="checkbox" name="portal_arrhythmia" checked> Arrhythmia &amp; Device Management</label>
+                <label><input type="checkbox" name="portal_hf"> Heart Failure Management</label>
+            </div>
+        </div>
+        <h3 class="section-header">Clinic Information <span class="note">(must match information in Merlin.net&trade; PCN)</span></h3>
+        <div class="field-row full"><div class="field-group"><label>Merlin.net&trade; PCN User ID or Username:</label><input type="text" name="merlin_user_id" data-required="true"></div></div>
+        <div class="field-row full"><div class="field-group"><label>Name of Clinic, Hospital or Group:</label><input type="text" name="clinic_name" data-required="true"></div></div>
+        <div class="field-row full"><div class="field-group"><label>Street Address:</label><input type="text" name="street_address"></div></div>
+        <div class="field-row"><div class="field-group"><label>Zip / Postal Code:</label><input type="text" name="zip_code" placeholder="00000"></div><div class="field-group"><label>Country:</label><input type="text" name="country"></div></div>
+        <div class="field-row"><div class="field-group"><label>City:</label><input type="text" name="city" placeholder="Auto-populated from zip"></div><div class="field-group"><label>State:</label><input type="text" name="state" placeholder="Auto-populated from zip"></div></div>
+        <div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="clinic_phone"></div><div class="field-group"><label>Website URL:</label><input type="url" name="clinic_url"></div></div>
+        <div class="contact-subsection"><h4>Clinician Contact(s):</h4>
+            <div class="contact-block"><div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="clin1_name"></div><div class="field-group"><label>Title or Role:</label><input type="text" name="clin1_role"></div></div><div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="clin1_phone"></div><div class="field-group"><label>E-mail:</label><input type="email" name="clin1_email"></div></div></div>
+            <div class="contact-block"><div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="clin2_name"></div><div class="field-group"><label>Title or Role:</label><input type="text" name="clin2_role"></div></div><div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="clin2_phone"></div><div class="field-group"><label>E-mail:</label><input type="email" name="clin2_email"></div></div></div>
+            <div class="contact-block"><div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="clin3_name"></div><div class="field-group"><label>Title or Role:</label><input type="text" name="clin3_role"></div></div><div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="clin3_phone"></div><div class="field-group"><label>E-mail:</label><input type="email" name="clin3_email"></div></div></div>
+        </div>
+        <div class="contact-subsection"><h4>Clinic IT Contact(s):</h4>
+            <div class="contact-block"><div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="it1_name"></div><div class="field-group"><label>Title or Role:</label><input type="text" name="it1_role"></div></div><div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="it1_phone"></div><div class="field-group"><label>E-mail:</label><input type="email" name="it1_email"></div></div></div>
+            <div class="contact-block"><div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="it2_name"></div><div class="field-group"><label>Title or Role:</label><input type="text" name="it2_role"></div></div><div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="it2_phone"></div><div class="field-group"><label>E-mail:</label><input type="email" name="it2_email"></div></div></div>
+        </div>
+        <div class="contact-subsection"><h4>St. Jude Medical Field Representative(s)</h4>
+            <div class="contact-block"><div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="sjm_rep1_name"></div><div class="field-group"><label>Title or Role:</label><input type="text" name="sjm_rep1_role"></div></div><div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="sjm_rep1_phone"></div><div class="field-group"><label>E-mail:</label><input type="email" name="sjm_rep1_email"></div></div></div>
+            <div class="contact-block"><div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="sjm_rep2_name"></div><div class="field-group"><label>Title or Role:</label><input type="text" name="sjm_rep2_role"></div></div><div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="sjm_rep2_phone"></div><div class="field-group"><label>E-mail:</label><input type="email" name="sjm_rep2_email"></div></div></div>
+        </div>
+    </div>
+    <div class="page-footer"><span>Page 1 of 2</span><span style="font-style:italic">(Continue on next page)</span></div>
+    <!-- PAGE 2 -->
+    <div class="page-break"></div>
+    <div class="form-body">
+        <h3 class="section-header" style="margin-top:20px">Vendor Information</h3>
+        <p style="font-size:0.82rem;margin-bottom:12px">Please indicate the name of your EMR/EHR/integration/device management vendor:</p>
+        <div class="checkbox-grid">
+            <label><input type="checkbox" name="v_allscripts"> Allscripts</label><label><input type="checkbox" name="v_healthland"> Healthland</label>
+            <label><input type="checkbox" name="v_amazingcharts"> Amazing Charts</label><label><input type="checkbox" name="v_mckesson"> McKesson</label>
+            <label><input type="checkbox" name="v_athena"> athenahealth</label><label><input type="checkbox" name="v_meditab"> Meditab</label>
+            <label><input type="checkbox" name="v_pacemate" checked> PaceMate</label><label><input type="checkbox" name="v_meditech"> MEDITECH</label>
+            <label><input type="checkbox" name="v_cerner"> Cerner</label><label><input type="checkbox" name="v_medtronic"> Medtronic</label>
+            <label><input type="checkbox" name="v_cpsi"> CPSI (Computer Programs &amp; Systems Inc.)</label><label><input type="checkbox" name="v_nextgen"> NextGen Healthcare</label>
+            <label><input type="checkbox" name="v_emds"> e-MDs</label><label><input type="checkbox" name="v_practicefusion"> Practice Fusion</label>
+            <label><input type="checkbox" name="v_eclinical"> eClinicalWorks</label><label><input type="checkbox" name="v_scottcare"> ScottCare</label>
+            <label><input type="checkbox" name="v_epic"> Epic</label><label><input type="checkbox" name="v_siemens"> Siemens</label>
+            <label><input type="checkbox" name="v_ge"> GE Healthcare</label><label class="other-specify"><input type="checkbox" name="v_other"> Other (please specify): <input type="text" name="v_other_text" style="max-width:180px"></label>
+            <label><input type="checkbox" name="v_greenway"> Greenway</label>
+        </div>
+        <div class="contractor-row">
+            <div class="field-group" style="flex:1;min-width:250px"><label>Website URL:</label><input type="url" name="vendor_url" value="www.pacematelive.com"></div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.82rem;padding-top:16px"><span>Is the vendor a contractor or consultant?</span><div class="radio-group"><label><input type="radio" name="contractor" value="yes"> Yes</label><label><input type="radio" name="contractor" value="no" checked> No</label></div></div>
+        </div>
+        <div class="contact-subsection"><h4>Vendor Contact(s):</h4>
+            <div class="contact-block"><div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="vc1_name" value="Gabe Ruso" readonly></div><div class="field-group"><label>Business Role:</label><input type="text" name="vc1_role" value="Chief Technology Officer" readonly></div></div><div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="vc1_phone" value="N/A" readonly></div><div class="field-group"><label>E-mail:</label><input type="email" name="vc1_email" value="gabe.ruso@pacemate.com" readonly></div></div></div>
+            <div class="contact-block"><div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="vc2_name"></div><div class="field-group"><label>Technical Role:</label><input type="text" name="vc2_role"></div></div><div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="vc2_phone"></div><div class="field-group"><label>E-mail:</label><input type="email" name="vc2_email"></div></div></div>
+        </div>
+        <hr class="section-divider">
+        <h3 class="section-header">Requester <span class="note">(must be a Merlin.net&trade; PCN Administrator user from the clinic or hospital)</span></h3>
+        <div class="field-row"><div class="field-group"><label>Name:</label><input type="text" name="req_name" data-required="true"></div><div class="field-group"><label>Title or Role:</label><input type="text" name="req_role"></div></div>
+        <div class="field-row"><div class="field-group"><label>Telephone:</label><input type="tel" name="req_phone"></div><div class="field-group"><label>E-mail:</label><input type="email" name="req_email"></div></div>
+        <div class="signature-block">
+            <div class="signature-row"><div class="signature-field"><div class="sig-line"></div><div class="sig-label">Signature of Requester</div></div><div class="date-field"><input type="date" name="req_date"><div class="sig-label">Date</div></div></div>
+        </div>
+        <div style="margin-top:20px">
+            <div class="field-row full"><div class="field-group"><label><strong>Target Go-Live Date</strong> <em>(optional):</em></label><input type="text" name="golive_date"></div></div>
+            <div class="field-row full" style="margin-top:10px"><div class="field-group"><label>Additional Comments <em>(optional):</em></label><textarea name="comments" rows="3"></textarea></div></div>
+        </div>
+        <div class="cta-section">
+            <h3>Questions? Ready to get started?</h3>
+            <p>Send an e-mail to <a href="/cdn-cgi/l/email-protection#dd90b8afb1b4b398958f9daeb7b0f3beb2b0"><span class="__cf_email__" data-cfemail="cf82aabda3a6a18a879d8fbca5a2e1aca0a2">[email&#160;protected]</span></a>.</p>
+        </div>
+        <div class="legal-text">
+            <p><strong>Rx Only</strong></p>
+            <p><strong>Brief Summary:</strong> Prior to using these devices, please review the Instructions for Use for a complete listing of indications, contraindications, warnings, precautions, potential adverse events and directions for use.</p>
+            <p>Adobe is a trademark of Adobe Systems Incorporated.</p>
+            <p>Unless otherwise noted, &trade; indicates that the name is a trademark of, or licensed to, St. Jude Medical or one of its subsidiaries. ST. JUDE MEDICAL and the nine-squares symbol are trademarks and service marks of St. Jude Medical, Inc. and its related companies. &copy; 2016 St. Jude Medical, Inc. All Rights Reserved.</p>
+        </div>
+    </div>
+    <div class="page-footer"><span>Page 2 of 2</span><span></span></div>
+<!-- ── PM STANDARD ACTION BAR ── -->
+<div class="pm-action-bar">
+  <button class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+    <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+    Save Progress
+  </button>
+  <button class="pm-pill pm-pill-save" onclick="pmClearForm()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+    Clear Form
+  </button>
+  <span class="pm-autosave" id="pmAutosave"></span>
+  <div class="pm-export-wrap" id="pmExportWrap">
+    <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Export
+      <svg class="pm-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+    </button>
+    <div class="pm-export-menu">
+      <button class="pm-export-item" onclick="pmExport('pdf')">
+        <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+        Export as PDF
+      </button>
+      <button class="pm-export-item" onclick="pmExport('excel')">
+        <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        Export as Excel
+      </button>
+      <button class="pm-export-item" onclick="pmExport('csv')">
+        <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+        Export as CSV
+      </button>
+    </div>
+  </div>
+  <button class="pm-pill pm-pill-submit" onclick="pmShowWetSigModal()">
+    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+    Submit to PaceMate
+  </button>
+</div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- Wet Signature Modal -->
+<div class="wet-sig-overlay" id="wetSigOverlay">
+  <div class="wet-sig-modal">
+    <div class="wet-sig-icon">
+      <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+    </div>
+    <h2>Wet Signature Required</h2>
+    <p><strong>St. Jude Medical / Abbott requires a physical (wet) signature</strong> on this form. Electronic or typed signatures are not accepted.</p>
+    <div class="steps">
+      <ol>
+        <li>Print this completed form</li>
+        <li>Sign the form by hand</li>
+        <li>Send the signed form to your <strong>Customer Success Manager</strong></li>
+      </ol>
+    </div>
+    <p>Your progress has been saved. You can return to this form at any time to make changes before printing.</p>
+    <div class="wet-sig-modal-btns">
+      <button class="wet-sig-btn-print" onclick="pmPrintAndClose()">Print Form</button>
+      <button class="wet-sig-btn-close" onclick="pmCloseWetSigModal()">Close</button>
+    </div>
+  </div>
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+function showToast(m,t){const e=document.getElementById('toast');e.textContent=m;e.className='toast '+(t||'');setTimeout(()=>e.classList.add('show'),10);setTimeout(()=>{e.classList.remove('show');setTimeout(()=>e.className='toast',300)},3000)}
+
+document.querySelectorAll('input,textarea').forEach(i=>{i.addEventListener('input',updateProgress);i.addEventListener('change',updateProgress)});
+
+function handleClear(){if(confirm('Clear all fields?')){document.querySelectorAll('input[type="text"],input[type="email"],input[type="tel"],input[type="url"],input[type="date"],textarea').forEach(i=>{i.value='';});showToast('Form cleared','');}}
+</script>
+
+<!-- PaceMate Back Button -->
+
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 4L6 8l4 4"/>
+  </svg>
+  Back
+</button>
+
+<script>
+/* PM STANDARD ACTION BAR */
+var PM_WORKSTREAM='csm',PM_STORAGE_KEY='form_vendor_sjm_merlin',PM_FORM_ID='vendor-abbott',PM_FORM_NAME='SJM Merlin Vendor Form',PM_FORM_FILE='form-vendor-sjm-merlin-v1.html';
+function pmGetData(){var d={};document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name||'field';if(el.type==='radio'){if(el.checked)d[el.name]=el.value;}else if(el.type==='checkbox'){if(el.checked)d[k]=(d[k]?d[k]+', ':''+(el.value||'checked'));}else if(el.value){d[k]=el.value;}});return d;}
+function pmSave(){try{localStorage.setItem(PM_STORAGE_KEY,JSON.stringify(pmGetData()));}catch(e){}}
+function pmLoad(){try{var r=localStorage.getItem(PM_STORAGE_KEY);if(!r)return;var s=JSON.parse(r);document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name;if(!k||!(k in s))return;if(el.type==='radio'){el.checked=(s[el.name]===el.value);}else if(el.type==='checkbox'){el.checked=!!(s[k]&&s[k].indexOf(el.value||'checked')>-1);}else{el.value=s[k];}});}catch(e){}}
+function pmSetAutosave(msg){var el=document.getElementById('pmAutosave');if(!el)return;var t=new Date();var ts=t.getHours()+':'+String(t.getMinutes()).padStart(2,'0');el.innerHTML='<span class="pm-autosave-dot"></span>'+(msg||('Auto-saved at '+ts));el.classList.add('active');setTimeout(function(){el.classList.remove('active');},3000);}
+function pmSaveProgress(){pmSave();pmSetAutosave('Saved');if(typeof showToast==='function')showToast('Progress saved!','success');}
+function pmToggleExport(e){e.stopPropagation();document.getElementById('pmExportWrap').classList.toggle('open');}
+document.addEventListener('click',function(){var w=document.getElementById('pmExportWrap');if(w)w.classList.remove('open');});
+function pmExport(t){document.getElementById('pmExportWrap').classList.remove('open');if(t==='pdf')pmExportPDF();else if(t==='excel')pmExportExcel();else if(t==='csv')pmExportCSV();}
+function pmExportPDF(){if(typeof showToast==='function')showToast('Generating PDF...','info');var bar=document.querySelector('.pm-action-bar');var back=document.querySelector('.pm-back-btn');if(bar)bar.style.display='none';if(back)back.style.display='none';var el=document.querySelector('.form-body,.form-wrapper,.pdf-form,.form-card,.main-content,form')||document.body;html2canvas(el,{scale:2,useCORS:true,logging:false}).then(function(canvas){if(bar)bar.style.display='';if(back)back.style.display='';var img=canvas.toDataURL('image/png');var pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),iw=pw,ih=(canvas.height*pw)/canvas.width,y=0;while(y<ih){if(y>0)pdf.addPage();pdf.addImage(img,'PNG',0,-y,iw,ih);y+=ph;}pdf.save(PM_FORM_NAME.replace(/\s+/g,'-')+'.pdf');if(typeof showToast==='function')showToast('PDF downloaded!','success');}).catch(function(){if(bar)bar.style.display='';if(back)back.style.display='';if(typeof showToast==='function')showToast('PDF failed','error');});}
+function pmExportExcel(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:30},{wch:50}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Form Data');XLSX.writeFile(wb,PM_FORM_NAME.replace(/\s+/g,'-')+'.xlsx');if(typeof showToast==='function')showToast('Excel downloaded!','success');}
+function pmExportCSV(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var csv=rows.map(function(r){return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(',')}).join('\n');var blob=new Blob([csv],{type:'text/csv'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=PM_FORM_NAME.replace(/\s+/g,'-')+'.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},5000);if(typeof showToast==='function')showToast('CSV downloaded!','success');}
+function pmSubmit(){pmSave();var WS_KEYS={'csm':'csm_inbox_submissions','integration':'integration_inbox_submissions','clinical':'clinical_inbox_submissions','patientsvcs':'patientsvcs_inbox_submissions','support':'support_inbox_submissions'};var key=WS_KEYS[PM_WORKSTREAM];if(!key){if(typeof showToast==='function')showToast('Submitted to PaceMate!','success');return;}var data=[];try{data=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}var now=Date.now();var existing=data.find(function(e){return e.id===PM_FORM_ID;});if(existing){existing.history[existing.history.length-1].statusAtReview=existing.status;existing.history.push({submittedAt:now,statusAtReview:null});existing.status='submitted';existing.glowStart=now;}else{data.push({id:PM_FORM_ID,formName:PM_FORM_NAME,formFile:PM_FORM_FILE,status:'submitted',glowStart:now,history:[{submittedAt:now,statusAtReview:null}]});}try{localStorage.setItem(key,JSON.stringify(data));}catch(e){}if(typeof showToast==='function')showToast('Submitted to PaceMate!','success');}
+function pmShowWetSigModal(){pmSave();document.getElementById('wetSigOverlay').classList.add('active');}
+function pmCloseWetSigModal(){document.getElementById('wetSigOverlay').classList.remove('active');}
+function pmPrintAndClose(){document.getElementById('wetSigOverlay').classList.remove('active');setTimeout(function(){window.print();},200);}
+document.getElementById('wetSigOverlay').addEventListener('click',function(e){if(e.target===this)pmCloseWetSigModal();});
+setInterval(function(){pmSave();pmSetAutosave();},30000);
+document.addEventListener('DOMContentLoaded',function(){var vKey=PM_STORAGE_KEY+'_v';if(localStorage.getItem(vKey)!=='v1-brand'){localStorage.removeItem(PM_STORAGE_KEY);localStorage.setItem(vKey,'v1-brand');}else{pmLoad();}});
+
+/* ── ZIP AUTO-POPULATE ── */
+function lookupZip(zipVal, cityName, stateName) {
+  if (!/^\d{5}$/.test(zipVal)) return;
+  fetch('https://api.zippopotam.us/us/' + zipVal)
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (!data || !data.places || !data.places[0]) return;
+      var place = data.places[0];
+      var cityEl = document.querySelector('[name="city"]');
+      var stateEl = document.querySelector('[name="state"]');
+      if (cityEl) { cityEl.value = place['place name']; flashZipField(cityEl); }
+      if (stateEl) { stateEl.value = place['state abbreviation']; flashZipField(stateEl); }
+    }).catch(function(){});
+}
+function flashZipField(el) {
+  el.classList.add('zip-autofilled');
+  setTimeout(function(){ el.classList.remove('zip-autofilled'); }, 1000);
+}
+document.addEventListener('DOMContentLoaded', function(){
+  var zipEl = document.querySelector('[name="zip_code"]');
+  if (zipEl) zipEl.addEventListener('blur', function(){ lookupZip(this.value, 'city', 'state'); });
+});
+
+
+</script>

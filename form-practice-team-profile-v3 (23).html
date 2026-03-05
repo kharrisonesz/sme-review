@@ -1,0 +1,1752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceMate® | Practice &amp; Team Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@400;500&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --pm-red: #EA0044;
+    --pm-red-dark: #C9003C;
+    --pm-red-light: #FF2255;
+    --teal: #2E7D8C;
+    --teal-bg: #EAF5F7;
+    --text-1: #212529;
+    --text-2: #495057;
+    --text-3: #868E96;
+    --bg: #F5F6F8;
+    --white: #FFFFFF;
+    --border: #DEE2E6;
+    --border-med: #CED4DA;
+    --shadow: 0 4px 24px rgba(0,0,0,0.06);
+    --radius: 12px;
+}
+body {
+    font-family: 'Roboto', sans-serif, -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text-1);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.form-wrapper { max-width: 1320px; margin: 0 auto; padding: 32px 28px 60px; }
+
+
+/* === FORM CARD wrapper === */
+.form-card {
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    border: 1px solid #DEE2E6;
+    overflow: hidden;
+    margin-bottom: 0;
+}
+
+/* === HEADER === */
+.form-header {
+    background: #FFFFFF;
+    border-bottom: 3px solid #EA0044;
+    padding: 18px 40px 16px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+.form-header::before { display: none; }
+.header-top { display: contents; }
+.header-title-block { flex: 1; }
+.header-logo { display: flex; align-items: center; gap: 12px; }
+.heart-icon {
+    width: 36px; height: 36px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+}
+.heart-icon svg { width: 20px; height: 20px; fill: white; }
+.brand-text { font-size: 1.05rem; font-weight: 700; letter-spacing: 0.02em; }
+.brand-tagline { font-size: 0.65rem; font-weight: 400; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.7; }
+.form-title { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 700; color: #212529; margin-bottom: 2px; }
+.form-subtitle { font-size: 0.78rem; color: #868E96; font-weight: 400; line-height: 1.4; }
+
+/* === PROGRESS === */
+.progress-section {
+    background: white;
+    padding: 16px 40px;
+    border-bottom: 1px solid #E9ECEF;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+.progress-bar-track { flex: 1; height: 6px; background: #E9ECEF; border-radius: 3px; overflow: hidden; }
+.progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--pm-red), var(--pm-red-light)); border-radius: 3px; transition: width 0.4s ease; width: 0%; }
+.progress-label { font-size: 0.78rem; font-weight: 600; color: var(--text-2); white-space: nowrap; }
+
+/* === BODY === */
+.form-body {
+    background: white;
+    padding: 32px 48px 48px;
+    
+    
+}
+
+/* === INSTRUCTIONS === */
+.instructions-block {
+    background: #FFF8F8;
+    border: 1px solid #FECDD3;
+    border-left: 4px solid var(--pm-red);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+}
+.instructions-title {
+    font-weight: 700; font-size: 0.88rem; color: var(--pm-red);
+    margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+}
+.instructions-text { font-size: 0.84rem; color: var(--text-2); line-height: 1.7; }
+.instructions-text strong { color: var(--text-1); }
+
+/* === SECTION CARDS === */
+.section-card {
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+}
+.section-card:focus-within { border-color: #FECDD3; }
+
+.section-hdr {
+    padding: 14px 24px;
+    font-family: 'Poppins', sans-serif, serif;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.section-hdr-red {
+    background: linear-gradient(135deg, var(--pm-red) 0%, var(--pm-red-dark) 100%);
+    color: white;
+    cursor: pointer;
+    user-select: none;
+}
+.section-hdr-red:hover { filter: brightness(1.06); }
+.section-hdr-red .chevron { color: rgba(255,255,255,0.7); transition: transform 0.25s; width: 18px; height: 18px; }
+.section-hdr-red .chevron.open { transform: rotate(180deg); }
+.section-hdr-gray {
+    background: #F8F9FA;
+    color: var(--text-1);
+    border-bottom: 1px solid #E9ECEF;
+    cursor: pointer;
+    user-select: none;
+}
+.section-hdr-gray:hover { background: #F0F1F3; }
+.section-hdr .badge {
+    font-family: 'Roboto', sans-serif, sans-serif;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 12px;
+}
+.badge-primary { background: rgba(255,255,255,0.2); color: white; }
+.badge-satellite { background: var(--pm-red); color: white; }
+.section-hdr-gray .loc-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.section-hdr .chevron {
+    transition: transform 0.25s;
+    width: 18px; height: 18px;
+    color: var(--text-3);
+}
+.section-hdr .chevron.open { transform: rotate(180deg); }
+.section-hdr .hdr-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.remove-loc-btn {
+    background: none; border: none; cursor: pointer;
+    color: #ADB5BD; padding: 4px 8px; border-radius: 6px;
+    font-family: 'Roboto', sans-serif, sans-serif; font-size: 0.74rem; font-weight: 600;
+    display: flex; align-items: center; gap: 4px; transition: all 0.2s;
+}
+.remove-loc-btn:hover { color: var(--pm-red); background: #FFF5F5; }
+.remove-loc-btn svg { width: 14px; height: 14px; }
+
+.section-body { padding: 24px 28px; }
+.section-body.collapsed { display: none; }
+
+/* === FORM FIELDS === */
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+.full-width { grid-column: 1 / -1; }
+
+.field-group label {
+    display: block; font-size: 0.73rem; font-weight: 600;
+    color: var(--text-2); text-transform: uppercase;
+    letter-spacing: 0.05em; margin-bottom: 5px;
+}
+.field-group input, .field-group select, .field-group textarea {
+    width: 100%; padding: 9px 12px;
+    border: 1.5px solid var(--border); border-radius: 8px;
+    font-family: 'Roboto', sans-serif, sans-serif; font-size: 0.84rem;
+    color: var(--text-1); transition: border-color 0.2s, box-shadow 0.2s;
+    background: #FAFBFC;
+}
+.field-group input:focus, .field-group select:focus, .field-group textarea:focus {
+    outline: none; border-color: var(--pm-red);
+    box-shadow: 0 0 0 3px rgba(234,0,68,0.08); background: white;
+}
+.field-group input::placeholder, .field-group textarea::placeholder { color: #ADB5BD; }
+.field-group select { cursor: pointer; }
+
+/* === STAFF TABLE === */
+.staff-section {
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #E9ECEF;
+}
+.staff-section-hdr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.staff-section-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--text-1);
+}
+.staff-count {
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: var(--text-3);
+}
+
+.staff-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.82rem;
+}
+.staff-table thead th {
+    text-align: left;
+    padding: 8px 8px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-3);
+    border-bottom: 2px solid var(--border);
+    white-space: nowrap;
+}
+.staff-table tbody tr {
+    border-bottom: 1px solid #F1F3F5;
+    transition: background 0.15s;
+}
+.staff-table tbody tr:hover { background: #FAFBFC; }
+.staff-table td { padding: 6px 4px; vertical-align: middle; }
+.staff-table td input, .staff-table td select {
+    width: 100%; padding: 9px 10px;
+    border: 1px solid #E9ECEF; border-radius: 6px;
+    font-family: 'Roboto', sans-serif, sans-serif; font-size: 0.82rem;
+    color: var(--text-1); background: transparent;
+    transition: border-color 0.15s;
+}
+.staff-table td input:focus, .staff-table td select:focus {
+    outline: none; border-color: var(--pm-red);
+    box-shadow: 0 0 0 2px rgba(234,0,68,0.06);
+    background: white;
+}
+.staff-table td input::placeholder { color: #CED4DA; }
+.staff-table td select { cursor: pointer; font-size: 0.76rem; }
+
+.pml-toggle {
+    display: flex; gap: 0; border-radius: 6px; overflow: hidden;
+    border: 1px solid var(--border);
+}
+.pml-toggle input { display: none; }
+.pml-toggle label {
+    padding: 5px 10px; font-size: 0.72rem; font-weight: 600;
+    cursor: pointer; text-align: center; transition: all 0.15s;
+    background: white; color: var(--text-3);
+}
+.pml-toggle input:checked + label {
+    background: var(--pm-red); color: white;
+}
+
+.remove-row-btn {
+    background: none; border: none; cursor: pointer;
+    color: #CED4DA; padding: 2px; border-radius: 4px;
+    transition: color 0.15s;
+}
+.remove-row-btn:hover { color: var(--pm-red); }
+.remove-row-btn svg { width: 14px; height: 14px; }
+
+.op-check {
+    width: 16px; height: 16px; cursor: pointer;
+    accent-color: var(--pm-red);
+}
+
+.vendor-checks {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 2px;
+}
+.vendor-check {
+    display: flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border: 1.5px solid var(--border);
+    border-radius: 8px; cursor: pointer; font-size: 0.8rem;
+    font-weight: 500; color: var(--text-2); transition: all 0.15s;
+    background: #FAFBFC; user-select: none;
+}
+.vendor-check:hover { border-color: var(--pm-red); color: var(--text-1); }
+.vendor-check input { accent-color: var(--pm-red); cursor: pointer; }
+.vendor-check:has(input:checked) {
+    border-color: var(--pm-red); background: #FDF0F2; color: var(--pm-red); font-weight: 600;
+}
+
+.add-staff-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: none; border: none; cursor: pointer;
+    font-family: 'Roboto', sans-serif, sans-serif; font-size: 0.78rem;
+    font-weight: 600; color: var(--text-2); padding: 8px 0;
+    transition: color 0.2s;
+}
+.add-staff-btn:hover { color: var(--pm-red); }
+.add-staff-btn svg { width: 14px; height: 14px; }
+
+/* === ADD LOCATION === */
+.add-loc-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 28px; background: #FFF8F8;
+    border: 2px dashed #EA0044; border-radius: var(--radius);
+    font-family: 'Roboto', sans-serif; font-size: 0.88rem;
+    font-weight: 600; color: #EA0044; cursor: pointer;
+    transition: all 0.2s; margin-bottom: 32px; width: 100%;
+    justify-content: center;
+}
+.add-loc-btn:hover { border-color: #C9003C; color: #C9003C; background: #FFF0F2; }
+.add-loc-btn svg { width: 20px; height: 20px; }
+
+/* === ORG CHART === */
+.orgchart-section {
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 2px solid #E9ECEF;
+}
+.orgchart-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 6px;
+}
+.orgchart-title {
+    font-family: 'Poppins', sans-serif, serif;
+    font-size: 1.2rem; font-weight: 700; color: var(--text-1);
+}
+.orgchart-subtitle { font-size: 0.84rem; color: var(--text-3); margin-bottom: 24px; }
+.orgchart-badge {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em;
+    text-transform: uppercase; padding: 4px 12px; border-radius: 20px;
+    background: #E8F5E9; color: #2E7D32;
+}
+.orgchart-empty {
+    text-align: center; padding: 48px 24px;
+    border: 2px dashed var(--border); border-radius: 16px; color: #ADB5BD;
+}
+.orgchart-empty-text { font-size: 0.92rem; font-weight: 500; }
+.orgchart-empty-hint { font-size: 0.78rem; margin-top: 6px; }
+
+.oc-canvas { position: relative; overflow-x: auto; padding: 16px 0 24px; }
+.oc-tree { display: flex; flex-direction: column; align-items: center; min-width: fit-content; margin: 0 auto; }
+
+.oc-root {
+    background: linear-gradient(135deg, var(--pm-red) 0%, var(--pm-red-dark) 100%);
+    color: white; border-radius: 14px; padding: 16px 28px;
+    text-align: center; box-shadow: 0 4px 16px rgba(234,0,68,0.25);
+    max-width: 360px;
+}
+.oc-root-name { font-family: 'Poppins', sans-serif, serif; font-size: 1.05rem; font-weight: 700; line-height: 1.3; }
+.oc-root-sub { font-size: 0.72rem; opacity: 0.8; margin-top: 3px; }
+
+.oc-vline { width: 2px; height: 24px; background: var(--border-med); margin: 0 auto; }
+
+.oc-branches { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; padding: 0 8px; }
+.oc-branch { display: flex; flex-direction: column; align-items: center; }
+.oc-branch-line { width: 2px; height: 20px; background: var(--border-med); }
+
+.oc-loc {
+    border-radius: 10px; padding: 14px 16px; text-align: left;
+    min-width: 200px; max-width: 260px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: white;
+}
+.oc-loc:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+.oc-loc-primary { border: 2px solid var(--pm-red); }
+.oc-loc-satellite { border: 2px solid var(--teal); }
+
+.oc-loc-tag {
+    font-size: 0.6rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.05em; padding: 2px 8px; border-radius: 8px;
+    display: inline-block; margin-bottom: 6px;
+}
+.oc-loc-primary .oc-loc-tag { background: #FDF0F2; color: var(--pm-red); }
+.oc-loc-satellite .oc-loc-tag { background: var(--teal-bg); color: var(--teal); }
+
+.oc-loc-name { font-family: 'Poppins', sans-serif, serif; font-size: 0.9rem; font-weight: 700; color: var(--text-1); line-height: 1.3; margin-bottom: 4px; }
+.oc-loc-addr { font-size: 0.7rem; color: var(--text-3); line-height: 1.4; margin-bottom: 2px; }
+.oc-loc-hours { font-size: 0.68rem; color: #ADB5BD; margin-bottom: 3px; }
+.oc-loc-pts { font-size: 0.72rem; font-weight: 700; color: var(--teal); margin-bottom: 8px; }
+
+.oc-staff-list { border-top: 1px solid #E9ECEF; padding-top: 8px; margin-top: 4px; }
+.oc-role-group { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-3); margin-top: 6px; margin-bottom: 2px; }
+.oc-role-group:first-child { margin-top: 0; }
+.oc-person { font-size: 0.72rem; color: var(--text-2); line-height: 1.5; }
+.oc-person-cred { color: var(--text-3); }
+.oc-no-staff { font-size: 0.68rem; color: #ADB5BD; font-style: italic; }
+
+.oc-stats { display: flex; gap: 12px; justify-content: center; margin-top: 24px; flex-wrap: wrap; }
+.oc-stat { background: #F8F9FA; border-radius: 10px; padding: 12px 20px; text-align: center; min-width: 110px; }
+.oc-stat-num { font-size: 1.4rem; font-weight: 700; line-height: 1; }
+.oc-stat-num.red { color: var(--pm-red); }
+.oc-stat-num.teal { color: var(--teal); }
+.oc-stat-num.dark { color: var(--text-1); }
+.oc-stat-label { font-size: 0.68rem; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.04em; margin-top: 4px; }
+
+/* === ACTIONS === */
+.form-actions {
+    display: flex; gap: 12px; justify-content: flex-end;
+    padding-top: 24px; border-top: 1px solid #E9ECEF; margin-top: 32px;
+}
+.btn {
+    padding: 11px 28px; border-radius: 10px;
+    font-family: 'Roboto', sans-serif, sans-serif; font-size: 0.84rem;
+    font-weight: 600; cursor: pointer; transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 8px; border: none;
+}
+.btn-primary { background: linear-gradient(135deg, var(--pm-red), var(--pm-red-dark)); color: white; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(234,0,68,0.3); }
+.btn-submit { background: linear-gradient(135deg, #1A7F4B, #145f38); color: white; }
+.btn-submit:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(26,127,75,0.35); }
+.btn-secondary { background: white; color: var(--text-2); border: 1.5px solid var(--border); }
+.btn-secondary:hover { background: #F8F9FA; border-color: #ADB5BD; }
+.btn-outline-red { background: white; color: var(--pm-red); border: 1.5px solid #FECDD3; }
+.btn-outline-red:hover { background: #FFF5F5; border-color: var(--pm-red); }
+.btn svg { width: 16px; height: 16px; }
+
+/* === FOOTER === */
+.form-footer { text-align: center; padding: 24px 40px; margin-top: 8px; }
+.footer-brand { font-size: 0.82rem; font-weight: 600; color: var(--text-2); }
+.footer-brand span { color: var(--pm-red); }
+.footer-tagline { font-size: 0.72rem; color: var(--text-3); margin-top: 4px; }
+.footer-meta { font-size: 0.68rem; color: #ADB5BD; margin-top: 6px; }
+
+/* === TOAST === */
+.toast {
+    position: fixed; bottom: 30px; right: 30px;
+    padding: 14px 24px; border-radius: 10px;
+    font-family: 'Roboto', sans-serif, sans-serif; font-size: 0.84rem; font-weight: 600; color: white;
+    transform: translateY(100px); opacity: 0;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-success { background: #2B8A3E; }
+.toast-info { background: #1971C2; }
+.toast-warning { background: #E67700; }
+
+/* === PRINT === */
+@media print {
+    body { background: white; }
+    .form-wrapper { padding: 0; max-width: 100%; }
+    .form-header { border-bottom: 3px solid #EA0044; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .progress-section, .form-actions, .add-loc-btn, .add-staff-btn, .remove-loc-btn, .remove-row-btn { display: none !important; }
+    .form-body {   padding: 20px; }
+    .section-hdr-red { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .section-body.collapsed { display: block !important; }
+    .staff-table td input, .staff-table td select, .field-group input, .field-group select {
+        border: none !important; padding: 2px 0; background: none !important; box-shadow: none !important;
+        border-bottom: 1px solid #ccc !important;
+    }
+    .toast { display: none !important; }
+    .section-card { break-inside: avoid; }
+    .orgchart-section { break-before: page; }
+    .oc-root { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .oc-loc-tag { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+}
+
+@media (max-width: 768px) {
+    .form-header { padding: 20px 40px 18px; }
+    .form-body { padding: 20px 16px 28px; }
+    .progress-section { padding: 14px 24px; }
+    .form-grid, .form-grid-3 { grid-template-columns: 1fr; }
+    .form-title { font-family: 'Poppins', sans-serif; font-size: 1.15rem; font-weight: 700; color: #212529; margin-bottom: 2px; }
+    .form-actions { flex-direction: column; }
+    .form-actions .btn { width: 100%; justify-content: center; }
+    .section-body { padding: 16px; }
+    .oc-branches { flex-direction: column; align-items: center; }
+    .oc-loc { min-width: 180px; }
+    .staff-table { font-size: 0.72rem; }
+    .staff-table thead th { font-size: 0.62rem; }
+    .staff-table td input, .staff-table td select { font-size: 0.72rem; padding: 5px 4px; }
+}
+.pm-form-footer{text-align:center;padding:24px 20px 16px;font-size:0.75rem;color:#868E96;border-top:1px solid #F1F3F5;margin-top:8px;font-family:'Roboto', sans-serif,sans-serif;line-height:1.8;}
+.pm-form-footer strong{color:#495057;font-weight:600;}
+@media print{.pm-form-footer{display:none!important;}}
+
+/* OP column tooltip */
+.op-tooltip-th { cursor: help; }
+/* JS tooltip — fixed position to escape overflow:hidden */
+.pm-tooltip-box {
+    position: fixed;
+    background: #212529; color: #fff;
+    font-size: 0.72rem; font-weight: 500;
+    padding: 5px 11px; border-radius: 6px;
+    white-space: nowrap; pointer-events: none;
+    z-index: 9999; font-family: 'Roboto', sans-serif;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    opacity: 0; transition: opacity 0.15s;
+}
+.pm-tooltip-box.visible { opacity: 1; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div class="form-wrapper">
+    <!-- FORM CARD -->
+    <div class="form-card">
+
+    <!-- HEADER -->
+    <div class="form-header">
+        <div class="header-logo">
+          <svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" overflow="visible" style="height:56px;width:158px;display:block;flex-shrink:0;" aria-label="PaceMate">
+            <g><path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.601 57.79 165.601 33.675 172.08 33.675 176.723 50.509 176.79 50.509 181.467 33.675 188.014 33.675 188.014 57.79 184.005 57.79 184.005 38.818 183.938 38.818 178.528 57.79 175.02 57.79 169.676 38.818 169.609 38.818 169.609 57.79 165.601 57.79Z" fill="#636569"/><path d="M201.94 57.79 201.674 56.287C200.003 57.422 198.433 58.123 196.263 58.123 193.122 58.123 191.551 55.885 191.551 53.515 191.551 49.573 194.759 47.503 201.506 46.701L201.506 45.232C201.506 43.895 200.438 43.161 198.968 43.161 197.031 43.161 195.962 44.196 195.16 45.299L192.489 43.261C193.557 41.425 196.43 40.021 198.968 40.09 203.644 40.189 205.648 41.892 205.648 47.104L205.648 55.286C205.648 56.155 205.715 57.023 205.982 57.792L201.94 57.792ZM201.507 49.473C198.735 50.008 195.695 50.576 195.695 53.013 195.695 54.315 196.529 55.051 197.699 55.051 199.001 55.051 200.638 53.948 201.507 53.214L201.507 49.473Z" fill="#636569"/><path d="M210.689 40.421 210.689 34.676 214.83 34.676 214.83 40.421 218.238 40.421 218.238 43.762 214.83 43.762 214.83 53.582C214.83 54.517 215.299 54.785 216.334 54.785 216.969 54.785 217.636 54.584 218.238 54.45L218.238 57.857C217.101 57.991 216.099 58.125 214.965 58.125 211.892 58.125 210.689 56.588 210.689 54.116L210.689 43.762 208.284 43.762 208.284 40.421 210.689 40.421Z" fill="#636569"/><path d="M224.179 49.774C224.245 53.381 225.849 54.784 227.787 54.784 229.725 54.784 230.626 53.915 231.662 52.713L234.668 54.584C233.065 57.056 230.727 58.124 227.386 58.124 222.877 58.124 220.038 54.617 220.038 49.106 220.038 43.595 222.877 40.088 227.586 40.088 232.129 40.054 234.667 43.896 234.667 48.072L234.667 49.775 224.179 49.775ZM230.86 46.968C230.794 44.563 229.524 43.16 227.519 43.16 225.514 43.16 224.246 44.563 224.179 46.968L230.86 46.968Z" fill="#636569"/></g></g><g><circle cx="240.028" cy="40.004" r="3.659" stroke="#636569" stroke-width="0.48" stroke-miterlimit="10" fill="none"/><path d="M239.897 40.276 239.24 40.276 239.24 41.999 238.707 41.999 238.707 38.011 239.984 38.011C240.968 38.011 241.272 38.489 241.272 39.076 241.272 39.532 241.136 40.027 240.43 40.206L241.348 41.999 240.767 41.999 239.898 40.276ZM239.761 39.858C240.424 39.858 240.717 39.684 240.717 39.103 240.717 38.63 240.451 38.435 239.869 38.435L239.239 38.435 239.239 39.859 239.761 39.859Z" fill="#636569"/></g>
+          </svg>
+        </div>
+        <div class="header-title-block">
+            <div class="form-title">Practice &amp; Team Profile</div>
+            <div class="form-subtitle">Map your locations, team members, and roles for PaceMateLIVE&trade; configuration</div>
+        </div>
+    </div>
+
+    <!-- BODY -->
+    <div class="form-body">
+        <!-- INSTRUCTIONS -->
+        <div class="instructions-block">
+            <div class="instructions-title" style="color:#212529; font-size:0.92rem; margin-bottom:12px;">Purpose</div>
+            <div class="instructions-text" style="margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid #FECDD3;">
+                This form captures your complete practice structure &mdash; every location where cardiac device monitoring takes place and every team member who will interact with PaceMateLIVE&trade;. PaceMate&reg; uses this to configure your platform, provision user accounts, and plan your go-live.
+            </div>
+            <div class="instructions-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EA0044" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                How to Complete
+            </div>
+            <div class="instructions-text">
+                <strong>Step 1:</strong> Enter your practice name and primary clinic details.<br>
+                <strong>Step 2:</strong> Add every team member at that location &mdash; physicians, APPs, device nurses, admins, billers, and anyone who will use the system.<br>
+                <strong>Step 3:</strong> If you have satellite locations, click <strong>+ Add Satellite Location</strong> and repeat.<br>
+                <strong>Step 4:</strong> Review the auto-generated practice map at the bottom to confirm your structure looks right.
+            </div>
+        </div>
+
+        <!-- PRACTICE INFO -->
+        <div class="section-card" id="practiceInfoSection">
+            <div class="section-hdr section-hdr-red" onclick="toggleSection('practiceInfoBody', this)">
+                <span>Practice Information</span>
+                <svg class="chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+            <div class="section-body" id="practiceInfoBody">
+                <div class="form-grid">
+                    <div class="field-group full-width">
+                        <label>Practice / Organization Name <span style="color:#EA0044">*</span></label>
+                        <input type="text" id="practiceName" placeholder="Full practice or health system name" oninput="updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>IDN (if applicable)</label>
+                        <input type="text" id="practiceIDN" placeholder="Integrated Delivery Network" oninput="updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>Practice URL</label>
+                        <input type="url" id="practiceURL" placeholder="https://www.example.com" oninput="updateAll()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRIMARY LOCATION -->
+        <div class="section-card" id="primarySection">
+            <div class="section-hdr section-hdr-red" onclick="toggleSection('primaryBody', this)">
+                <span>Primary / Main Clinic</span>
+                <div style="display:flex;align-items:center;gap:10px;">
+                    <span class="badge badge-primary">Primary</span>
+                    <svg class="chevron open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                </div>
+            </div>
+            <div class="section-body" id="primaryBody">
+                <div class="form-grid">
+                    <div class="field-group full-width">
+                        <label>Clinic Name <span style="color:#EA0044">*</span></label>
+                        <input type="text" class="loc-field" data-loc="primary" data-f="name" placeholder="Primary clinic name" oninput="updateAll()">
+                    </div>
+                    <div class="field-group full-width">
+                        <label>Street Address <span style="color:#EA0044">*</span></label>
+                        <input type="text" class="loc-field" data-loc="primary" data-f="address" placeholder="Street address" oninput="updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>Zip Code <span style="color:#EA0044">*</span></label>
+                        <input type="text" class="loc-field" data-loc="primary" data-f="zip" placeholder="00000" maxlength="10" oninput="lookupZip(this.value,'primary'); updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>City <span style="color:#EA0044">*</span></label>
+                        <input type="text" class="loc-field" data-loc="primary" data-f="city" placeholder="Auto-populated from zip" oninput="updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>State <span style="color:#EA0044">*</span></label>
+                        <input type="text" class="loc-field" data-loc="primary" data-f="state" placeholder="Auto-populated from zip" oninput="updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>Phone <span style="color:#EA0044">*</span></label>
+                        <input type="tel" class="loc-field" data-loc="primary" data-f="phone" placeholder="(000) 000-0000" oninput="updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>Days of Operation</label>
+                        <input type="text" class="loc-field" data-loc="primary" data-f="days" placeholder="e.g., Monday – Friday" oninput="updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>Hours of Operation</label>
+                        <input type="text" class="loc-field" data-loc="primary" data-f="hours" placeholder="e.g., 8:00 am – 5:00 pm" oninput="updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>Approximate Patient Volume <span style="color:#EA0044">*</span></label>
+                        <input type="text" class="loc-field" data-loc="primary" data-f="patients" placeholder="e.g., 1,500 patients" oninput="updateAll()">
+                    </div>
+                    <div class="field-group">
+                        <label>Current Software (if any)</label>
+                        <input type="text" class="loc-field" data-loc="primary" data-f="software" placeholder="e.g., PaceArt, None" oninput="updateAll()">
+                    </div>
+                    <div class="field-group full-width">
+                        <label>Vendor Sites at This Location <span style="color:#EA0044">*</span> <span style="font-weight:400;text-transform:none;font-size:0.7rem;color:#868E96">(check all that apply)</span></label>
+                        <div class="vendor-checks" data-loc="primary">
+                            <label class="vendor-check"><input type="checkbox" value="Medtronic CareLink" onchange="updateAll()"><span>Medtronic CareLink</span></label>
+                            <label class="vendor-check"><input type="checkbox" value="Boston Scientific Latitude" onchange="updateAll()"><span>BSC Latitude</span></label>
+                            <label class="vendor-check"><input type="checkbox" value="Abbott Merlin" onchange="updateAll()"><span>Abbott Merlin</span></label>
+                            <label class="vendor-check"><input type="checkbox" value="Biotronik" onchange="updateAll()"><span>Biotronik</span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STAFF TABLE -->
+                <div class="staff-section">
+                    <div class="staff-section-hdr">
+                        <div class="staff-section-title">Team Members at This Location</div>
+                        <div class="staff-count" id="primary-staff-count">0 team members</div>
+                    </div>
+                    <div style="overflow-x:auto;">
+                    <table class="staff-table">
+                        <thead>
+                            <tr>
+                                <th style="width:18%">Name</th>
+                                <th style="width:10%">Role</th>
+                                <th style="width:10%">Title</th>
+                                <th style="width:5%">Creds</th>
+                                <th style="width:7%">NPI</th>
+                                <th style="width:10%">Phone</th>
+                                <th style="width:16%">Email</th>
+                                <th style="width:9%">Also Works At</th>
+                                <th class="op-tooltip-th" style="width:4%;text-align:center" data-tooltip="Ordering Provider">OP</th>
+                                <th class="pml-tooltip-th" style="width:5%;text-align:center;cursor:help">PML</th>
+                                <th style="width:3%"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="primary-staff-body">
+                        </tbody>
+                    </table>
+                    </div>
+                    <button class="add-staff-btn" onclick="addStaffRow('primary')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Team Member
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SATELLITE CONTAINER -->
+        <div id="satelliteContainer"></div>
+
+        <!-- ADD LOCATION -->
+        <button class="add-loc-btn" onclick="addSatellite()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Satellite Location
+        </button>
+
+        <!-- ORG CHART -->
+        <div class="orgchart-section" id="orgchartSection">
+            <!-- Training Playbook Note -->
+            <div style="background:linear-gradient(135deg,#FFF5F7,#FFEAEF);border:1.5px solid #FECDD3;border-left:4px solid #EA0044;border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:flex-start;gap:12px;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#EA0044" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px;"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              <div>
+                <div style="font-family:'Poppins',sans-serif;font-size:0.82rem;font-weight:700;color:#C9003C;margin-bottom:4px;">&#128218; Save This for Go-Live Training</div>
+                <div style="font-size:0.78rem;color:#495057;line-height:1.6;">When you are ready to plan training, use <strong>Export Org for Training</strong> (in the Export menu above) to download a PDF. Upload that PDF to the <strong>Go-Live Training Playbook &rsaquo; Practice Profile</strong> tab. Your locations and team will be automatically configured. <strong>Save this file to your project folder.</strong></div>
+              </div>
+            </div>
+            <div class="orgchart-header">
+                <div class="orgchart-title">Your Practice at a Glance</div>
+                <div class="orgchart-badge" id="orgchartBadge">Live Preview</div>
+            </div>
+            <div class="orgchart-subtitle">This map builds automatically as you complete the form. Review it to confirm your practice structure is accurate.</div>
+            <div id="orgchartOutput"></div>
+        </div>
+
+    </div><!-- /.form-card -->
+</div><!-- /.form-wrapper -->
+
+<!-- ── PM STANDARD ACTION BAR ── -->
+<div class="pm-action-bar" style="flex-wrap:nowrap">
+  <div class="pm-action-left" style="display:flex;align-items:center;gap:10px;flex-shrink:0">
+    <button class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+      <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+      Save Progress
+    </button>
+    <button class="pm-pill pm-pill-save" onclick="pmClearForm()">
+      <svg viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      Clear Form
+    </button>
+    <span class="pm-autosave" id="pmAutosave"></span>
+  </div>
+  <div class="pm-action-right" style="display:flex;align-items:center;gap:10px;flex-shrink:0;margin-left:auto">
+    <div class="pm-export-wrap" id="pmExportWrap">
+      <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Export
+        <svg class="pm-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <div class="pm-export-menu">
+        <button class="pm-export-item" onclick="pmExport('pdf')">
+          <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+          Export as PDF
+        </button>
+        <button class="pm-export-item" onclick="pmExport('excel')">
+          <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          Export as Excel
+        </button>
+        <button class="pm-export-item" onclick="pmExport('csv')">
+          <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+          Export as CSV
+        </button>
+        <button class="pm-export-item" onclick="pmExportOrgPDF()" style="border-top:2px solid #FECDD3;background:#FFF5F7;">
+          <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          <span><strong style="color:#EA0044;">Export Org for Training</strong><br><span style="font-size:0.7rem;color:#868E96;">Upload to Go-Live Training Playbook</span></span>
+        </button>
+      </div>
+    </div>
+    <button class="pm-pill pm-pill-submit" onclick="pmSubmitValidated()">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+      Submit to PaceMate®
+    </button>
+  </div>
+</div>
+
+<script>
+/* =========================================================
+   ROLE OPTIONS
+   ========================================================= */
+const ROLES = [
+    'Physician',
+    'Physician, EP',
+    'APP / NP',
+    'Device RN',
+    'Admin',
+    'Practice Manager',
+    'Biller / Coder',
+    'Device Tech',
+    'Non-Device Nursing',
+    'PSR',
+    'IT / EHR Analyst',
+    'Other'
+];
+
+/* Role → display group for org chart */
+const ROLE_GROUPS = {
+    'Physician': 'Providers',
+    'Physician, EP': 'Providers',
+    'APP / NP': 'Providers',
+    'Device RN': 'Staff / Nurses',
+    'Device Tech': 'Staff / Nurses',
+    'Non-Device Nursing': 'Staff / Nurses',
+    'Admin': 'Admin / Support',
+    'Practice Manager': 'Admin / Support',
+    'Biller / Coder': 'Admin / Support',
+    'PSR': 'Admin / Support',
+    'IT / EHR Analyst': 'Admin / Support',
+    'Other': 'Other'
+};
+
+const ROLE_GROUP_ORDER = ['Providers', 'Staff / Nurses', 'Admin / Support', 'Other'];
+
+let satCount = 0;
+let rowIdCounter = 0;
+
+/* =========================================================
+   STAFF ROW CREATION
+   ========================================================= */
+function makeRoleSelect(id) {
+    let opts = '<option value="">Select role...</option>';
+    ROLES.forEach(r => { opts += `<option value="${r}">${r}</option>`; });
+    return `<select data-sf="role" id="role-${id}" onchange="updateAll()">${opts}</select>`;
+}
+
+function makeStaffRowHTML(locId) {
+    const rid = ++rowIdCounter;
+    return `<tr data-rid="${rid}" data-loc="${locId}">
+        <td><input type="text" data-sf="name" placeholder="First, Last Name" oninput="updateAll()"></td>
+        <td>${makeRoleSelect(rid)}</td>
+        <td><input type="text" data-sf="title" placeholder="Title" oninput="updateAll()"></td>
+        <td><input type="text" data-sf="credentials" placeholder="RN, MD" oninput="updateAll()"></td>
+        <td><input type="text" data-sf="npi" placeholder="NPI #" oninput="updateAll()"></td>
+        <td><input type="tel" data-sf="phone" placeholder="(000) 000-0000" oninput="updateAll()"></td>
+        <td><input type="email" data-sf="email" placeholder="email@org.com" oninput="updateAll()"></td>
+        <td><input type="text" data-sf="alsoat" placeholder="e.g., Clearwater" oninput="updateAll()"></td>
+        <td style="text-align:center"><input type="checkbox" data-sf="op" class="op-check" onchange="updateAll()" title="Ordering Provider"></td>
+        <td>
+            <div class="pml-toggle">
+                <input type="radio" name="pml-${rid}" id="pml-y-${rid}" value="Y" onchange="updateAll()"><label for="pml-y-${rid}">Y</label>
+                <input type="radio" name="pml-${rid}" id="pml-n-${rid}" value="N" onchange="updateAll()"><label for="pml-n-${rid}">N</label>
+            </div>
+        </td>
+        <td>
+            <button class="remove-row-btn" onclick="removeStaffRow(this)" title="Remove">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+        </td>
+    </tr>`;
+}
+
+function addStaffRow(locId) {
+    const tbody = document.getElementById(`${locId}-staff-body`);
+    tbody.insertAdjacentHTML('beforeend', makeStaffRowHTML(locId));
+    const rows = tbody.querySelectorAll('tr');
+    const lastRow = rows[rows.length - 1];
+    lastRow.querySelector('input[data-sf="name"]').focus();
+    updateAll();
+}
+
+function removeStaffRow(btn) {
+    const tr = btn.closest('tr');
+    tr.remove();
+    updateAll();
+}
+
+/* Seed primary with starter rows */
+function seedPrimary() {
+    const tbody = document.getElementById('primary-staff-body');
+    for (let i = 0; i < 5; i++) {
+        tbody.insertAdjacentHTML('beforeend', makeStaffRowHTML('primary'));
+    }
+}
+
+/* =========================================================
+   SATELLITE LOCATIONS
+   ========================================================= */
+function addSatellite() {
+    satCount++;
+    const n = satCount;
+    const locId = `sat${n}`;
+    const container = document.getElementById('satelliteContainer');
+    const card = document.createElement('div');
+    card.className = 'section-card';
+    card.id = `satellite-${n}`;
+    card.innerHTML = `
+        <div class="section-hdr section-hdr-gray" onclick="toggleSection('satBody-${n}', this)">
+            <div class="loc-meta">
+                <span class="badge badge-satellite">Satellite ${n}</span>
+                <span id="satLabel-${n}">Satellite Clinic</span>
+            </div>
+            <div class="hdr-right">
+                <button class="remove-loc-btn" onclick="event.stopPropagation(); removeSatellite(${n})">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    Remove
+                </button>
+                <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </div>
+        </div>
+        <div class="section-body collapsed" id="satBody-${n}">
+            <div class="form-grid">
+                <div class="field-group full-width">
+                    <label>Clinic Name <span style="color:#EA0044">*</span></label>
+                    <input type="text" class="loc-field" data-loc="${locId}" data-f="name" placeholder="Clinic or location name" oninput="updateSatLabel(${n}); updateAll()">
+                </div>
+                <div class="field-group full-width">
+                    <label>Street Address <span style="color:#EA0044">*</span></label>
+                    <input type="text" class="loc-field" data-loc="${locId}" data-f="address" placeholder="Street address" oninput="updateAll()">
+                </div>
+                <div class="field-group">
+                    <label>Zip Code <span style="color:#EA0044">*</span></label>
+                    <input type="text" class="loc-field" data-loc="${locId}" data-f="zip" placeholder="00000" maxlength="10" oninput="lookupZip(this.value,'${locId}'); updateAll()">
+                </div>
+                <div class="field-group">
+                    <label>City <span style="color:#EA0044">*</span></label>
+                    <input type="text" class="loc-field" data-loc="${locId}" data-f="city" placeholder="Auto-populated from zip" oninput="updateAll()">
+                </div>
+                <div class="field-group">
+                    <label>State <span style="color:#EA0044">*</span></label>
+                    <input type="text" class="loc-field" data-loc="${locId}" data-f="state" placeholder="Auto-populated from zip" oninput="updateAll()">
+                </div>
+                <div class="field-group">
+                    <label>Phone <span style="color:#EA0044">*</span></label>
+                    <input type="tel" class="loc-field" data-loc="${locId}" data-f="phone" placeholder="(000) 000-0000" oninput="updateAll()">
+                </div>
+                <div class="field-group">
+                    <label>Days of Operation</label>
+                    <input type="text" class="loc-field" data-loc="${locId}" data-f="days" placeholder="e.g., Monday – Friday" oninput="updateAll()">
+                </div>
+                <div class="field-group">
+                    <label>Hours of Operation</label>
+                    <input type="text" class="loc-field" data-loc="${locId}" data-f="hours" placeholder="e.g., 8:00 am – 5:00 pm" oninput="updateAll()">
+                </div>
+                <div class="field-group">
+                    <label>Approximate Patient Volume <span style="color:#EA0044">*</span></label>
+                    <input type="text" class="loc-field" data-loc="${locId}" data-f="patients" placeholder="e.g., 1,500 patients" oninput="updateAll()">
+                </div>
+                <div class="field-group">
+                    <label>Current Software (if any)</label>
+                    <input type="text" class="loc-field" data-loc="${locId}" data-f="software" placeholder="e.g., PaceArt, None" oninput="updateAll()">
+                </div>
+                <div class="field-group full-width">
+                    <label>Vendor Sites at This Location <span style="color:#EA0044">*</span> <span style="font-weight:400;text-transform:none;font-size:0.7rem;color:#868E96">(check all that apply)</span></label>
+                    <div class="vendor-checks" data-loc="${locId}">
+                        <label class="vendor-check"><input type="checkbox" value="Medtronic CareLink" onchange="updateAll()"><span>Medtronic CareLink</span></label>
+                        <label class="vendor-check"><input type="checkbox" value="Boston Scientific Latitude" onchange="updateAll()"><span>BSC Latitude</span></label>
+                        <label class="vendor-check"><input type="checkbox" value="Abbott Merlin" onchange="updateAll()"><span>Abbott Merlin</span></label>
+                        <label class="vendor-check"><input type="checkbox" value="Biotronik" onchange="updateAll()"><span>Biotronik</span></label>
+                    </div>
+                </div>
+            </div>
+            <div class="staff-section">
+                <div class="staff-section-hdr">
+                    <div class="staff-section-title">Team Members at This Location</div>
+                    <div class="staff-count" id="${locId}-staff-count">0 team members</div>
+                </div>
+                <div style="overflow-x:auto;">
+                <table class="staff-table">
+                    <thead>
+                        <tr>
+                            <th style="width:18%">Name</th>
+                            <th style="width:10%">Role</th>
+                            <th style="width:10%">Title</th>
+                            <th style="width:5%">Creds</th>
+                            <th style="width:7%">NPI</th>
+                            <th style="width:10%">Phone</th>
+                            <th style="width:16%">Email</th>
+                            <th style="width:9%">Also Works At</th>
+                            <th class="op-tooltip-th" style="width:4%;text-align:center" data-tooltip="Ordering Provider">OP</th>
+                            <th class="pml-tooltip-th" style="width:5%;text-align:center;cursor:help">PML</th>
+                            <th style="width:4%"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="${locId}-staff-body">
+                    </tbody>
+                </table>
+                </div>
+                <button class="add-staff-btn" onclick="addStaffRow('${locId}')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Add Team Member
+                </button>
+            </div>
+        </div>
+    `;
+    container.appendChild(card);
+
+    // Auto-expand FIRST — before addStaffRow which may trigger updateAll
+    const satBody = document.getElementById(`satBody-${n}`);
+    const satChevron = card.querySelector('.chevron');
+    if (satBody) satBody.classList.remove('collapsed');
+    if (satChevron) satChevron.classList.add('open');
+
+    // Seed 3 starter rows
+    for (let i = 0; i < 3; i++) {
+        addStaffRow(locId);
+    }
+
+    card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setTimeout(() => { const first = card.querySelector('input'); if(first) first.focus(); }, 300);
+    updateAll();
+    showToast('Satellite location added — fill in the details below', 'success');
+}
+
+function removeSatellite(n) {
+    if (!confirm('Remove this satellite location and all its team members?')) return;
+    const el = document.getElementById(`satellite-${n}`);
+    if (el) el.remove();
+    updateAll();
+    showToast('Location removed', 'warning');
+}
+
+function updateSatLabel(n) {
+    const input = document.querySelector(`input[data-loc="sat${n}"][data-f="name"]`);
+    const label = document.getElementById(`satLabel-${n}`);
+    if (input && label) {
+        label.textContent = input.value.trim() || 'Satellite Clinic';
+    }
+}
+
+function toggleSection(bodyId, hdr) {
+    const body = document.getElementById(bodyId);
+    const chevron = hdr.querySelector('.chevron');
+    body.classList.toggle('collapsed');
+    chevron.classList.toggle('open');
+}
+
+/* =========================================================
+   DATA GATHERING
+   ========================================================= */
+function getLocationData(locId) {
+    const loc = { name: '', address: '', zip: '', city: '', state: '', csz: '', phone: '', days: '', hours: '', patients: '', software: '', vendors: [], staff: [] };
+    document.querySelectorAll(`.loc-field[data-loc="${locId}"]`).forEach(inp => {
+        loc[inp.dataset.f] = (inp.value || '').trim();
+    });
+    // Build combined csz for org chart display
+    const cszParts = [loc.city, loc.state ? (loc.city ? loc.state : loc.state) : '', loc.zip].filter(Boolean);
+    loc.csz = loc.city && loc.state ? `${loc.city}, ${loc.state} ${loc.zip}`.trim() : [loc.city, loc.state, loc.zip].filter(Boolean).join(' ');
+    const vendorContainer = document.querySelector(`.vendor-checks[data-loc="${locId}"]`);
+    if (vendorContainer) {
+        vendorContainer.querySelectorAll('input[type="checkbox"]:checked').forEach(cb => {
+            loc.vendors.push(cb.value);
+        });
+    }
+    const tbody = document.getElementById(`${locId}-staff-body`);
+    if (tbody) {
+        tbody.querySelectorAll('tr').forEach(tr => {
+            const name = (tr.querySelector('[data-sf="name"]')?.value || '').trim();
+            const role = (tr.querySelector('[data-sf="role"]')?.value || '').trim();
+            const title = (tr.querySelector('[data-sf="title"]')?.value || '').trim();
+            const creds = (tr.querySelector('[data-sf="credentials"]')?.value || '').trim();
+            const npi = (tr.querySelector('[data-sf="npi"]')?.value || '').trim();
+            const phone = (tr.querySelector('[data-sf="phone"]')?.value || '').trim();
+            const email = (tr.querySelector('[data-sf="email"]')?.value || '').trim();
+            const alsoAt = (tr.querySelector('[data-sf="alsoat"]')?.value || '').trim();
+            const op = tr.querySelector('[data-sf="op"]')?.checked || false;
+            const pmlY = tr.querySelector('input[value="Y"]')?.checked;
+            const pmlN = tr.querySelector('input[value="N"]')?.checked;
+            const pml = pmlY ? 'Y' : pmlN ? 'N' : '';
+            if (name || role || email) {
+                loc.staff.push({ name, role, title, creds, npi, phone, email, alsoAt, op, pml });
+            }
+        });
+    }
+    return loc;
+}
+
+function getAllData() {
+    return {
+        practiceName: (document.getElementById('practiceName').value || '').trim(),
+        practiceIDN: (document.getElementById('practiceIDN').value || '').trim(),
+        practiceURL: (document.getElementById('practiceURL').value || '').trim(),
+        primary: getLocationData('primary'),
+        satellites: Array.from(document.querySelectorAll('#satelliteContainer .section-card')).map(card => {
+            const locId = card.querySelector('.loc-field')?.dataset.loc;
+            return locId ? getLocationData(locId) : null;
+        }).filter(Boolean)
+    };
+}
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+function updateProgress() {
+    const data = getAllData();
+    let score = 0, total = 0;
+
+    // Practice name
+    total++; if (data.practiceName) score++;
+
+    // Primary location fields
+    ['name','address','zip','city'].forEach(f => { total++; if (data.primary[f]) score++; });
+
+    // Primary has at least 1 staff
+    total++; if (data.primary.staff.length > 0) score++;
+
+    // Satellites
+    data.satellites.forEach(sat => {
+        ['name','address','zip'].forEach(f => { total++; if (sat[f]) score++; });
+        total++; if (sat.staff.length > 0) score++;
+    });
+
+    const pct = total > 0 ? Math.min(100, Math.round((score / total) * 100)) : 0;
+    var pf=document.getElementById('progressFill'); if(pf) pf.style.width = pct + '%';
+    (null && document.getElementById('progressLabel')).textContent = pct + '% Complete';
+
+    // Update staff counts
+    updateStaffCounts();
+}
+
+function updateStaffCounts() {
+    document.querySelectorAll('.staff-section').forEach(section => {
+        const tbody = section.querySelector('tbody');
+        const countEl = section.querySelector('.staff-count');
+        if (tbody && countEl) {
+            let filled = 0;
+            tbody.querySelectorAll('tr').forEach(tr => {
+                const name = (tr.querySelector('[data-sf="name"]')?.value || '').trim();
+                if (name) filled++;
+            });
+            countEl.textContent = `${filled} team member${filled !== 1 ? 's' : ''}`;
+        }
+    });
+}
+
+/* =========================================================
+   ORG CHART
+   ========================================================= */
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function renderLocNode(loc, type, label) {
+    const cls = type === 'primary' ? 'oc-loc-primary' : 'oc-loc-satellite';
+    const name = loc.name || (type === 'primary' ? 'Primary Clinic' : label);
+
+    let addrHTML = '';
+    if (loc.address || loc.csz) {
+        addrHTML = `<div class="oc-loc-addr">${esc([loc.address, loc.csz].filter(Boolean).join(', '))}</div>`;
+    }
+    let hoursHTML = '';
+    if (loc.days || loc.hours) {
+        hoursHTML = `<div class="oc-loc-hours">${esc([loc.days, loc.hours].filter(Boolean).join(' | '))}</div>`;
+    }
+    let ptsHTML = '';
+    if (loc.patients) {
+        ptsHTML = `<div class="oc-loc-pts">${esc(loc.patients)}</div>`;
+    }
+
+    let vendorHTML = '';
+    if (loc.vendors && loc.vendors.length > 0) {
+        vendorHTML = '<div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:8px;">';
+        loc.vendors.forEach(v => {
+            const short = v.replace('Medtronic CareLink','MDT').replace('Boston Scientific Latitude','BSC').replace('Abbott Merlin','ABT').replace('Biotronik','BIO');
+            vendorHTML += `<span style="font-size:0.56rem;font-weight:700;padding:2px 6px;border-radius:4px;background:#EDF0F4;color:#3D5A80;letter-spacing:0.03em">${esc(short)}</span>`;
+        });
+        vendorHTML += '</div>';
+    }
+
+    // Group staff by role group
+    let staffHTML = '';
+    if (loc.staff.length > 0) {
+        const groups = {};
+        loc.staff.forEach(p => {
+            const g = ROLE_GROUPS[p.role] || 'Other';
+            if (!groups[g]) groups[g] = [];
+            groups[g].push(p);
+        });
+        staffHTML = '<div class="oc-staff-list">';
+        ROLE_GROUP_ORDER.forEach(g => {
+            if (groups[g] && groups[g].length > 0) {
+                staffHTML += `<div class="oc-role-group">${esc(g)}</div>`;
+                groups[g].forEach(p => {
+                    const credStr = p.creds ? ` <span class="oc-person-cred">${esc(p.creds)}</span>` : '';
+                    const alsoStr = p.alsoAt ? ` <span class="oc-person-cred" style="font-style:italic"> · Also at ${esc(p.alsoAt)}</span>` : '';
+                    const opStr = p.op ? ' <span style="background:#FDF0F2;color:#EA0044;font-size:0.58rem;font-weight:700;padding:1px 5px;border-radius:4px;letter-spacing:0.03em">OP</span>' : '';
+                    staffHTML += `<div class="oc-person">${esc(p.name)}${credStr}${opStr}${alsoStr}</div>`;
+                });
+            }
+        });
+        staffHTML += '</div>';
+    } else {
+        staffHTML = '<div class="oc-no-staff">No team members listed</div>';
+    }
+
+    return `<div class="oc-loc ${cls}">
+        <div class="oc-loc-tag">${esc(type === 'primary' ? 'Primary' : label)}</div>
+        <div class="oc-loc-name">${esc(name)}</div>
+        ${addrHTML}${hoursHTML}${ptsHTML}${vendorHTML}${staffHTML}
+    </div>`;
+}
+
+function renderOrgChart() {
+    const data = getAllData();
+    const output = document.getElementById('orgchartOutput');
+
+    const primaryHasData = data.practiceName || data.primary.name || data.primary.address || data.primary.city || data.primary.zip;
+    const hasAny = primaryHasData || data.primary.staff.length > 0 || data.satellites.length > 0;
+    if (!hasAny) {
+        output.innerHTML = `<div class="orgchart-empty">
+            <div style="margin-bottom:12px;opacity:0.4;">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#CED4DA" stroke-width="1.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            </div>
+            <div class="orgchart-empty-text">Your practice map will appear here</div>
+            <div class="orgchart-empty-hint">Start filling in the form above and watch it build</div>
+        </div>`;
+        document.getElementById('orgchartBadge').textContent = 'Waiting for data';
+        return;
+    }
+
+    document.getElementById('orgchartBadge').textContent = 'Live Preview';
+
+    const locs = [{ data: data.primary, type: 'primary', label: 'Primary' }];
+    data.satellites.forEach((sat, i) => {
+        if (sat.name || sat.staff.length > 0) {
+            locs.push({ data: sat, type: 'satellite', label: `Satellite ${i + 1}` });
+        }
+    });
+
+    // Stats
+    let totalLocs = 0, totalStaff = 0, totalProviders = 0, totalPML = 0, totalOP = 0;
+    locs.forEach(l => {
+        if (l.data.name || l.data.address) totalLocs++;
+        l.data.staff.forEach(s => {
+            totalStaff++;
+            const g = ROLE_GROUPS[s.role] || 'Other';
+            if (g === 'Providers') totalProviders++;
+            if (s.pml === 'Y') totalPML++;
+            if (s.op) totalOP++;
+        });
+    });
+
+    let html = '<div class="oc-canvas"><div class="oc-tree">';
+
+    // Root
+    const rootName = data.practiceName || 'Your Practice';
+    const rootSub = data.practiceIDN ? `IDN: ${esc(data.practiceIDN)}` : '';
+    html += `<div class="oc-root">
+        <div class="oc-root-name">${esc(rootName)}</div>
+        ${rootSub ? `<div class="oc-root-sub">${rootSub}</div>` : ''}
+    </div><div class="oc-vline"></div>`;
+
+    if (locs.length === 1) {
+        html += renderLocNode(locs[0].data, locs[0].type, locs[0].label);
+    } else {
+        html += '<div class="oc-branches">';
+        locs.forEach(l => {
+            html += `<div class="oc-branch"><div class="oc-branch-line"></div>${renderLocNode(l.data, l.type, l.label)}</div>`;
+        });
+        html += '</div>';
+    }
+    html += '</div></div>';
+
+    // Stats bar
+    html += `<div class="oc-stats">
+        <div class="oc-stat"><div class="oc-stat-num red">${totalLocs || '—'}</div><div class="oc-stat-label">Locations</div></div>
+        <div class="oc-stat"><div class="oc-stat-num teal">${totalProviders || '—'}</div><div class="oc-stat-label">Providers</div></div>
+        <div class="oc-stat"><div class="oc-stat-num dark">${totalStaff || '—'}</div><div class="oc-stat-label">Total Staff</div></div>
+        <div class="oc-stat"><div class="oc-stat-num" style="color:#2B8A3E">${totalPML || '—'}</div><div class="oc-stat-label">PaceMateLIVE&#8482;</div></div>
+        <div class="oc-stat"><div class="oc-stat-num red">${totalOP || '—'}</div><div class="oc-stat-label">Ordering Providers</div></div>
+    </div>`;
+
+    output.innerHTML = html;
+}
+
+/* =========================================================
+   COMBINED UPDATE
+   ========================================================= */
+function updateAll() {
+    try { updateProgress(); } catch(e) { console.error('updateProgress error:', e); }
+    try { renderOrgChart(); } catch(e) { console.error('renderOrgChart error:', e); }
+}
+
+/* =========================================================
+   FORM ACTIONS
+   ========================================================= */
+function clearForm() {
+    if (!confirm('Clear all form data? This cannot be undone.')) return;
+    document.querySelectorAll('.loc-field').forEach(f => f.value = '');
+    document.querySelectorAll('.vendor-checks input[type="checkbox"]').forEach(cb => cb.checked = false);
+    document.getElementById('practiceName').value = '';
+    document.getElementById('practiceIDN').value = '';
+    document.getElementById('practiceURL').value = '';
+    document.getElementById('primary-staff-body').innerHTML = '';
+    document.getElementById('satelliteContainer').innerHTML = '';
+    satCount = 0;
+    seedPrimary();
+    updateAll();
+    showToast('Form cleared', 'warning');
+}
+
+function saveForm() {
+    showToast('Progress saved successfully', 'success');
+}
+
+function submitForm() {
+    // Save progress first
+    saveForm();
+    // Write submission record to CSM Form Inbox
+    var INBOX_KEY = 'csm_inbox_submissions';
+    var FORM_ID   = 'practice-team-profile';
+    var FORM_NAME = 'Practice Team Profile';
+    var FORM_FILE = 'form-practice-team-profile-v3__1_.html';
+    try {
+        var data = [];
+        try { data = JSON.parse(localStorage.getItem(INBOX_KEY) || '[]'); } catch(e) {}
+        var existing = data.find(function(e){ return e.id === FORM_ID; });
+        var now = Date.now();
+        if (existing) {
+            // Resubmission
+            existing.history[existing.history.length - 1].statusAtReview = existing.status;
+            existing.history.push({ submittedAt: now, statusAtReview: null });
+            existing.status    = 'submitted';
+            existing.glowStart = now;
+        } else {
+            data.push({
+                id:       FORM_ID,
+                formName: FORM_NAME,
+                formFile: FORM_FILE,
+                status:   'submitted',
+                glowStart: now,
+                history:  [{ submittedAt: now, statusAtReview: null }]
+            });
+        }
+        localStorage.setItem(INBOX_KEY, JSON.stringify(data));
+        showToast('Form submitted to PaceMate ✓', 'success');
+    } catch(e) {
+        showToast('Submission saved locally', 'success');
+    }
+}
+
+function showToast(msg, type) {
+    var existing = document.getElementById('pm-toast-el');
+    if (existing) existing.remove();
+    var t = document.createElement('div');
+    t.id = 'pm-toast-el';
+    t.textContent = msg;
+    var bg = type === 'success' ? '#2B8A3E' : type === 'error' ? '#C92A2A' : '#1971C2';
+    Object.assign(t.style, {
+        position:'fixed', bottom:'28px', left:'50%',
+        transform:'translateX(-50%) translateY(20px)',
+        background:bg, color:'#fff', padding:'12px 28px',
+        borderRadius:'50px', fontFamily:"'Roboto',sans-serif",
+        fontSize:'0.82rem', fontWeight:'600',
+        boxShadow:'0 6px 24px rgba(0,0,0,0.18)', zIndex:'9999',
+        opacity:'0', transition:'all 0.25s ease', whiteSpace:'nowrap'
+    });
+    document.body.appendChild(t);
+    requestAnimationFrame(function(){
+        t.style.opacity = '1';
+        t.style.transform = 'translateX(-50%) translateY(0)';
+    });
+    setTimeout(function(){
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(-50%) translateY(10px)';
+        setTimeout(function(){ if(t.parentNode) t.remove(); }, 300);
+    }, 3000);
+}
+
+
+function pmClearForm() {
+    if (!confirm('Clear all form fields? This cannot be undone.')) return;
+    document.querySelectorAll('input:not([type=radio]):not([type=checkbox]):not([type=hidden]), textarea, select').forEach(function(el){ el.value = ''; });
+    document.querySelectorAll('input[type=radio], input[type=checkbox]').forEach(function(el){ el.checked = false; });
+    // Clear dynamic satellite locations
+    var sc = document.getElementById('satelliteContainer');
+    if (sc) sc.innerHTML = '';
+    try { localStorage.removeItem('form_practice_team_profile'); } catch(e){}
+    updateAll();
+    showToast('Form cleared', 'info');
+}
+
+function pmSubmitValidated() {
+    var errors = [];
+    var pn = document.getElementById('practiceName');
+    if (pn && !pn.value.trim()) errors.push(pn);
+    var clinicName = document.querySelector('.loc-field[data-loc="primary"][data-f="name"]');
+    if (clinicName && !clinicName.value.trim()) errors.push(clinicName);
+    errors.forEach(function(el){ el.style.borderColor = '#EA0044'; el.style.boxShadow = '0 0 0 3px rgba(234,0,68,0.12)'; });
+    if (errors.length > 0) {
+        showToast('Please fill in required fields before submitting.', 'error');
+        errors[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        errors[0].focus();
+        return;
+    }
+    pmSubmit();
+}
+
+try { localStorage.setItem('form_practice_team_profile_v', 'v1-brand-rebuild'); } catch(e){}
+
+/* =========================================================
+   INIT
+   ========================================================= */
+/* =========================================================
+   ZIP CODE LOOKUP (zippopotam.us)
+   ========================================================= */
+function lookupZip(zip, locId) {
+    if (!zip || zip.length < 5) return;
+    const cleanZip = zip.replace(/\D/g, '').substring(0, 5);
+    if (cleanZip.length < 5) return;
+
+    fetch(`https://api.zippopotam.us/us/${cleanZip}`)
+        .then(r => { if (r.ok) return r.json(); throw new Error('Not found'); })
+        .then(data => {
+            if (data.places && data.places.length > 0) {
+                const city = data.places[0]['place name'];
+                const state = data.places[0]['state abbreviation'];
+                const cityField = document.querySelector(`.loc-field[data-loc="${locId}"][data-f="city"]`);
+                const stateField = document.querySelector(`.loc-field[data-loc="${locId}"][data-f="state"]`);
+                if (cityField) cityField.value = city;
+                if (stateField) stateField.value = state;
+                updateAll();
+                showToast('City and state filled in from zip code', 'success');
+            }
+        })
+        .catch(() => { /* Silent fail — user can type manually */ });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    seedPrimary();
+    updateAll();
+});
+</script>
+
+<!-- PaceMate Back Button -->
+<style>
+.pm-back-btn{
+  position:fixed;top:16px;left:16px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px 8px 12px;
+  background:#fff;
+  border:1.5px solid #DEE2E6;
+  border-radius:20px;
+  font-family:'Roboto', sans-serif,sans-serif;
+  font-size:0.78rem;font-weight:600;
+  color:#495057;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.09);
+  transition:all 0.15s;
+  line-height:1;
+}
+.pm-back-btn:hover{
+  background:#EA0044;color:#fff;
+  border-color:#EA0044;
+  box-shadow:0 3px 12px rgba(234,0,68,0.25);
+  transform:translateX(-2px);
+}
+.pm-back-btn svg{transition:transform 0.15s;}
+.pm-back-btn:hover svg{transform:translateX(-2px);}
+@media print{.pm-back-btn{display:none!important}}
+
+/* ── PM STANDARD ACTION BAR ─────────────────────────── */
+.pm-action-bar{display:flex;align-items:center;gap:10px;padding:20px 0 8px;border-top:1px solid #E9ECEF;margin-top:24px;flex-wrap:wrap;}
+.pm-pill{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:50px;font-family:'Roboto', sans-serif,sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.18s;border:none;outline:none;white-space:nowrap;line-height:1;}
+.pm-pill svg{width:14px;height:14px;flex-shrink:0;fill:currentColor;}
+.pm-pill-save{background:white;color:#495057;border:1.5px solid #DEE2E6;}
+.pm-pill-save:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529;}
+.pm-export-wrap{position:relative;margin-left:auto;}
+.pm-pill-export{background:white;color:#495057;border:1.5px solid #DEE2E6;}
+.pm-pill-export:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529;}
+.pm-chevron{width:11px!important;height:11px!important;transition:transform 0.18s;margin-left:1px;}
+.pm-export-wrap.open .pm-pill-export{border-color:#ADB5BD;background:#F8F9FA;}
+.pm-export-wrap.open .pm-chevron{transform:rotate(180deg);}
+.pm-export-menu{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:white;border:1.5px solid #E9ECEF;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.12);min-width:190px;z-index:200;overflow:hidden;}
+.pm-export-wrap.open .pm-export-menu{display:block;}
+.pm-export-item{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:0.82rem;font-weight:500;color:#495057;cursor:pointer;transition:background 0.12s;border:none;background:none;width:100%;text-align:left;font-family:'Roboto', sans-serif,sans-serif;}
+.pm-export-item:hover{background:#F8F9FA;color:#212529;}
+.pm-export-item+.pm-export-item{border-top:1px solid #F1F3F5;}
+.pm-export-item svg{width:15px;height:15px;flex-shrink:0;}
+.pm-pill-submit{background:linear-gradient(135deg,#EA0044,#C9003C);color:white;box-shadow:0 3px 12px rgba(234,0,68,0.22);}
+.pm-pill-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,0,68,0.35);}
+.pm-autosave{font-size:0.72rem;color:#ADB5BD;display:flex;align-items:center;gap:5px;}
+.pm-autosave.active{color:#2B8A3E;}
+.pm-autosave-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+@media print{.pm-action-bar{display:none!important;}}
+@media(max-width:600px){.pm-action-bar{gap:8px;}.pm-export-wrap{margin-left:0;}.pm-pill-submit{width:100%;justify-content:center;}}
+</style>
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 4L6 8l4 4"/>
+  </svg>
+  Back
+</button>
+
+
+<script>
+/* PM STANDARD ACTION BAR */
+var PM_WORKSTREAM='csm',PM_STORAGE_KEY='form_practice_team_profile',PM_FORM_ID='practice-team-profile',PM_FORM_NAME='Practice Team Profile',PM_FORM_FILE='form-practice-team-profile-v3__1_.html';
+function pmGetData(){var d={};document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name||'field';if(el.type==='radio'){if(el.checked)d[el.name]=el.value;}else if(el.type==='checkbox'){if(el.checked)d[k]=(d[k]?d[k]+', ':''+(el.value||'checked'));}else if(el.value){d[k]=el.value;}});return d;}
+function pmSave(){try{localStorage.setItem(PM_STORAGE_KEY,JSON.stringify(pmGetData()));}catch(e){}}
+function pmLoad(){try{var r=localStorage.getItem(PM_STORAGE_KEY);if(!r)return;var s=JSON.parse(r);document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name;if(!k||!(k in s))return;if(el.type==='radio'){el.checked=(s[el.name]===el.value);}else if(el.type==='checkbox'){el.checked=!!(s[k]&&s[k].indexOf(el.value||'checked')>-1);}else{el.value=s[k];}});}catch(e){}}
+function pmSetAutosave(msg){var el=document.getElementById('pmAutosave');if(!el)return;var t=new Date();var ts=t.getHours()+':'+String(t.getMinutes()).padStart(2,'0');el.innerHTML='<span class="pm-autosave-dot"></span>'+(msg||('Auto-saved at '+ts));el.classList.add('active');setTimeout(function(){el.classList.remove('active');},3000);}
+function pmSaveProgress(){pmSave();pmSetAutosave('Saved');if(typeof showToast==='function')showToast('Progress saved!','success');}
+function pmToggleExport(e){e.stopPropagation();document.getElementById('pmExportWrap').classList.toggle('open');}
+document.addEventListener('click',function(){var w=document.getElementById('pmExportWrap');if(w)w.classList.remove('open');});
+function pmExport(t){document.getElementById('pmExportWrap').classList.remove('open');if(t==='pdf')pmExportPDF();else if(t==='excel')pmExportExcel();else if(t==='csv')pmExportCSV();}
+function pmExportPDF(){if(typeof showToast==='function')showToast('Generating PDF...','info');var el=document.querySelector('.form-body,.form-wrapper,.pdf-form,.form-card,.main-content,form')||document.body;html2canvas(el,{scale:2,useCORS:true,logging:false}).then(function(canvas){var img=canvas.toDataURL('image/png');var pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),iw=pw,ih=(canvas.height*pw)/canvas.width,y=0;while(y<ih){if(y>0)pdf.addPage();pdf.addImage(img,'PNG',0,-y,iw,ih);y+=ph;}pdf.save(PM_FORM_NAME.replace(/\s+/g,'-')+'.pdf');if(typeof showToast==='function')showToast('PDF downloaded!','success');}).catch(function(){if(typeof showToast==='function')showToast('PDF failed','error');});}
+function pmExportExcel(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:30},{wch:50}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Form Data');XLSX.writeFile(wb,PM_FORM_NAME.replace(/\s+/g,'-')+'.xlsx');if(typeof showToast==='function')showToast('Excel downloaded!','success');}
+function pmExportCSV(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var csv=rows.map(function(r){return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(',')}).join('\n');var blob=new Blob([csv],{type:'text/csv'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=PM_FORM_NAME.replace(/\s+/g,'-')+'.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},5000);if(typeof showToast==='function')showToast('CSV downloaded!','success');}
+function pmSubmit(){pmSave();var WS_KEYS={'csm':'csm_inbox_submissions','integration':'integration_inbox_submissions','clinical':'clinical_inbox_submissions','patientsvcs':'patientsvcs_inbox_submissions','support':'support_inbox_submissions'};var key=WS_KEYS[PM_WORKSTREAM];if(!key){if(typeof showToast==='function')showToast('Submitted to PaceMate!','success');return;}var data=[];try{data=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}var now=Date.now();var existing=data.find(function(e){return e.id===PM_FORM_ID;});if(existing){existing.history[existing.history.length-1].statusAtReview=existing.status;existing.history.push({submittedAt:now,statusAtReview:null});existing.status='submitted';existing.glowStart=now;}else{data.push({id:PM_FORM_ID,formName:PM_FORM_NAME,formFile:PM_FORM_FILE,status:'submitted',glowStart:now,history:[{submittedAt:now,statusAtReview:null}]});}try{localStorage.setItem(key,JSON.stringify(data));}catch(e){}if(typeof showToast==='function')showToast('Submitted to PaceMate!','success');}
+setInterval(function(){pmSave();pmSetAutosave();},30000);
+/* ============================================================
+   EXPORT ORG FOR TRAINING — generates text-based jsPDF
+   with embedded JSON payload readable by PDF.js parser
+============================================================ */
+function pmExportOrgPDF() {
+  var data = getAllData();
+  if (!data.practiceName && !data.primary.name) {
+    if (typeof showToast === 'function') showToast('Please fill in practice information first', 'error');
+    return;
+  }
+
+  var doc = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  var pw = 210, ph = 297, m = 18, cw = pw - m * 2;
+  var y = 20;
+
+  // ── Header bar ──
+  doc.setFillColor(234, 0, 68);
+  doc.rect(0, 0, pw, 22, 'F');
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(11);
+  doc.text('PaceMate\u00AE  |  Practice Organization Profile', m, 14);
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'normal');
+  doc.text('Go-Live Training Playbook \u2014 Upload this PDF to the Practice Profile tab', pw - m, 14, { align: 'right' });
+
+  y = 32;
+
+  // ── Practice name ──
+  doc.setTextColor(30, 30, 30);
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(14);
+  doc.text(data.practiceName || 'Practice Name', m, y);
+  y += 5;
+  if (data.practiceIDN) {
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(100, 100, 100);
+    doc.text('IDN: ' + data.practiceIDN, m, y);
+    y += 5;
+  }
+  y += 4;
+
+  // ── Divider ──
+  doc.setDrawColor(234, 0, 68);
+  doc.setLineWidth(0.5);
+  doc.line(m, y, pw - m, y);
+  y += 6;
+
+  // ── Build locations array ──
+  var locs = [];
+  if (data.primary) {
+    locs.push({ type: 'Primary', loc: data.primary });
+  }
+  if (data.satellites) {
+    data.satellites.forEach(function(sat, i) {
+      if (sat && (sat.name || sat.staff.length > 0)) {
+        locs.push({ type: 'Satellite ' + (i + 1), loc: sat });
+      }
+    });
+  }
+
+  // ── Render each location ──
+  locs.forEach(function(entry, li) {
+    var loc = entry.loc;
+    var locName = loc.name || ('Location ' + (li + 1));
+
+    // Check page space
+    if (y > ph - 60) { doc.addPage(); y = 20; }
+
+    // Location header
+    doc.setFillColor(248, 249, 250);
+    doc.rect(m, y - 4, cw, 10, 'F');
+    doc.setDrawColor(220, 220, 220);
+    doc.rect(m, y - 4, cw, 10, 'S');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(10);
+    doc.setTextColor(30, 30, 30);
+    doc.text('\uD83D\uDCCD  ' + locName, m + 3, y + 2);
+
+    // Type badge
+    doc.setFillColor(234, 0, 68);
+    doc.roundedRect(pw - m - 30, y - 3, 28, 7, 2, 2, 'F');
+    doc.setTextColor(255, 255, 255);
+    doc.setFontSize(7);
+    doc.text(entry.type, pw - m - 16, y + 2, { align: 'center' });
+
+    y += 12;
+
+    // Address
+    if (loc.address || loc.csz) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(8);
+      doc.setTextColor(80, 80, 80);
+      if (loc.address) { doc.text(loc.address, m + 3, y); y += 4; }
+      if (loc.csz) { doc.text(loc.csz, m + 3, y); y += 4; }
+      if (loc.phone) { doc.text('Phone: ' + loc.phone, m + 3, y); y += 4; }
+      y += 2;
+    }
+
+    // Staff table header
+    if (loc.staff && loc.staff.length > 0) {
+      // Table header row
+      doc.setFillColor(234, 0, 68);
+      doc.rect(m, y, cw, 6, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(7.5);
+      doc.text('Name', m + 2, y + 4);
+      doc.text('Role', m + 60, y + 4);
+      doc.text('Title', m + 100, y + 4);
+      doc.text('PML User', m + 150, y + 4);
+      y += 6;
+
+      // Staff rows
+      loc.staff.forEach(function(s, si) {
+        if (!s.name && !s.role) return;
+        if (y > ph - 30) { doc.addPage(); y = 20; }
+
+        var rowBg = si % 2 === 0 ? [255, 255, 255] : [248, 249, 250];
+        doc.setFillColor(rowBg[0], rowBg[1], rowBg[2]);
+        doc.rect(m, y, cw, 6, 'F');
+        doc.setDrawColor(235, 235, 235);
+        doc.line(m, y + 6, m + cw, y + 6);
+
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(7.5);
+        doc.setTextColor(30, 30, 30);
+        doc.text(s.name || '', m + 2, y + 4);
+        doc.text(s.role || '', m + 60, y + 4);
+        doc.text(s.title || '', m + 100, y + 4);
+
+        // PML badge
+        if (s.pml === 'Y') {
+          doc.setFillColor(232, 245, 233);
+          doc.roundedRect(m + 148, y + 1, 12, 4, 1, 1, 'F');
+          doc.setTextColor(43, 138, 62);
+          doc.setFontSize(6.5);
+          doc.text('YES', m + 154, y + 4, { align: 'center' });
+        } else {
+          doc.setTextColor(150, 150, 150);
+          doc.setFontSize(7);
+          doc.text('No', m + 154, y + 4, { align: 'center' });
+        }
+        y += 6;
+      });
+      y += 4;
+    } else {
+      doc.setFont('helvetica', 'italic');
+      doc.setFontSize(8);
+      doc.setTextColor(150, 150, 150);
+      doc.text('No staff entered for this location.', m + 3, y);
+      y += 8;
+    }
+
+    y += 4;
+  });
+
+  // ── Generation date ──
+  if (y > ph - 24) { doc.addPage(); y = 20; }
+  y += 6;
+  doc.setDrawColor(220, 220, 220);
+  doc.line(m, y, pw - m, y);
+  y += 6;
+  doc.setFont('helvetica', 'italic');
+  doc.setFontSize(7.5);
+  doc.setTextColor(150, 150, 150);
+  doc.text('Generated: ' + new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) + '  |  PaceMate\u00AE Go-Live Training Configuration File', m, y);
+
+  // ── STRUCTURED DATA PAYLOAD (machine-readable, small font at bottom) ──
+  // This is what the Training Playbook parser reads
+  var payload = {
+    _pm_version: '1.0',
+    practiceName: data.practiceName || '',
+    practiceIDN: data.practiceIDN || '',
+    exportedAt: new Date().toISOString(),
+    locations: locs.map(function(entry) {
+      var loc = entry.loc;
+      return {
+        type: entry.type,
+        name: loc.name || '',
+        address: loc.address || '',
+        city: loc.city || '',
+        state: loc.state || '',
+        zip: loc.zip || '',
+        phone: loc.phone || '',
+        staff: (loc.staff || []).filter(function(s) { return s.name || s.role; }).map(function(s) {
+          return {
+            name: s.name || '',
+            role: s.role || '',
+            title: s.title || '',
+            credentials: s.credentials || '',
+            phone: s.phone || '',
+            email: s.email || '',
+            pml: s.pml || 'N',
+            op: s.op || false
+          };
+        })
+      };
+    })
+  };
+
+  var jsonStr = JSON.stringify(payload);
+
+  // Add data page - last page, tiny text, clearly labeled
+  doc.addPage();
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(8);
+  doc.setTextColor(180, 180, 180);
+  doc.text('MACHINE-READABLE DATA \u2014 Do not edit. Used by Go-Live Training Playbook.', m, 15);
+
+  doc.setFont('courier', 'normal');
+  doc.setFontSize(5.5);
+  doc.setTextColor(200, 200, 200);
+
+  // Write marker + JSON in chunks (jsPDF text wrapping)
+  var fullText = '===PM_ORG_DATA_START===\n' + jsonStr + '\n===PM_ORG_DATA_END===';
+  var lines = doc.splitTextToSize(fullText, cw);
+  var ty = 22;
+  lines.forEach(function(line) {
+    if (ty > 280) { doc.addPage(); ty = 15; }
+    doc.text(line, m, ty);
+    ty += 3.5;
+  });
+
+  // Save
+  var filename = (data.practiceName || 'Practice').replace(/[^a-zA-Z0-9 ]/g, '').replace(/\s+/g, '-') + '-Org-Profile.pdf';
+  doc.save(filename);
+  if (typeof showToast === 'function') showToast('Org Profile PDF downloaded — upload to Training Playbook', 'success');
+}
+
+document.addEventListener('DOMContentLoaded',function(){pmLoad(); setTimeout(updateAll, 100);});
+
+/* ── OP TOOLTIP ── */
+document.addEventListener('DOMContentLoaded', function(){
+  var box = document.createElement('div');
+  box.className = 'pm-tooltip-box';
+  document.body.appendChild(box);
+
+  function attachTooltip(selector, label) {
+    document.querySelectorAll(selector).forEach(function(th){
+      if (th.dataset.tooltipBound) return; // prevent duplicate listeners
+      th.dataset.tooltipBound = '1';
+      th.addEventListener('mouseenter', function(){
+        box.textContent = label;
+        var r = th.getBoundingClientRect();
+        box.style.left = (r.left + r.width/2) + 'px';
+        box.style.top = (r.top - 36) + 'px';
+        box.style.transform = 'translateX(-50%)';
+        box.classList.add('visible');
+      });
+      th.addEventListener('mouseleave', function(){
+        box.classList.remove('visible');
+      });
+    });
+  }
+
+  attachTooltip('.op-tooltip-th', 'Ordering Provider');
+  attachTooltip('.pml-tooltip-th', 'PaceMateLIVE™ User');
+
+  // Re-attach when satellite tables are added dynamically
+  var observer = new MutationObserver(function(){
+    attachTooltip('.op-tooltip-th', 'Ordering Provider');
+    attachTooltip('.pml-tooltip-th', 'PaceMateLIVE™ User');
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>
+
+<!-- Footer -->
+<div style="max-width:1320px;margin:0 auto;padding:10px 28px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;font-family:'Roboto Condensed',sans-serif;color:#868E96">
+  <div style="font-weight:700;color:#626469">PaceMate&reg; &bull; PaceMate.com</div>
+  <div>Practice &amp; Team Profile &bull; v1 &bull; February 2026</div>
+</div>
+</div><!-- /.form-wrapper -->
+</body>
+</html>

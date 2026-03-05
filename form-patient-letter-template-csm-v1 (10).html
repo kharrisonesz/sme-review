@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceMate® Patient Letter Template (CSM)</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Roboto:wght@400&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --pm-red:#EA0044;
+  --pm-gray:#626469;
+  --pm-light-gray:#D9D9D6;
+  --text-primary:#212529;
+  --text-secondary:#495057;
+  --text-tertiary:#868E96;
+  --bg-white:#FFFFFF;
+  --bg-light:#F8F9FA;
+  --border-light:#DEE2E6;
+  --shadow-md:0 4px 12px rgba(0,0,0,0.08)
+}
+body{font-family:'Roboto',sans-serif;background:var(--bg-light);color:var(--text-primary);line-height:1.6}
+
+/* ── CONTROLS BAR ─────────────────────────────── */
+.controls-bar{max-width:780px;margin:16px auto 0;padding:0 24px;display:flex;flex-direction:column;gap:8px}
+.controls-bar-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px}
+.controls-label{font-family:'Poppins',sans-serif;font-weight:600;font-size:0.78rem;color:var(--pm-gray);text-transform:uppercase;letter-spacing:0.04em;margin-bottom:3px}
+.field-inputs{display:flex;flex-direction:column;gap:6px;flex:1}
+.practice-input{border:2px solid var(--pm-light-gray);border-radius:8px;padding:7px 12px;font-family:'Roboto',sans-serif;font-size:0.92rem;color:var(--text-primary);width:100%;transition:border-color 0.18s}
+.practice-input:focus{outline:none;border-color:var(--pm-red);box-shadow:0 0 0 3px rgba(234,0,68,0.1)}
+.practice-input::placeholder{color:var(--text-tertiary)}
+.practice-input.error{border-color:var(--pm-red);background:#fff8f9}
+.input-row{display:flex;gap:10px}
+.input-row .practice-input{flex:1}
+.controls-right{display:flex;align-items:center;gap:8px;flex-shrink:0;margin-top:22px}
+.lang-btn{font-family:'Poppins',sans-serif;font-weight:600;font-size:0.75rem;padding:7px 16px;border-radius:50px;background:transparent;color:var(--pm-gray);border:1.5px solid var(--pm-light-gray);cursor:pointer;white-space:nowrap;transition:all 0.18s}
+.lang-btn:hover{border-color:var(--pm-gray);color:var(--text-primary)}
+.btn-download-pdf{display:inline-flex;align-items:center;gap:6px;padding:7px 16px;border-radius:50px;font-family:'Poppins',sans-serif;font-size:0.75rem;font-weight:600;cursor:pointer;background:var(--pm-red);color:#fff;border:none;transition:all 0.18s;white-space:nowrap}
+.btn-download-pdf svg{width:13px;height:13px;fill:#fff;flex-shrink:0}
+.btn-download-pdf:hover{background:#c9003c}
+.instruction-note{max-width:780px;margin:8px auto 0;padding:0 24px;font-size:0.82rem;color:var(--text-tertiary);font-style:italic}
+@media print{.controls-bar,.instruction-note{display:none!important}}
+
+/* ── LETTER PAGE ───────────────────────────────── */
+.letter-page{max-width:780px;margin:10px auto 0;background:var(--bg-white);border-radius:14px;box-shadow:var(--shadow-md);overflow:hidden}
+
+/* ── HEADER ────────────────────────────────────── */
+.letter-header{background:var(--bg-white);padding:18px 44px 14px;border-bottom:3px solid var(--pm-red);display:flex;align-items:center;justify-content:flex-start}
+.header-logo svg{height:56px;width:auto;display:block}
+
+/* ── LOGO (unused helpers — clean) ────────────── */
+
+/* ── LETTER BODY ───────────────────────────────── */
+.letter-body{padding:28px 44px;font-size:0.91rem;line-height:1.65;color:var(--text-primary);font-family:'Roboto',sans-serif}
+.letter-body .salutation{font-size:0.95rem;margin-bottom:14px;font-family:'Poppins',sans-serif;font-weight:600}
+.letter-body p{margin-bottom:10px;text-align:justify}
+.practice-name-display{color:var(--pm-red);font-family:'Poppins',sans-serif;font-weight:600;border-bottom:2px solid var(--pm-red);padding-bottom:1px}
+.letter-body .closing{margin-top:16px}
+.letter-body .closing p{margin-bottom:2px;font-family:'Poppins',sans-serif;font-weight:300}
+.team-name{font-family:'Poppins',sans-serif;font-size:0.95rem;font-weight:600;color:var(--pm-red);margin-top:4px}
+
+/* ── CONTACT CALLOUT ───────────────────────────── */
+.contact-callout{background:linear-gradient(135deg,#fff5f7 0%,#ffe8ee 100%);border-left:4px solid var(--pm-red);border-radius:0 8px 8px 0;padding:12px 16px;margin:12px 0;font-size:0.88rem}
+.contact-callout strong{color:var(--pm-red)}
+
+/* ── FOOTER ────────────────────────────────────── */
+.pm-footer{
+  display:flex;justify-content:space-between;align-items:center;
+  max-width:780px;margin:12px auto 24px;padding:10px 24px;
+  font-size:0.72rem;
+  font-family:'Roboto Condensed',sans-serif;
+  color:#868E96
+}
+.pm-footer-left{font-weight:700;color:#626469}
+.pm-footer-right{text-align:right;color:#868E96}
+
+/* ── PRINT ─────────────────────────────────────── */
+@media print{
+  body{background:#fff}
+  .controls-bar,.instruction-note,.pm-footer{display:none!important}
+  .letter-page{box-shadow:none;border-radius:0;margin:0;max-width:100%}
+  .letter-header,.contact-callout{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .letter-body{padding:36px 48px;font-size:11pt;line-height:1.7}
+  @page{margin:0.5in}
+}
+
+/* ── MOBILE ────────────────────────────────────── */
+@media(max-width:640px){
+  .letter-body{padding:28px 24px}
+  .pm-footer{padding:12px 24px;flex-direction:column;gap:6px;text-align:center}
+  .controls-bar{padding:0 16px}
+  .input-row{flex-direction:column}
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<!-- Controls -->
+<div class="controls-bar">
+  <div class="controls-bar-top">
+    <div class="field-inputs">
+      <div>
+        <div class="controls-label">Practice / Organization Name</div>
+        <input type="text" id="practiceNameInput" class="practice-input" placeholder="Enter practice or organization name…" oninput="updateField('practiceNameSlot','practiceNameSlotES',this.value,'YOUR PRACTICE NAME')">
+      </div>
+      <div class="input-row">
+        <div style="flex:1">
+          <div class="controls-label">Clinic Phone Number</div>
+          <input type="text" id="clinicPhoneInput" class="practice-input" placeholder="e.g. (555) 555-5555" oninput="updateField('clinicPhoneSlot','clinicPhoneSlotES',this.value,'[CLINIC PHONE NUMBER]')">
+        </div>
+        <div style="flex:1">
+          <div class="controls-label">Clinic Manager Name</div>
+          <input type="text" id="clinicManagerInput" class="practice-input" placeholder="First and last name" oninput="updateField('clinicManagerSlot','clinicManagerSlotES',this.value,'[CLINIC MANAGER]')">
+        </div>
+      </div>
+    </div>
+    <div class="controls-right">
+      <button class="lang-btn" id="langToggle" onclick="toggleLanguage()">Español</button>
+      <button class="btn-download-pdf" onclick="pmExportPDF()">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Download PDF
+      </button>
+    </div>
+  </div>
+</div>
+<div class="instruction-note">Fill in the fields above, then download as PDF to print for your <strong style="font-style:normal">active remotely monitored</strong> patients.</div>
+
+<!-- Letter -->
+<div class="letter-page">
+
+  <!-- Header -->
+  <div class="letter-header">
+        <div class="header-logo"><svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" overflow="hidden"><g><path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.601 57.79 165.601 33.675 172.08 33.675 176.723 50.509 176.79 50.509 181.467 33.675 188.014 33.675 188.014 57.79 184.005 57.79 184.005 38.818 183.938 38.818 178.528 57.79 175.02 57.79 169.676 38.818 169.609 38.818 169.609 57.79 165.601 57.79Z" fill="#636569"/><path d="M201.94 57.79 201.674 56.287C200.003 57.422 198.433 58.123 196.263 58.123 193.122 58.123 191.551 55.885 191.551 53.515 191.551 49.573 194.759 47.503 201.506 46.701L201.506 45.232C201.506 43.895 200.438 43.161 198.968 43.161 197.031 43.161 195.962 44.196 195.16 45.299L192.489 43.261C193.557 41.425 196.43 40.021 198.968 40.09 203.644 40.189 205.648 41.892 205.648 47.104L205.648 55.286C205.648 56.155 205.715 57.023 205.982 57.792L201.94 57.792ZM201.507 49.473C198.735 50.008 195.695 50.576 195.695 53.013 195.695 54.315 196.529 55.051 197.699 55.051 199.001 55.051 200.638 53.948 201.507 53.214L201.507 49.473Z" fill="#636569"/><path d="M210.689 40.421 210.689 34.676 214.83 34.676 214.83 40.421 218.238 40.421 218.238 43.762 214.83 43.762 214.83 53.582C214.83 54.517 215.299 54.785 216.334 54.785 216.969 54.785 217.636 54.584 218.238 54.45L218.238 57.857C217.101 57.991 216.099 58.125 214.965 58.125 211.892 58.125 210.689 56.588 210.689 54.116L210.689 43.762 208.284 43.762 208.284 40.421 210.689 40.421Z" fill="#636569"/><path d="M224.179 49.774C224.245 53.381 225.849 54.784 227.787 54.784 229.725 54.784 230.626 53.915 231.662 52.713L234.668 54.584C233.065 57.056 230.727 58.124 227.386 58.124 222.877 58.124 220.038 54.617 220.038 49.106 220.038 43.595 222.877 40.088 227.586 40.088 232.129 40.054 234.667 43.896 234.667 48.072L234.667 49.775 224.179 49.775ZM230.86 46.968C230.794 44.563 229.524 43.16 227.519 43.16 225.514 43.16 224.246 44.563 224.179 46.968L230.86 46.968Z" fill="#636569"/></g></g><g><circle cx="240.028" cy="40.004" r="3.659" stroke="#636569" stroke-width="0.48" stroke-miterlimit="10" fill="none"/><path d="M239.897 40.276 239.24 40.276 239.24 41.999 238.707 41.999 238.707 38.011 239.984 38.011C240.968 38.011 241.272 38.489 241.272 39.076 241.272 39.532 241.136 40.027 240.43 40.206L241.348 41.999 240.767 41.999 239.898 40.276ZM239.761 39.858C240.424 39.858 240.717 39.684 240.717 39.103 240.717 38.63 240.451 38.435 239.869 38.435L239.239 38.435 239.239 39.859 239.761 39.859Z" fill="#636569"/></g></svg></div>
+  </div>
+
+  <!-- English Body -->
+  <div class="letter-body" id="letterEnglish">
+    <p class="salutation">Dear Valued Patient,</p>
+
+    <p><span class="practice-name-display" id="practiceNameSlot">YOUR PRACTICE NAME</span> is committed to providing you with the highest quality cardiac care and patient experience. We are reaching out to inform you that a new partner, PaceMate&reg;, has been chosen to monitor your cardiac device and heart data. PaceMate&reg; is the leading digital technology company in cardiac care data management, using technology to simplify and modernize heart monitoring.</p>
+
+    <p>We will be working together with PaceMate&reg; to make sure your implanted cardiac device is always monitored, keeping you safe and reducing your risk of hospitalizations.</p>
+
+    <p>Your cardiac device with the bedside monitor will regularly transmit your device and heart information to PaceMate&reg; so they can report any irregularities to us. For the most part, there is not much you need to do on your end to make sure this happens. The transmission schedule is managed and reviewed by us and coordinated with PaceMate&reg;.</p>
+
+    <p>If you have an automatic monitor, just make sure your home monitor is plugged in at your bedside and the device will do the rest.</p>
+
+    <p>If you do not have an automatic monitor, PaceMate&reg; will call you to remind you when to send remote transmissions using your existing equipment.</p>
+
+    <p>Your safety is our number one concern, which is why we have chosen PaceMate&reg; to monitor your device and heart data. PaceMate&reg; technology has saved lives with its innovative approach to cardiac data management and we know your heart health is in good hands.</p>
+
+    <div class="contact-callout">
+      <strong>Learn more &amp; get help</strong><br>
+      Visit the PaceMate&reg; patient portal at <strong>www.pacemate.com/patient-portal</strong> for helpful resources about home monitoring.<br>
+      If you have any questions, please call us at <strong id="clinicPhoneSlot">[CLINIC PHONE NUMBER]</strong>.
+    </div>
+
+    <div class="closing">
+      <p>Sincerely,</p>
+      <div class="team-name" id="clinicManagerSlot">[CLINIC MANAGER]</div>
+    </div>
+  </div>
+
+  <!-- Spanish Body -->
+  <div class="letter-body" id="letterSpanish" style="display:none">
+    <p class="salutation">Estimado paciente,</p>
+
+    <p><span class="practice-name-display" id="practiceNameSlotES">YOUR PRACTICE NAME</span> se compromete a brindarle la m&aacute;s alta calidad en atenci&oacute;n card&iacute;aca y en su experiencia como paciente. Nos ponemos en contacto con usted para informarle que se ha elegido a un nuevo socio, PaceMate&reg;, para monitorear su dispositivo card&iacute;aco y los datos de su coraz&oacute;n. PaceMate&reg; es la empresa l&iacute;der en tecnolog&iacute;a digital para la gesti&oacute;n de datos card&iacute;acos, utilizando la innovaci&oacute;n tecnol&oacute;gica para simplificar y modernizar el monitoreo del coraz&oacute;n.</p>
+
+    <p>Trabajaremos en conjunto con PaceMate&reg; para asegurarnos de que su dispositivo card&iacute;aco implantado est&eacute; siempre monitoreado, manteni&eacute;ndolo/a seguro/a y reduciendo su riesgo de hospitalizaci&oacute;n.</p>
+
+    <p>Su dispositivo card&iacute;aco con el monitor de cabecera transmitir&aacute; regularmente la informaci&oacute;n de su dispositivo y de su coraz&oacute;n a PaceMate&reg;, para que ellos puedan notificarnos cualquier irregularidad. En la mayor&iacute;a de los casos, usted no necesita hacer nada para que esto suceda. El calendario de transmisiones es administrado y revisado por nosotros en coordinaci&oacute;n con PaceMate&reg;.</p>
+
+    <p>Si usted cuenta con un monitor autom&aacute;tico, solo aseg&uacute;rese de que su monitor dom&eacute;stico est&eacute; conectado en su cabecera y el dispositivo har&aacute; el resto.</p>
+
+    <p>Si no cuenta con un monitor autom&aacute;tico, PaceMate&reg; se comunicar&aacute; con usted por tel&eacute;fono para recordarle cu&aacute;ndo debe enviar transmisiones remotas utilizando su equipo actual.</p>
+
+    <p>Su seguridad es nuestra m&aacute;xima prioridad, raz&oacute;n por la cual hemos elegido a PaceMate&reg; para monitorear su dispositivo y los datos de su coraz&oacute;n. La tecnolog&iacute;a de PaceMate&reg; ha salvado vidas gracias a su enfoque innovador en la gesti&oacute;n de datos card&iacute;acos, y sabemos que la salud de su coraz&oacute;n est&aacute; en buenas manos.</p>
+
+    <div class="contact-callout">
+      <strong>M&aacute;s informaci&oacute;n y ayuda</strong><br>
+      Visite el portal de pacientes de PaceMate&reg; en <strong>www.pacemate.com/patient-portal</strong> para acceder a recursos &uacute;tiles sobre el monitoreo en el hogar.<br>
+      Si tiene alguna pregunta, por favor comun&iacute;quese con nosotros al <strong id="clinicPhoneSlotES">[CLINIC PHONE NUMBER]</strong>.
+    </div>
+
+    <div class="closing">
+      <p>Atentamente,</p>
+      <div class="team-name" id="clinicManagerSlotES">[CLINIC MANAGER]</div>
+    </div>
+  </div>
+
+</div><!-- /.letter-page -->
+
+<!-- Footer — outside letter-page so html2canvas never captures it -->
+<div class="pm-footer">
+  <div class="pm-footer-left">PaceMate&reg; &bull; PaceMate.com</div>
+  <div class="pm-footer-right">Patient Letter Template (CSM) &bull; v1 &bull; February 2026</div>
+</div>
+
+<script>
+/* ── CONFIG ─────────────────────────────────────── */
+var PM_FORM_NAME = 'Patient Letter Template (CSM)';
+var currentLang = 'en';
+
+/* ── FIELD UPDATE ───────────────────────────────── */
+function updateField(enId, esId, value, fallback) {
+  var enEl = document.getElementById(enId);
+  var esEl = document.getElementById(esId);
+  var display = value.trim() || fallback;
+  if (enEl) enEl.textContent = display;
+  if (esEl) esEl.textContent = display;
+}
+
+/* ── LANGUAGE TOGGLE ────────────────────────────── */
+function toggleLanguage() {
+  var enBody = document.getElementById('letterEnglish');
+  var esBody = document.getElementById('letterSpanish');
+  var btn = document.getElementById('langToggle');
+  if (currentLang === 'en') {
+    enBody.style.display = 'none';
+    esBody.style.display = '';
+    btn.textContent = 'English';
+    currentLang = 'es';
+  } else {
+    enBody.style.display = '';
+    esBody.style.display = 'none';
+    btn.textContent = 'Español';
+    currentLang = 'en';
+  }
+}
+
+/* ── PDF EXPORT ─────────────────────────────────── */
+function pmExportPDF() {
+  showToast('Generating PDF…', 'info');
+  var el = document.querySelector('.letter-page');
+  html2canvas(el, { scale: 2, useCORS: true, logging: false }).then(function(canvas){
+    var img = canvas.toDataURL('image/png');
+    var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    var pw = pdf.internal.pageSize.getWidth(), ph = pdf.internal.pageSize.getHeight();
+    var iw = pw, ih = (canvas.height * pw) / canvas.width, y = 0;
+    while (y < ih) {
+      if (y > 0) pdf.addPage();
+      pdf.addImage(img, 'PNG', 0, -y, iw, ih);
+      y += ph;
+    }
+    pdf.save(PM_FORM_NAME.replace(/\s+/g,'-') + '.pdf');
+    showToast('PDF downloaded!', 'success');
+  }).catch(function(){ showToast('PDF generation failed.', 'error'); });
+}
+
+/* ── TOAST (self-contained) ─────────────────────── */
+function showToast(msg, type) {
+  var existing = document.getElementById('pm-toast-el');
+  if (existing) existing.remove();
+  var t = document.createElement('div');
+  t.id = 'pm-toast-el';
+  t.textContent = msg;
+  var bg = type === 'success' ? '#2B8A3E' : type === 'error' ? '#C92A2A' : '#1971C2';
+  Object.assign(t.style, {
+    position:'fixed', bottom:'28px', left:'50%', transform:'translateX(-50%) translateY(20px)',
+    background:bg, color:'#fff', padding:'12px 28px', borderRadius:'50px',
+    fontFamily:"'Poppins',sans-serif", fontSize:'0.82rem', fontWeight:'600',
+    boxShadow:'0 6px 24px rgba(0,0,0,0.18)', zIndex:'9999',
+    opacity:'0', transition:'all 0.25s ease', whiteSpace:'nowrap'
+  });
+  document.body.appendChild(t);
+  requestAnimationFrame(function(){
+    t.style.opacity = '1';
+    t.style.transform = 'translateX(-50%) translateY(0)';
+  });
+  setTimeout(function(){
+    t.style.opacity = '0';
+    t.style.transform = 'translateX(-50%) translateY(10px)';
+    setTimeout(function(){ if(t.parentNode) t.remove(); }, 300);
+  }, 3000);
+}
+</script>
+</body>
+</html>

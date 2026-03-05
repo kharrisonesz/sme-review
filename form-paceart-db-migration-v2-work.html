@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceArt Optima™ | Historical Data Migration to PaceMateLIVE™</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@300;400;500;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Roboto',-apple-system,BlinkMacSystemFont,sans-serif;background:#F5F6F8;color:#212529;line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;}
+.form-wrapper{max-width:900px;margin:0 auto;padding:32px 20px 60px;}
+
+/* HEADER - PaceArt Optima branding */
+.form-header{background:#FFFFFF;border-bottom:3px solid #EA0044;padding:14px 40px;display:flex;align-items:center;}
+.form-header::before{display:none;/*content:'';position:absolute;top:-40%;right:-15%;width:300px;height:300px;background:radial-gradient(circle,rgba(255,255,255,0.06) 0%,transparent 70%);border-radius:50%;*/}
+.header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;position:relative;z-index:1;}
+.header-logo{display:flex;align-items:center;gap:12px;}
+.heart-icon{width:36px;height:36px;background:rgba(255,255,255,0.15);border-radius:10px;display:flex;align-items:center;justify-content:center;}
+.heart-icon svg{width:20px;height:20px;fill:white;}
+.brand-text{font-size:1.05rem;font-weight:700;letter-spacing:0.02em;}
+.brand-sub{font-size:0.72rem;font-weight:400;opacity:0.7;}
+.header-badge{background:rgba(255,255,255,0.15);padding:6px 16px;border-radius:20px;font-size:0.72rem;font-weight:600;letter-spacing:0.05em;text-transform:uppercase;}
+.form-title{font-family:'Poppins',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:6px;position:relative;z-index:1;}
+.form-subtitle{font-size:0.88rem;opacity:0.85;font-weight:400;position:relative;z-index:1;}
+
+/* PROGRESS */
+.progress-section{display:none}
+.progress-bar-track{display:none}
+.progress-bar-fill{height:100%;background:linear-gradient(90deg,#EA0044,#E8394F);border-radius:3px;transition:width 0.4s ease;width:0%;}
+.progress-label{font-size:0.78rem;font-weight:600;color:#495057;white-space:nowrap;}
+
+/* BODY */
+.form-body{background:white;padding:32px 40px 40px;border-radius:0 0 16px 16px;box-shadow:0 4px 24px rgba(0,0,0,0.06);}
+
+/* PURPOSE */
+.purpose-block{background:#F8F5FA;border:1px solid #D8CCE0;border-left:4px solid #EA0044;border-radius:10px;padding:20px 24px;margin-bottom:28px;}
+.purpose-title{font-weight:700;font-size:0.92rem;color:#212529;margin-bottom:8px;}
+.purpose-text{font-size:0.84rem;color:#495057;line-height:1.7;}
+
+/* SECTIONS */
+.section-divider{margin:32px 0 20px;padding-bottom:12px;border-bottom:2px solid #F1F3F5;display:flex;align-items:center;gap:10px;}
+.section-divider-num{background:#EA0044;color:white;font-size:0.7rem;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.section-divider-title{font-family:'Poppins',sans-serif;font-size:1.1rem;font-weight:700;color:#212529;}
+.section-note{font-size:0.78rem;color:#868E96;font-style:italic;margin-left:auto;}
+
+/* FIELDS */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-grid .full-width{grid-column:1/-1;}
+.field-group label{display:block;font-size:0.76rem;font-weight:600;color:#495057;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;}
+.field-group input,.field-group select,.field-group textarea{width:100%;padding:10px 14px;border:1.5px solid #DEE2E6;border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.86rem;color:#212529;transition:border-color 0.2s,box-shadow 0.2s;background:#FAFBFC;}
+.field-group input:focus,.field-group select:focus,.field-group textarea:focus{outline:none;border-color:#EA0044;box-shadow:0 0 0 3px rgba(107,45,123,0.08);background:white;}
+.field-group input::placeholder,.field-group textarea::placeholder{color:#ADB5BD;}
+
+/* INFO BLOCKS */
+.info-section{background:#F8F9FA;border:1px solid #E9ECEF;border-radius:10px;padding:20px 24px;margin-bottom:20px;}
+.info-section-title{font-weight:700;font-size:0.86rem;color:#212529;margin-bottom:10px;}
+.info-list{font-size:0.82rem;color:#495057;line-height:1.8;}
+.info-list li{margin-bottom:4px;}
+.info-list li::marker{color:#EA0044;}
+.exclusion-block{background:#FFF8F8;border:1px solid #FECDD3;border-radius:10px;padding:16px 20px;margin-top:16px;}
+.exclusion-title{font-weight:700;font-size:0.82rem;color:#EA0044;margin-bottom:8px;}
+
+/* CHECKBOX CARDS */
+.checkbox-card{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border:1.5px solid #DEE2E6;border-radius:10px;cursor:pointer;transition:all 0.2s;user-select:none;margin-bottom:10px;}
+.checkbox-card:hover{border-color:#ADB5BD;background:#F8F9FA;}
+.checkbox-card.checked{border-color:#EA0044;background:#F8F5FA;}
+.checkbox-card input[type="checkbox"],.checkbox-card input[type="radio"]{display:none;}
+.checkbox-box{width:20px;height:20px;border:2px solid #CED4DA;border-radius:5px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;margin-top:1px;}
+.checkbox-card.checked .checkbox-box{background:#EA0044;border-color:#EA0044;}
+.checkbox-box svg{width:12px;height:12px;fill:white;opacity:0;transition:opacity 0.15s;}
+.checkbox-card.checked .checkbox-box svg{opacity:1;}
+.checkbox-card-content{flex:1;}
+.checkbox-card-label{font-size:0.84rem;font-weight:600;color:#212529;}
+.checkbox-card.checked .checkbox-card-label{color:#EA0044;}
+.checkbox-card-desc{font-size:0.76rem;color:#868E96;margin-top:2px;line-height:1.5;}
+
+/* RADIO STYLE */
+.radio-box{border-radius:50%;}
+.checkbox-card.checked .radio-box{background:#EA0044;border-color:#EA0044;}
+
+/* CLINIC MAPPING TABLE */
+.mapping-table-wrapper{border:1.5px solid #DEE2E6;border-radius:12px;overflow:hidden;margin:16px 0;}
+.mapping-table{width:100%;border-collapse:collapse;}
+.mapping-table thead th{background:linear-gradient(135deg,#EA0044 0%,#c8003b 100%);color:white;font-size:0.76rem;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;padding:12px 16px;text-align:left;}
+.mapping-table tbody td{padding:6px 8px;border-bottom:1px solid #F1F3F5;}
+.mapping-table tbody td input{width:100%;padding:9px 12px;border:1.5px solid transparent;border-radius:6px;font-family:'Roboto',sans-serif;font-size:0.84rem;color:#212529;background:transparent;transition:all 0.2s;}
+.mapping-table tbody td input:focus{outline:none;border-color:#EA0044;background:white;box-shadow:0 0 0 3px rgba(107,45,123,0.06);}
+.mapping-table tbody td input::placeholder{color:#CED4DA;}
+.mapping-table tbody td:first-child{width:40px;text-align:center;color:#868E96;font-size:0.78rem;font-weight:600;padding-left:12px;}
+.add-row-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:white;border:2px dashed #DEE2E6;border-radius:10px;font-family:'Roboto',sans-serif;font-size:0.84rem;font-weight:600;color:#495057;cursor:pointer;transition:all 0.2s;margin-bottom:24px;}
+.add-row-btn:hover{border-color:#EA0044;color:#EA0044;background:#F8F5FA;}
+.add-row-btn svg{width:18px;height:18px;}
+
+/* OTHER TEXT */
+.other-input{display:none;margin-top:8px;}
+.other-input.show{display:block;}
+
+/* RESPONSIBILITY CHECKLIST */
+.resp-item{display:flex;align-items:center;gap:10px;padding:12px 16px;border:1.5px solid #E9ECEF;border-radius:8px;margin-bottom:8px;cursor:pointer;transition:all 0.2s;user-select:none;}
+.resp-item:hover{background:#F8F9FA;}
+.resp-item.checked{background:#F8F5FA;border-color:#D8CCE0;}
+.resp-item input{display:none;}
+.resp-check{width:18px;height:18px;border:2px solid #CED4DA;border-radius:4px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;}
+.resp-item.checked .resp-check{background:#EA0044;border-color:#EA0044;}
+.resp-check svg{width:10px;height:10px;fill:white;opacity:0;transition:opacity 0.15s;}
+.resp-item.checked .resp-check svg{opacity:1;}
+.resp-label{font-size:0.84rem;color:#495057;}
+.resp-item.checked .resp-label{color:#212529;font-weight:500;}
+
+/* SIGNATURE */
+.sig-block{margin-top:24px;padding:24px;border:1.5px solid #E9ECEF;border-radius:12px;background:#FAFBFC;}
+.sig-title{font-weight:700;font-size:0.88rem;color:#212529;margin-bottom:16px;}
+.sig-acknowledge{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border:1.5px solid #DEE2E6;border-radius:10px;cursor:pointer;transition:all 0.2s;user-select:none;margin-bottom:20px;background:white;}
+.sig-acknowledge:hover{border-color:#ADB5BD;}
+.sig-acknowledge.checked{border-color:#EA0044;background:#F8F5FA;}
+.sig-acknowledge input{display:none;}
+.sig-ack-box{width:20px;height:20px;border:2px solid #CED4DA;border-radius:5px;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0;margin-top:1px;}
+.sig-acknowledge.checked .sig-ack-box{background:#EA0044;border-color:#EA0044;}
+.sig-ack-box svg{width:12px;height:12px;fill:white;opacity:0;transition:opacity 0.15s;}
+.sig-acknowledge.checked .sig-ack-box svg{opacity:1;}
+.sig-ack-text{font-size:0.82rem;color:#495057;line-height:1.6;}
+.sig-ack-text strong{color:#212529;}
+.sig-fields{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.sig-line{border-bottom:1.5px solid #CED4DA;padding-bottom:4px;margin-bottom:4px;}
+.sig-line input{border:none;background:none;width:100%;font-family:'Roboto',sans-serif;font-size:0.88rem;color:#212529;padding:4px 0;}
+.sig-line input:focus{outline:none;}
+.sig-line input::placeholder{color:#CED4DA;}
+.sig-line-label{font-size:0.68rem;color:#868E96;text-transform:uppercase;letter-spacing:0.05em;}
+
+/* ACTIONS */
+.form-actions{display:flex;gap:12px;justify-content:flex-end;padding-top:24px;border-top:1px solid #E9ECEF;margin-top:32px;}
+.btn{padding:11px 28px;border-radius:10px;font-family:'Roboto',sans-serif;font-size:0.84rem;font-weight:600;cursor:pointer;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px;border:none;}
+.btn-primary{background:linear-gradient(135deg,#EA0044,#c8003b);color:white;}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(107,45,123,0.3);}
+.btn-secondary{background:white;color:#495057;border:1.5px solid #DEE2E6;}
+.btn-secondary:hover{background:#F8F9FA;border-color:#ADB5BD;}
+.btn-outline{background:white;color:#EA0044;border:1.5px solid #D8CCE0;}
+.btn-outline:hover{background:#F8F5FA;border-color:#EA0044;}
+.btn svg{width:16px;height:16px;}
+
+/* FOOTER */
+.form-footer{text-align:center;padding:24px 40px;margin-top:8px;}
+.footer-brand{font-size:0.82rem;font-weight:600;color:#495057;}
+.footer-brand span{color:#EA0044;}
+.footer-tagline{font-size:0.72rem;color:#868E96;margin-top:4px;}
+.footer-meta{font-size:0.68rem;color:#ADB5BD;margin-top:6px;}
+
+/* TOAST */
+/* toast css removed */
+.toast.show{transform:translateY(0);opacity:1;}
+.toast-success{background:#2B8A3E;}.toast-warning{background:#E67700;}.toast-error{background:#DC3545;}
+
+/* PRINT */
+@media print{body{background:white;}.form-wrapper{padding:0;}.form-header{border-radius:0;print-color-adjust:exact;-webkit-print-color-adjust:exact;}.progress-section,.form-actions,.add-row-btn{display:none!important;}.form-body{box-shadow:none;border-radius:0;padding:24px;}.mapping-table thead th{print-color-adjust:exact;-webkit-print-color-adjust:exact;}.field-group input,.mapping-table tbody td input{border:none!important;background:none!important;box-shadow:none!important;border-bottom:1px solid #ccc!important;padding:4px 0;}.toast{display:none!important;}}
+@media(max-width:768px){.form-header{padding:28px 24px 24px;}.form-body{padding:24px 20px 32px;}.form-grid{grid-template-columns:1fr;}.sig-fields{grid-template-columns:1fr;}.form-title{font-size:1.3rem;}.form-actions{flex-direction:column;}.form-actions .btn{width:100%;justify-content:center;}}
+
+/* Accordion */
+.accordion-section { margin-bottom: 8px; }
+.accordion-trigger {
+    display: flex; align-items: center; justify-content: space-between; width: 100%;
+    cursor: pointer; background: none; border: none; padding: 0; font-family: inherit;
+}
+.accordion-chevron {
+    width: 20px; height: 20px; color: #ADB5BD; transition: transform 0.25s ease; flex-shrink: 0;
+}
+.accordion-section.open .accordion-chevron { transform: rotate(180deg); color: #EA0044; }
+.accordion-body { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.accordion-section.open .accordion-body { max-height: 5000px; }
+.pm-form-footer{display:none;}
+
+@media print{.pm-form-footer{display:none!important;}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+<div class="form-wrapper">
+<div class="form-header">
+  <div style="display:flex;align-items:center;gap:0;height:56px;">
+  <svg viewBox="0 0 92 89" xmlns="http://www.w3.org/2000/svg" style="height:48px;width:auto;flex-shrink:0;">
+    <path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EA0044"/>
+  </svg>
+  <div style="display:flex;align-items:center;gap:12px;margin-left:10px;">
+    <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:1.15rem;color:#626469;letter-spacing:-0.01em;">Pace<strong style="font-weight:700;color:#626469;">Mate</strong><sup style="font-size:0.55em;vertical-align:super;">&#174;</sup></span>
+    <span style="width:1px;height:28px;background:#D9D9D6;display:inline-block;"></span>
+    <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:1.15rem;color:#626469;letter-spacing:-0.01em;">Pace<strong style="font-weight:700;color:#626469;">Art</strong><sup style="font-size:0.55em;vertical-align:super;">&#174;</sup></span>
+  </div>
+</div>
+</div>
+<div class="form-body">
+<div class="purpose-block">
+<div class="purpose-title">Purpose</div>
+<div class="purpose-text">This form authorizes PaceMate&reg; to migrate your historical PaceArt data into PaceMateLIVE&trade;. It defines the scope of data to be migrated, any customization options, and your acknowledgement of responsibilities. Complete all sections and sign at the bottom.</div>
+</div>
+
+<!-- SECTION 1: CONTACT INFO -->
+<div class="accordion-section open" id="accSec1"><button type="button" class="accordion-trigger" onclick="toggleSection('accSec1')"><div class="section-divider">
+<div class="section-divider-num">1</div>
+<div class="section-divider-title">Contact Information</div>
+<span class="section-note" style="color:#EA0044;background:#FFF0F2;border:1px solid #FECDD3;padding:3px 10px;border-radius:10px;font-style:normal;font-weight:700;font-size:0.72rem;letter-spacing:0.03em;">Required</span>
+</div><svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="accordion-body">
+
+<p style="font-weight:700;font-size:0.86rem;color:#212529;margin-bottom:14px;">Practice Information</p>
+<div class="form-grid">
+<div class="field-group full-width"><label>Name of Clinic, Hospital, or Group</label><input type="text" placeholder="Enter practice name" class="track" oninput="updateProgress()"></div>
+<div class="field-group full-width"><label>Street Address</label><input type="text" placeholder="Street address" class="track" oninput="updateProgress()"></div>
+<div class="field-group"><label>City</label><input type="text" id="cityField" placeholder="Auto-populated from zip" class="track" oninput="updateProgress()"></div>
+<div class="field-group"><label>State</label><input type="text" id="stateField" placeholder="Auto-populated from zip" class="track" oninput="updateProgress()"></div>
+<div class="field-group"><label>Zip / Postal Code</label><input type="text" id="zipField" placeholder="00000" maxlength="10" class="track" oninput="lookupZip(this.value); updateProgress()"></div>
+<div class="field-group"><label>Country</label><input type="text" placeholder="Country" class="track" oninput="updateProgress()"></div>
+<div class="field-group"><label>Telephone</label><input type="text" placeholder="(000) 000-0000" class="track" oninput="updateProgress()"></div>
+<div class="field-group"><label>Website URL</label><input type="text" placeholder="https://www.example.com"></div>
+</div>
+
+<p style="font-weight:700;font-size:0.86rem;color:#212529;margin:24px 0 14px;">PaceArt IT Administrator</p>
+<div class="form-grid">
+<div class="field-group"><label>Name</label><input type="text" placeholder="IT admin name" class="track" oninput="updateProgress()"></div>
+<div class="field-group"><label>Title or Role</label><input type="text" placeholder="Title or role"></div>
+<div class="field-group"><label>Telephone</label><input type="text" placeholder="(000) 000-0000"></div>
+<div class="field-group"><label>Email</label><input type="email" placeholder="email@organization.com" class="track" oninput="updateProgress()"></div>
+</div>
+
+<!-- SECTION 2: DATA MIGRATION SCOPE -->
+</div></div><div class="accordion-section" id="accSec2"><button type="button" class="accordion-trigger" onclick="toggleSection('accSec2')"><div class="section-divider">
+<div class="section-divider-num">2</div>
+<div class="section-divider-title">Data Migration Scope</div>
+<span class="section-note">Informational</span>
+</div><svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="accordion-body">
+
+<div class="info-section">
+<!-- MIGRATION CARDS -->
+<div style="margin-bottom:6px;">
+  <div style="font-family:'Poppins',sans-serif;font-weight:600;font-size:0.92rem;color:#2D2E32;margin-bottom:4px;">Standard Migration &mdash; 7-Year Timeframe</div>
+  <p style="font-family:'Roboto',sans-serif;font-size:0.82rem;color:#626469;margin-bottom:14px;">The following data will be migrated from PaceArt to PaceMateLIVE&trade;:</p>
+</div>
+
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:14px;">
+
+  <!-- Card 1: Patient Information -->
+  <div style="background:#F7F8FD;border:1px solid #E0E4F0;border-top:3px solid #307FE2;border-radius:10px;padding:16px 18px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;flex-shrink:0;">
+        <circle cx="10" cy="7" r="3.5" stroke="#307FE2" stroke-width="1.5"/>
+        <path d="M3 17c0-3.314 3.134-6 7-6s7 2.686 7 6" stroke="#307FE2" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:0.82rem;color:#307FE2;">Patient Information</span>
+    </div>
+    <ul style="margin:0;padding-left:16px;font-family:'Roboto',sans-serif;font-size:0.78rem;color:#495057;line-height:1.7;list-style:disc;">
+      <li>Demographics: First Name, Last Name, Middle Initial, DOB, Gender, Marital Status</li>
+      <li>Contact Information: Email, Address, Phone Numbers</li>
+      <li>Identifiers: Patient ID (Primary)</li>
+      <li>Notes: Patient Comments, Private Patient Comments</li>
+    </ul>
+  </div>
+
+  <!-- Card 2: Encounters -->
+  <div style="background:#F7FDF9;border:1px solid #C8EDD8;border-top:3px solid #00B140;border-radius:10px;padding:16px 18px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;flex-shrink:0;">
+        <rect x="3" y="3" width="14" height="14" rx="2" stroke="#00B140" stroke-width="1.5"/>
+        <path d="M7 8h6M7 11h4" stroke="#00B140" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:0.82rem;color:#00B140;">Encounters</span>
+    </div>
+    <ul style="margin:0;padding-left:16px;font-family:'Roboto',sans-serif;font-size:0.78rem;color:#495057;line-height:1.7;list-style:disc;">
+      <li>Encounter Types: In-Clinic and Remote encounter types only</li>
+      <li>Clinical Data: Underlying Rhythm, Dependency (last known), Encounter Summary</li>
+      <li>Device Programming: Programming Mode, Device Battery Longevity</li>
+      <li>Device Information: PDF Encounter Attachments, Device (from Encounter Info)</li>
+    </ul>
+  </div>
+
+  <!-- Card 3: Device Details -->
+  <div style="background:#FDF7FF;border:1px solid #E5D0F5;border-top:3px solid #753BBD;border-radius:10px;padding:16px 18px;">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+      <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:18px;height:18px;flex-shrink:0;">
+        <rect x="4" y="6" width="12" height="9" rx="1.5" stroke="#753BBD" stroke-width="1.5"/>
+        <path d="M7 6V5a3 3 0 016 0v1" stroke="#753BBD" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="10" cy="10.5" r="1" fill="#753BBD"/>
+      </svg>
+      <span style="font-family:'Poppins',sans-serif;font-weight:600;font-size:0.82rem;color:#753BBD;">Device Details</span>
+    </div>
+    <ul style="margin:0;padding-left:16px;font-family:'Roboto',sans-serif;font-size:0.78rem;color:#495057;line-height:1.7;list-style:disc;">
+      <li>Device Information: Manufacturer, Model, Serial Number, Implant Date, Implanting Provider</li>
+      <li>Status: Active or explanted devices from associated encounters</li>
+      <li>Active Leads: Manufacturer, Model, Serial Number, Chamber, Implant Date</li>
+      <li>Device Advisories: Mitigation status and details (devices matching PaceMate&reg; advisory registry are automatically flagged)</li>
+      <li>Deactivated Leads: Manufacturer, Model, Serial Number, Chamber, Implant Date (includes abandoned, partially explanted, and fully explanted leads)</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- Data Exclusions -->
+<div style="background:#FFFBF0;border:1px solid #F5D97A;border-left:4px solid #F59E0B;border-radius:8px;padding:14px 18px;">
+  <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+    <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:16px;height:16px;flex-shrink:0;">
+      <path d="M10 3L18 17H2L10 3z" stroke="#D97706" stroke-width="1.5" stroke-linejoin="round"/>
+      <path d="M10 9v3M10 14v.5" stroke="#D97706" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:0.82rem;color:#92600A;">Data Exclusions (Not Included in Standard Migration)</span>
+  </div>
+  <ul style="margin:0;padding-left:16px;font-family:'Roboto',sans-serif;font-size:0.78rem;color:#78490A;line-height:1.7;list-style:disc;">
+    <li>Patients with no encounters within the selected timeframe</li>
+    <li>Encounters dated outside the 7-year window</li>
+    <li>Additional exclusions as applicable</li>
+  </ul>
+</div>
+
+<!-- SECTION 3: CUSTOMIZATION OPTIONS -->
+</div></div><div class="accordion-section" id="accSec3"><button type="button" class="accordion-trigger" onclick="toggleSection('accSec3')"><div class="section-divider">
+<div class="section-divider-num">3</div>
+<div class="section-divider-title">Customization Options</div>
+<span class="section-note">Skip if not applicable</span>
+</div><svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="accordion-body">
+
+<p style="font-size:0.84rem;color:#495057;margin-bottom:16px;">Select any additional data you would like included beyond the standard migration.</p>
+
+<label class="checkbox-card" onclick="toggleCheck(this);updateProgress();">
+<input type="checkbox" name="custom" value="no_encounters_range">
+<div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<div class="checkbox-card-content">
+<div class="checkbox-card-label">Include patients without encounters within the selected date range</div>
+<div class="checkbox-card-desc">Only demographic information will be migrated for these patients.</div>
+</div>
+</label>
+
+<label class="checkbox-card" onclick="toggleCheck(this);updateProgress();">
+<input type="checkbox" name="custom" value="no_encounters_all">
+<div class="checkbox-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<div class="checkbox-card-content">
+<div class="checkbox-card-label">Include patients with no encounters at all</div>
+<div class="checkbox-card-desc">Only demographic information will be migrated for these patients.</div>
+</div>
+</label>
+
+</div></div>
+
+<!-- SECTION 3a: MULTI-CLINIC SETUP -->
+<div class="accordion-section" id="accSec3a">
+<button type="button" class="accordion-trigger" onclick="toggleSection('accSec3a')">
+<div class="section-divider">
+<div class="section-divider-num" style="font-size:0.6rem;letter-spacing:-0.02em;">3a</div>
+<div class="section-divider-title">Multi-Clinic Setup</div>
+<span class="section-note" style="color:#D97706;background:#FFFBF0;border:1px solid #F5D97A;padding:3px 10px;border-radius:10px;font-style:normal;font-weight:700;font-size:0.72rem;letter-spacing:0.03em;">Required if applicable</span>
+</div>
+<svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+</button>
+<div class="accordion-body">
+
+<div style="margin-bottom:16px;">
+<div class="question-label" style="font-size:0.86rem;font-weight:600;color:#212529;margin-bottom:10px;">Will you have multiple clinics in PaceMateLIVE&trade;?</div>
+<div style="display:flex;gap:8px;" id="multiClinicGroup">
+<button class="yn-btn" onclick="selectMultiClinic('yes')" style="padding:9px 24px;border:1.5px solid #DEE2E6;border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;background:#FAFBFC;color:#495057;">Yes</button>
+<button class="yn-btn" onclick="selectMultiClinic('no')" style="padding:9px 24px;border:1.5px solid #DEE2E6;border-radius:8px;font-family:'Roboto',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;background:#FAFBFC;color:#495057;">No</button>
+</div>
+</div>
+
+<div id="multiClinicSection" style="display:none;">
+<p style="font-size:0.84rem;color:#495057;margin-bottom:12px;">Map your current PaceArt clinic names to their corresponding PaceMateLIVE&trade; short names.</p>
+<div class="mapping-table-wrapper">
+<table class="mapping-table" id="mappingTable">
+<thead><tr><th style="width:40px;">#</th><th>Current PaceArt Clinic Name</th><th>PaceMateLIVE&trade; Short Name</th></tr></thead>
+<tbody id="mappingBody"></tbody>
+</table>
+</div>
+<button class="add-row-btn" onclick="addMappingRow()">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+Add Clinic
+</button>
+
+<p style="font-weight:700;font-size:0.86rem;color:#212529;margin-bottom:12px;">How do you want to separate patients from PaceArt into PaceMateLIVE&trade; clinics?</p>
+<p style="font-size:0.82rem;color:#495057;margin-bottom:12px;">Choose one option:</p>
+
+<label class="checkbox-card" onclick="selectSeparation(this,'location')">
+<input type="radio" name="separation" value="location">
+<div class="checkbox-box radio-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<div class="checkbox-card-content">
+<div class="checkbox-card-label">Location of care (PaceMateLIVE&trade; Clinic)</div>
+<div class="checkbox-card-desc">This will require a mapping call with PaceMate.</div>
+</div>
+</label>
+<label class="checkbox-card" onclick="selectSeparation(this,'status')">
+<input type="radio" name="separation" value="status">
+<div class="checkbox-box radio-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<div class="checkbox-card-content">
+<div class="checkbox-card-label">Patient status</div>
+</div>
+</label>
+<label class="checkbox-card" onclick="selectSeparation(this,'other')">
+<input type="radio" name="separation" value="other">
+<div class="checkbox-box radio-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<div class="checkbox-card-content">
+<div class="checkbox-card-label">Other</div>
+</div>
+</label>
+<div class="other-input" id="otherSeparation">
+<div class="field-group"><label>Please specify</label><input type="text" placeholder="Describe your preferred method"></div>
+</div>
+</div>
+
+<!-- SECTION 4: CUSTOMER RESPONSIBILITY -->
+</div></div><div class="accordion-section" id="accSec4"><button type="button" class="accordion-trigger" onclick="toggleSection('accSec4')"><div class="section-divider">
+<div class="section-divider-num">4</div>
+<div class="section-divider-title">Customer Responsibilities</div>
+<span class="section-note" style="color:#EA0044;background:#FFF0F2;border:1px solid #FECDD3;padding:3px 10px;border-radius:10px;font-style:normal;font-weight:700;font-size:0.72rem;letter-spacing:0.03em;">Required</span>
+</div><svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="accordion-body">
+<p style="font-size:0.84rem;color:#495057;margin-bottom:16px;">Confirm that you understand and accept each responsibility by checking the boxes below.</p>
+
+<label class="resp-item" onclick="toggleResp(this);updateProgress();">
+<input type="checkbox" name="resp" value="form"><div class="resp-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<span class="resp-label">Complete this Historical Data Migration Form</span>
+</label>
+<label class="resp-item" onclick="toggleResp(this);updateProgress();">
+<input type="checkbox" name="resp" value="it"><div class="resp-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<span class="resp-label">Provide IT contact for technical coordination</span>
+</label>
+<label class="resp-item" onclick="toggleResp(this);updateProgress();">
+<input type="checkbox" name="resp" value="sftp"><div class="resp-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<span class="resp-label">Upload database backup to SFTP</span>
+</label>
+<label class="resp-item" onclick="toggleResp(this);updateProgress();">
+<input type="checkbox" name="resp" value="cleanup"><div class="resp-check"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<span class="resp-label">Complete the Encyclopedia cleanup process</span>
+</label>
+
+<!-- SECTION 5: ACKNOWLEDGEMENT -->
+</div></div><div class="accordion-section" id="accSec5"><button type="button" class="accordion-trigger" onclick="toggleSection('accSec5')"><div class="section-divider">
+<div class="section-divider-num">5</div>
+<div class="section-divider-title">Acknowledgement &amp; Authorization</div>
+<span class="section-note" style="color:#EA0044;background:#FFF0F2;border:1px solid #FECDD3;padding:3px 10px;border-radius:10px;font-style:normal;font-weight:700;font-size:0.72rem;letter-spacing:0.03em;">Required</span>
+</div><svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button><div class="accordion-body">
+
+<div class="sig-block">
+<div class="sig-title">By signing below, I acknowledge and confirm that:</div>
+
+<label class="sig-acknowledge" onclick="toggleCheck(this);updateProgress();">
+<input type="checkbox" name="ack" value="accurate">
+<div class="sig-ack-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<span class="sig-ack-text">The information provided in this form is <strong>accurate and complete</strong>.</span>
+</label>
+
+<label class="sig-acknowledge" onclick="toggleCheck(this);updateProgress();">
+<input type="checkbox" name="ack" value="authority">
+<div class="sig-ack-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<span class="sig-ack-text">I have the <strong>authority to request this data migration</strong> on behalf of my organization.</span>
+</label>
+
+<label class="sig-acknowledge" onclick="toggleCheck(this);updateProgress();">
+<input type="checkbox" name="ack" value="scope">
+<div class="sig-ack-box"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg></div>
+<span class="sig-ack-text">I understand the <strong>scope of data to be migrated</strong>, customer responsibilities, and the limitations outlined in this document.</span>
+</label>
+
+<p style="font-weight:700;font-size:0.86rem;color:#212529;margin:20px 0 14px;">Requester</p>
+<div class="form-grid">
+<div class="field-group"><label>Practice / Organization</label><input type="text" placeholder="Practice name" class="track" oninput="updateProgress()"></div>
+<div class="field-group"><label>Name</label><input type="text" placeholder="Your full name" class="track sig-name" oninput="updateProgress()"></div>
+<div class="field-group"><label>Title / Role</label><input type="text" placeholder="Title or role"></div>
+<div class="field-group"><label>Email</label><input type="email" placeholder="email@organization.com"></div>
+<div class="field-group"><label>Phone</label><input type="text" placeholder="(000) 000-0000"></div>
+<div class="field-group"><label>Date</label><input type="text" placeholder="MM/DD/YYYY" class="track" oninput="updateProgress()"></div>
+</div>
+
+<p style="font-weight:700;font-size:0.86rem;color:#212529;margin:24px 0 10px;">Signature</p>
+<p style="font-size:0.78rem;color:#868E96;margin-bottom:12px;">Type your full name below as your electronic signature.</p>
+<div class="sig-line"><input type="text" placeholder="Type your full name" class="track sig-typed" oninput="updateProgress()" style="font-size:1.1rem;font-style:italic;"></div>
+<div class="sig-line-label">Signature of Requester</div>
+</div>
+
+
+
+
+
+</div>
+</div>
+
+<div style="max-width:860px;margin:0 auto;padding:0 40px;">
+<!-- ── PM STANDARD ACTION BAR ── -->
+<div class="pm-action-bar">
+  <div class="pm-action-left">
+    <button class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+      <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+      Save Progress
+    </button>
+    <button class="pm-pill pm-pill-clear" onclick="clearForm()">Clear Form</button>
+  </div>
+  <div class="pm-action-right">
+    <div class="pm-export-wrap" id="pmExportWrap">
+      <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Export &#9660;
+      </button>
+      <div class="pm-export-menu">
+        <button class="pm-export-item" onclick="pmExport('pdf')">
+          <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+          Export as PDF
+        </button>
+        <button class="pm-export-item" onclick="pmExport('excel')">
+          <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          Export as Excel
+        </button>
+        <button class="pm-export-item" onclick="pmExport('csv')">
+          <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+          Export as CSV
+        </button>
+      </div>
+    </div>
+    <button class="pm-pill pm-pill-submit" onclick="pmHandleSubmit()">
+      <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      Submit to PaceMate&#174;
+    </button>
+  </div>
+</div>
+</div>
+<div style="max-width:860px;margin:0 auto;padding:14px 40px;border-top:1px solid #D9D9D6;display:flex;align-items:center;justify-content:space-between;font-family:'Poppins',sans-serif;font-weight:300;font-size:10px;color:#8A8C90;">
+  <div>PaceMate<sup>&#174;</sup> <span style="color:#D9D9D6;margin:0 6px;">|</span> PaceMate.com</div>
+  <div><strong style="font-weight:600;color:#2D2E32;">PaceArt DB Migration</strong> <span style="color:#D9D9D6;margin:0 6px;">|</span> v1 <span style="color:#D9D9D6;margin:0 6px;">|</span> February 2026</div>
+</div>
+
+
+<script>
+let mappingRowCount=0;
+function toggleCheck(el){const cb=el.querySelector('input[type="checkbox"]');cb.checked=!cb.checked;el.classList.toggle('checked',cb.checked);}
+function toggleResp(el){const cb=el.querySelector('input');cb.checked=!cb.checked;el.classList.toggle('checked',cb.checked);}
+function selectMultiClinic(val){const btns=document.querySelectorAll('#multiClinicGroup .yn-btn');btns.forEach(b=>{b.style.background='#FAFBFC';b.style.borderColor='#DEE2E6';b.style.color='#495057';});const idx=val==='yes'?0:1;btns[idx].style.background=val==='yes'?'#EBFBEE':'#F8F9FA';btns[idx].style.borderColor=val==='yes'?'#2B8A3E':'#495057';btns[idx].style.color=val==='yes'?'#2B8A3E':'#495057';document.getElementById('multiClinicSection').style.display=val==='yes'?'block':'none';if(val==='yes'&&mappingRowCount===0){for(let i=0;i<3;i++)addMappingRow();}updateProgress();}
+function addMappingRow(){mappingRowCount++;const tr=document.createElement('tr');tr.innerHTML='<td>'+mappingRowCount+'</td><td><input type="text" placeholder="PaceArt clinic name" oninput="updateProgress()"></td><td><input type="text" placeholder="PaceMateLIVE short name" oninput="updateProgress()"></td>';document.getElementById('mappingBody').appendChild(tr);}
+function selectSeparation(el,val){document.querySelectorAll('[name="separation"]').forEach(r=>{r.closest('.checkbox-card').classList.remove('checked');r.checked=false;});el.querySelector('input').checked=true;el.classList.add('checked');document.getElementById('otherSeparation').classList.toggle('show',val==='other');updateProgress();}
+function updateProgress(){const tracked=document.querySelectorAll('.track');let filled=0;tracked.forEach(f=>{if(f.value.trim())filled++;});const resps=document.querySelectorAll('[name="resp"]:checked').length;const acks=document.querySelectorAll('[name="ack"]:checked').length;const total=tracked.length+4+3;const done=filled+resps+acks;const pct=Math.round((done/total)*100);var _pf=document.getElementById('progressFill');if(_pf)_pf.style.width=pct+'%';var _pl=document.getElementById('progressLabel');if(_pl)_pl.textContent=pct+'% Complete';}
+function submitForm(){const acks=document.querySelectorAll('[name="ack"]:checked').length;const resps=document.querySelectorAll('[name="resp"]:checked').length;const sig=document.querySelector('.sig-typed').value.trim();if(acks<3){showToast('Please check all 3 acknowledgement boxes before submitting','error');return;}if(resps<4){showToast('Please confirm all customer responsibilities','error');return;}if(!sig){showToast('Please type your name as your electronic signature','error');return;}showToast('Form submitted successfully','success');}
+function clearForm(){if(!confirm('Clear all form data? This cannot be undone.'))return;document.querySelectorAll('input[type="text"],input[type="email"]').forEach(f=>f.value='');document.querySelectorAll('.checkbox-card.checked,.sig-acknowledge.checked,.resp-item.checked').forEach(el=>{el.classList.remove('checked');el.querySelector('input').checked=false;});document.getElementById('multiClinicSection').style.display='none';document.getElementById('otherSeparation').classList.remove('show');const btns=document.querySelectorAll('#multiClinicGroup .yn-btn');btns.forEach(b=>{b.style.background='#FAFBFC';b.style.borderColor='#DEE2E6';b.style.color='#495057';});mappingRowCount=0;document.getElementById('mappingBody').innerHTML='';updateProgress();showToast('Form cleared','warning');}
+function showToast(msg,type){
+  clearTimeout(window._pmToastTimer);
+  var ex=document.getElementById('_pmToast');if(ex)ex.parentNode.removeChild(ex);
+  var t=document.createElement('div');t.id='_pmToast';t.textContent=msg;
+  var bg=type==='error'?'#DC3545':type==='success'?'#00B140':type==='warning'?'#F59E0B':'#212529';
+  t.setAttribute('style','position:fixed;top:20px;left:50%;transform:translateX(-50%);background:'+bg+';color:white;padding:11px 24px;border-radius:24px;font-family:Poppins,sans-serif;font-size:13px;font-weight:600;box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:999999;white-space:nowrap;pointer-events:none;');
+  document.body.appendChild(t);
+  window._pmToastTimer=setTimeout(function(){var el=document.getElementById('_pmToast');if(el)el.parentNode.removeChild(el);},type==='error'||type==='warning'?5000:3000);
+}
+document.addEventListener('DOMContentLoaded',updateProgress);
+
+function toggleSection(id) {
+    document.getElementById(id).classList.toggle('open');
+}
+
+function saveProgress() {
+    try {
+        var data = {};
+        document.querySelectorAll('input, select, textarea').forEach(function(el) {
+            if (el.id) data[el.id] = el.value;
+        });
+        localStorage.setItem('paceartMigrationSave', JSON.stringify(data));
+        showSaveToast('Progress saved successfully', '#2B8A3E');
+    } catch(e) {
+        showSaveToast('Save unavailable — use Print / Save PDF', '#E67700');
+    }
+}
+
+/* =========================================================
+   ZIP CODE LOOKUP
+   ========================================================= */
+function lookupZip(zip) {
+    if (!zip || zip.length < 5) return;
+    const clean = zip.replace(/\D/g, '').substring(0, 5);
+    if (clean.length < 5) return;
+    fetch('https://api.zippopotam.us/us/' + clean)
+        .then(function(r) { if (r.ok) return r.json(); throw new Error(); })
+        .then(function(data) {
+            if (data.places && data.places.length > 0) {
+                var city = document.getElementById('cityField');
+                var state = document.getElementById('stateField');
+                if (city) city.value = data.places[0]['place name'];
+                if (state) state.value = data.places[0]['state abbreviation'];
+                updateProgress();
+                showSaveToast('City and state filled from zip code');
+            }
+        })
+        .catch(function() {});
+}
+
+function showSaveToast(msg, color) { showToast(msg, color==='#2B8A3E'?'success':'info'); }
+</script>
+
+<!-- PaceMate Back Button -->
+<style>
+.pm-back-btn{
+  position:fixed;top:16px;left:16px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px 8px 12px;
+  background:#fff;
+  border:1.5px solid #DEE2E6;
+  border-radius:20px;
+  font-family:'Poppins',sans-serif;
+  font-size:0.78rem;font-weight:600;
+  color:#495057;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.09);
+  transition:all 0.15s;
+  line-height:1;
+}
+.pm-back-btn:hover{
+  background:#EA0044;color:#fff;
+  border-color:#EA0044;
+  box-shadow:0 3px 12px rgba(234,0,68,0.25);
+  transform:translateX(-2px);
+}
+.pm-back-btn svg{transition:transform 0.15s;}
+.pm-back-btn:hover svg{transform:translateX(-2px);}
+@media print{.pm-back-btn{display:none!important}}
+
+/* ── PM STANDARD ACTION BAR ─────────────────────────── */
+.pm-action-bar{display:flex;align-items:center;padding:16px 0 8px;border-top:1px solid #E8E8E6;margin-top:24px;flex-wrap:nowrap;width:100%;}
+.pm-action-left{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.pm-action-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0;}
+.pm-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:20px;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s;border:none;outline:none;white-space:nowrap;line-height:1;}
+.pm-pill svg{width:14px;height:14px;flex-shrink:0;fill:currentColor;}
+.pm-pill-save{background:white;color:#2D2E32;border:1.5px solid #D9D9D6;}
+.pm-pill-save:hover{border-color:#626469;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.pm-pill-clear{background:white;color:#2D2E32;border:1.5px solid #D9D9D6;}
+.pm-pill-clear:hover{border-color:#626469;box-shadow:0 1px 4px rgba(0,0,0,0.08);}
+.pm-export-wrap{position:relative;}
+.pm-pill-export{background:white;color:#2D2E32;border:1.5px solid #D9D9D6;}
+.pm-pill-export:hover{border-color:#626469;}
+.pm-export-menu{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:white;border:1.5px solid #E8E8E6;border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,0.1);min-width:180px;z-index:200;overflow:hidden;}
+.pm-export-wrap.open .pm-export-menu{display:block;}
+.pm-export-item{display:flex;align-items:center;gap:10px;padding:10px 14px;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:600;color:#2D2E32;cursor:pointer;transition:background 0.1s;border:none;background:none;width:100%;text-align:left;}
+.pm-export-item:hover{background:#FAFAFA;}
+.pm-export-item+.pm-export-item{border-top:1px solid #F0F0EE;}
+.pm-export-item svg{width:15px;height:15px;flex-shrink:0;}
+.pm-pill-submit{background:#EA0044;color:white;}
+.pm-pill-submit:hover{background:#c8003b;box-shadow:0 2px 8px rgba(234,0,68,0.25);}
+@media print{.pm-action-bar{display:none!important;}}
+@media(max-width:600px){.pm-action-bar{flex-wrap:wrap;}.pm-action-right{margin-left:0;}}
+</style>
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 4L6 8l4 4"/>
+  </svg>
+  Back
+</button>
+
+
+<script>
+/* PM STANDARD ACTION BAR */
+var PM_WORKSTREAM='csm',PM_STORAGE_KEY='form_paceart_db_migration',PM_FORM_ID='paceart-migration',PM_FORM_NAME='PaceArt DB Migration Form',PM_FORM_FILE='form-paceart-db-migration-v2.html';
+function pmGetData(){var d={};document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name||'field';if(el.type==='radio'){if(el.checked)d[el.name]=el.value;}else if(el.type==='checkbox'){if(el.checked)d[k]=(d[k]?d[k]+', ':''+(el.value||'checked'));}else if(el.value){d[k]=el.value;}});return d;}
+function pmSave(){try{localStorage.setItem(PM_STORAGE_KEY,JSON.stringify(pmGetData()));localStorage.setItem(PM_STORAGE_KEY+'_version','v2-brand-rebuild');}catch(e){}}
+function pmLoad(){try{if(localStorage.getItem(PM_STORAGE_KEY+'_version')!=='v2-brand-rebuild'){localStorage.removeItem(PM_STORAGE_KEY);localStorage.setItem(PM_STORAGE_KEY+'_version','v2-brand-rebuild');}var r=localStorage.getItem(PM_STORAGE_KEY);if(!r)return;var s=JSON.parse(r);document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name;if(!k||!(k in s))return;if(el.type==='radio'){el.checked=(s[el.name]===el.value);}else if(el.type==='checkbox'){el.checked=!!(s[k]&&s[k].indexOf(el.value||'checked')>-1);}else{el.value=s[k];}});}catch(e){}}
+function pmSetAutosave(msg){var el=document.getElementById('pmAutosave');if(!el)return;var t=new Date();var ts=t.getHours()+':'+String(t.getMinutes()).padStart(2,'0');el.innerHTML='<span class="pm-autosave-dot"></span>'+(msg||('Auto-saved at '+ts));el.classList.add('active');setTimeout(function(){el.classList.remove('active');},3000);}
+function pmSaveProgress(){pmSave();pmSetAutosave('Saved');if(typeof showToast==='function')showToast('Progress saved!','success');}
+function pmToggleExport(e){e.stopPropagation();document.getElementById('pmExportWrap').classList.toggle('open');}
+document.addEventListener('click',function(){var w=document.getElementById('pmExportWrap');if(w)w.classList.remove('open');});
+function pmExport(t){document.getElementById('pmExportWrap').classList.remove('open');if(t==='pdf')pmExportPDF();else if(t==='excel')pmExportExcel();else if(t==='csv')pmExportCSV();}
+function pmExportPDF(){if(typeof showToast==='function')showToast('Generating PDF...','info');var el=document.querySelector('.form-body,.form-wrapper,.pdf-form,.form-card,.main-content,form')||document.body;html2canvas(el,{scale:2,useCORS:true,logging:false}).then(function(canvas){var img=canvas.toDataURL('image/png');var pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),iw=pw,ih=(canvas.height*pw)/canvas.width,y=0;while(y<ih){if(y>0)pdf.addPage();pdf.addImage(img,'PNG',0,-y,iw,ih);y+=ph;}pdf.save(PM_FORM_NAME.replace(/\s+/g,'-')+'.pdf');if(typeof showToast==='function')showToast('PDF downloaded!','success');}).catch(function(){if(typeof showToast==='function')showToast('PDF failed','error');});}
+function pmExportExcel(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:30},{wch:50}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Form Data');XLSX.writeFile(wb,PM_FORM_NAME.replace(/\s+/g,'-')+'.xlsx');if(typeof showToast==='function')showToast('Excel downloaded!','success');}
+function pmExportCSV(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var csv=rows.map(function(r){return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(',')}).join('\n');var blob=new Blob([csv],{type:'text/csv'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=PM_FORM_NAME.replace(/\s+/g,'-')+'.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},5000);if(typeof showToast==='function')showToast('CSV downloaded!','success');}
+function pmSubmit(){pmSave();var WS_KEYS={'csm':'csm_inbox_submissions','integration':'integration_inbox_submissions','clinical':'clinical_inbox_submissions','patientsvcs':'patientsvcs_inbox_submissions','support':'support_inbox_submissions'};var key=WS_KEYS[PM_WORKSTREAM];if(!key){showToast('Submitted to PaceMate®!','success');return;}var data=[];try{data=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}var now=Date.now();var existing=data.find(function(e){return e.id===PM_FORM_ID;});if(existing){existing.history[existing.history.length-1].statusAtReview=existing.status;existing.history.push({submittedAt:now,statusAtReview:null});existing.status='submitted';existing.glowStart=now;}else{data.push({id:PM_FORM_ID,formName:PM_FORM_NAME,formFile:PM_FORM_FILE,status:'submitted',glowStart:now,history:[{submittedAt:now,statusAtReview:null}]});}try{localStorage.setItem(key,JSON.stringify(data));}catch(e){}var btn=document.querySelector('.pm-pill-submit');if(btn){btn.textContent='✓ Submitted';btn.disabled=true;btn.style.opacity='0.6';}showToast('Submitted to PaceMate®!','success');}
+function pmHandleSubmit(){
+  // Validate Contact Information — required track fields
+  var contactSection = document.getElementById('accSec1');
+  var trackFields = contactSection ? contactSection.querySelectorAll('input.track[type="text"], input.track[type="email"], input.track[type="tel"]') : [];
+  var missingContact = null;
+  trackFields.forEach(function(f){
+    if(!f.value.trim() && !missingContact) missingContact = f;
+  });
+  // Check practice name at minimum (first track field)
+  var practiceName = contactSection ? contactSection.querySelector('input.track') : null;
+  if(practiceName && !practiceName.value.trim()){
+    showToast('Please complete the Contact Information section before submitting','error');
+    // Open section if collapsed
+    if(contactSection && !contactSection.classList.contains('open')) toggleSection('accSec1');
+    setTimeout(function(){practiceName.scrollIntoView({behavior:'smooth',block:'center'});},200);
+    practiceName.style.borderColor='#EA0044';
+    practiceName.style.boxShadow='0 0 0 3px rgba(234,0,68,0.15)';
+    practiceName.addEventListener('input',function(){practiceName.style.borderColor='';practiceName.style.boxShadow='';},{once:true});
+    return;
+  }
+  // Validate Customer Responsibilities
+  var resps=document.querySelectorAll('[name="resp"]:checked').length;
+  if(resps<4){showToast('Please confirm all customer responsibilities before submitting','error');return;}
+  // Validate Acknowledgement & Authorization
+  var acks=document.querySelectorAll('[name="ack"]:checked').length;
+  var sig=document.querySelector('.sig-typed');
+  var sigVal=sig?sig.value.trim():'';
+  if(acks<3){
+    showToast('Please check all 3 acknowledgement boxes before submitting','error');
+    if(document.getElementById('accSec5') && !document.getElementById('accSec5').classList.contains('open')) toggleSection('accSec5');
+    return;
+  }
+  if(!sigVal){
+    showToast('Please type your name as your electronic signature','error');
+    if(sig)setTimeout(function(){sig.scrollIntoView({behavior:'smooth',block:'center'});},100);
+    return;
+  }
+  pmSubmit();
+}
+setInterval(function(){pmSave();pmSetAutosave();},30000);
+document.addEventListener('DOMContentLoaded',function(){pmLoad();});
+</script>
+</body>
+</html>

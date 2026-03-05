@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceMate® — Athena Marketplace Authorization &amp; Consent</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F5F6F8; color: #212529; line-height: 1.6;
+    -webkit-font-smoothing: antialiased; min-height: 100vh;
+}
+:root {
+    --pm-red: #C8102E; --pm-red-dark: #A00D24; --pm-red-light: #E8394F;
+    --text-primary: #212529; --text-secondary: #495057; --text-tertiary: #868E96;
+    --border: #DEE2E6; --border-light: #E9ECEF;
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08); --radius: 12px; --radius-sm: 8px;
+}
+.page-wrapper { max-width: 860px; margin: 0 auto; padding: 24px 16px 80px; }
+
+/* === STANDARD HEADER === */
+.pm-header{display:flex;align-items:center;padding:20px 40px;background:#FFFFFF;border-bottom:3px solid #EA0044;border-radius:16px 16px 0 0;}
+.pm-header .pm-logo{height:56px;display:flex;align-items:center;}
+.pm-header .pm-logo svg{height:56px;width:auto;}
+.form-title-section{padding:24px 40px 20px;border-bottom:1px solid #E8E8E6;}
+
+/* === FORM BODY === */
+.form-body { background: white; padding: 32px 40px 40px; border-radius: 0 0 16px 16px; box-shadow: var(--shadow-md); }
+
+/* === SECTIONS === */
+.form-section { margin-bottom: 32px; }
+/* Section Accordions */
+.section-accordion{cursor:pointer;user-select:none;display:flex;align-items:center;}
+.section-chevron{margin-left:auto;width:16px;height:16px;transition:transform 0.3s;}
+.section-body{overflow:hidden;max-height:2000px;transition:max-height 0.4s ease,opacity 0.3s ease;opacity:1;}
+.section-body.collapsed{max-height:0;opacity:0;}
+
+.section-label {
+    font-family: 'DM Serif Display', serif; font-size: 1.05rem; font-weight: 700;
+    color: var(--pm-red-dark); margin-bottom: 16px; padding: 14px 18px;
+    background: linear-gradient(135deg, #FFF5F5 0%, #FFEAED 100%);
+    border-left: 4px solid var(--pm-red); border-radius: 0 8px 8px 0;
+    display: flex; align-items: center; gap: 10px;
+}
+.section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; background: white; color: var(--pm-red); box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+
+/* === FIELDS === */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.field-row.three-col { grid-template-columns: 1fr 1fr 1fr; }
+.field-row.full { grid-template-columns: 1fr; }
+.field-group { display: flex; flex-direction: column; gap: 4px; }
+.field-label { font-size: 0.75rem; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.04em; }
+.field-input {
+    padding: 10px 14px; border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem; color: var(--text-primary);
+    transition: all 0.2s; background: white; width: 100%;
+}
+.field-input:focus { outline: none; border-color: var(--pm-red); box-shadow: 0 0 0 3px rgba(200,16,46,0.08); }
+.field-input::placeholder { color: #CED4DA; }
+
+/* === CONSENT CALLOUT === */
+.consent-callout {
+    background: linear-gradient(135deg, #FFF5F5 0%, #FFE8EC 50%, #FFF0F3 100%);
+    border: 2px solid var(--pm-red);
+    border-radius: var(--radius);
+    padding: 28px 28px 24px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+}
+.consent-callout::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--pm-red), var(--pm-red-light));
+}
+.consent-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--pm-red); color: white;
+    padding: 5px 14px; border-radius: 6px;
+    font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 16px;
+}
+.consent-title {
+    font-family: 'DM Serif Display', serif; font-size: 1.1rem; font-weight: 700;
+    color: var(--pm-red-dark); margin-bottom: 12px;
+}
+.consent-steps { margin-bottom: 20px; }
+.consent-step {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 10px 0; border-bottom: 1px solid rgba(200,16,46,0.1);
+}
+.consent-step:last-child { border-bottom: none; }
+.step-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--pm-red); color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.78rem; font-weight: 700; flex-shrink: 0;
+}
+.step-text { font-size: 0.88rem; color: var(--text-primary); line-height: 1.5; padding-top: 3px; }
+.step-text strong { color: var(--pm-red-dark); }
+.step-note { font-size: 0.78rem; color: var(--text-tertiary); margin-top: 2px; }
+
+.consent-link-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--pm-red); color: white;
+    padding: 14px 28px; border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 0.9rem; font-weight: 700;
+    text-decoration: none; transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(200,16,46,0.25);
+}
+.consent-link-btn:hover {
+    background: var(--pm-red-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(200,16,46,0.3);
+}
+
+.consent-warning {
+    display: flex; align-items: center; gap: 10px;
+    background: #FFF8E1; border: 1px solid #FFE082; border-radius: 8px;
+    padding: 10px 16px; margin-top: 16px;
+    font-size: 0.78rem; color: #E65100; font-weight: 500;
+}
+.consent-warning svg { flex-shrink: 0; }
+
+.consent-match-note {
+    font-size: 0.8rem; color: var(--text-secondary);
+    margin-top: 12px; padding: 10px 14px;
+    background: white; border-radius: 6px; border: 1px solid var(--border-light);
+}
+
+/* === DYNAMIC ROWS === */
+.dynamic-block { border: 1.5px solid var(--border-light); border-radius: var(--radius-sm); margin-bottom: 10px; padding: 16px; position: relative; }
+.dynamic-block-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+.dynamic-block-label { font-size: 0.78rem; font-weight: 700; color: var(--pm-red); text-transform: uppercase; letter-spacing: 0.04em; }
+.btn-remove-row { padding: 4px 10px; border: 1px solid #FFCDD2; border-radius: 6px; background: white; font-family: 'DM Sans', sans-serif; font-size: 0.68rem; font-weight: 600; color: #E53935; cursor: pointer; transition: all 0.2s; }
+.btn-remove-row:hover { background: #FFEBEE; }
+.btn-add-row {
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    width: 100%; padding: 10px; border: 2px dashed var(--border); border-radius: var(--radius-sm);
+    background: transparent; font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+    font-weight: 600; color: var(--text-tertiary); cursor: pointer; transition: all 0.2s;
+    margin-bottom: 16px;
+}
+.btn-add-row:hover { border-color: var(--pm-red); color: var(--pm-red); background: rgba(200,16,46,0.03); }
+
+/* === CHECKBOXES === */
+.checkbox-row { display: flex; gap: 32px; margin-bottom: 16px; }
+.checkbox-group { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.checkbox-group input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--pm-red); cursor: pointer; }
+.checkbox-label { font-size: 0.88rem; color: var(--text-primary); }
+
+/* === PREFERENCE CALLOUT === */
+.pref-callout {
+    background: #FAFBFC; border: 2px solid var(--border); border-radius: var(--radius);
+    padding: 20px 24px;
+}
+.pref-callout-header {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.78rem; font-weight: 700; color: var(--pm-red);
+    text-transform: uppercase; letter-spacing: 0.04em;
+    margin-bottom: 12px;
+}
+.checkbox-row-pop { display: flex; gap: 16px; }
+.checkbox-card {
+    flex: 1; cursor: pointer; display: block;
+}
+.checkbox-card input { position: absolute; opacity: 0; pointer-events: none; }
+.checkbox-card-inner {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 24px 16px; border: 2px solid var(--border);
+    border-radius: var(--radius); background: white;
+    transition: all 0.2s; text-align: center;
+}
+.checkbox-card:hover .checkbox-card-inner {
+    border-color: var(--pm-red-light); background: #FFF8F8;
+}
+.checkbox-card input:checked ~ .checkbox-card-inner {
+    border-color: var(--pm-red); background: #FFF5F5;
+    box-shadow: 0 0 0 3px rgba(200,16,46,0.12);
+}
+.checkbox-card-icon { font-size: 1.8rem; margin-bottom: 8px; }
+.checkbox-card-label { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+
+/* === ACCORDION === */
+.accordion-wrapper { border: 1.5px solid var(--border-light); border-radius: var(--radius); overflow: hidden; }
+.accordion-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 14px 20px; background: #F8F9FA; cursor: pointer;
+    transition: background 0.2s; user-select: none;
+}
+.accordion-header:hover { background: #F1F3F5; }
+.accordion-header-left { display: flex; align-items: center; gap: 10px; }
+.ref-badge {
+    font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+    background: #E7F5FF; color: #1971C2; padding: 3px 10px; border-radius: 6px;
+}
+.accordion-title { font-size: 0.85rem; font-weight: 600; color: var(--text-secondary); }
+.accordion-arrow {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: var(--pm-red); color: white;
+    display: flex; align-items: center; justify-content: center;
+    transition: transform 0.3s; flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(200,16,46,0.25);
+}
+.accordion-arrow.open { transform: rotate(180deg); }
+.accordion-body { display: none; padding: 16px 20px; border-top: 1px solid var(--border-light); }
+.accordion-body.open { display: block; }
+
+/* === SIG WELCOME === */
+.sig-welcome {
+    font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7;
+    background: #F8FFF8; border: 1px solid #C8E6C9; border-radius: var(--radius-sm);
+    padding: 16px 20px; margin-bottom: 20px;
+}
+
+/* === INTERFACE DETAILS === */
+.interface-item { padding: 12px 16px; background: #F8F9FA; border-radius: var(--radius-sm); margin-bottom: 8px; border-left: 3px solid var(--pm-red); }
+.interface-item-label { font-size: 0.82rem; font-weight: 600; color: var(--text-primary); }
+.interface-item-sub { font-size: 0.75rem; color: var(--text-tertiary); margin-top: 2px; }
+
+/* === SIGNATURE === */
+.signature-row { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-top: 8px; }
+.signature-line { border-bottom: 1.5px solid var(--text-primary); padding-bottom: 4px; min-height: 40px; }
+.signature-label { font-size: 0.75rem; color: var(--text-tertiary); margin-top: 4px; }
+
+/* === PROGRESS === */
+
+.progress-label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 600; color: var(--text-tertiary); margin-bottom: 6px; }
+
+
+
+/* === ACTIONS === */
+.form-actions { display: flex; gap: 10px; justify-content: flex-end; padding-top: 24px; border-top: 1px solid var(--border-light); }
+.btn-action { padding: 10px 24px; border: 1.5px solid var(--border); border-radius: var(--radius-sm); background: white; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 600; color: var(--text-secondary); cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px; }
+.btn-action:hover { border-color: var(--pm-red); color: var(--pm-red); }
+.btn-action.primary { background: var(--pm-red); color: white; border-color: var(--pm-red); }
+.btn-action.primary:hover { background: var(--pm-red-dark); }
+
+/* === TOAST === */
+.toast { position: fixed; bottom: 24px; right: 24px; background: #212529; color: white; padding: 12px 24px; border-radius: 10px; font-size: 0.82rem; font-weight: 500; box-shadow: 0 8px 24px rgba(0,0,0,0.2); transform: translateY(100px); opacity: 0; transition: all 0.3s ease; z-index: 9999; }
+.toast.show { transform: translateY(0); opacity: 1; }
+
+/* === FOOTER === */
+.pm-footer{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-top:1px solid #D9D9D6;background:#fff;}
+.pm-footer-left{font-family:'DM Sans',sans-serif;font-weight:300;font-size:10px;color:#626469;}
+.pm-footer-left .pipe{margin:0 6px;color:#D9D9D6;}
+.pm-footer-right{text-align:right;font-family:'DM Sans',sans-serif;font-weight:300;font-size:10px;color:#8A8C90;}
+.pm-footer-right .doc-name{font-weight:600;color:#626469;}
+.pm-footer-right .pipe{margin:0 6px;color:#D9D9D6;}
+
+/* === PRINT === */
+@media print {
+    body { background: white; }
+    .page-wrapper { padding: 0; max-width: 100%; }
+    .form-header { border-radius: 0; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .form-body { border-radius: 0; box-shadow: none; }
+    .consent-callout { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .consent-link-btn { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .btn-action, .btn-add-row, .btn-remove-row { display: none; }
+    .accordion-body { display: block !important; }
+    .accordion-arrow { display: none; }
+    .form-actions, .toast { display: none; }
+    .form-section { break-inside: avoid; }
+}
+@media (max-width: 640px) {
+    .form-header { padding: 28px 20px 24px; }
+    .form-body { padding: 20px; }
+    .field-row, .field-row.three-col { grid-template-columns: 1fr; }
+    .consent-callout { padding: 20px; }
+    .checkbox-row { flex-direction: column; gap: 12px; }
+    .signature-row { grid-template-columns: 1fr; }
+    .form-actions { flex-direction: column; }
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+<div class="page-wrapper">
+
+    <!-- STANDARD HEADER -->
+    <div class="pm-header">
+      <div class="pm-logo">
+        <svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" overflow="hidden"><g><path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.601 57.79 165.601 33.675 172.08 33.675 176.723 50.509 176.79 50.509 181.467 33.675 188.014 33.675 188.014 57.79 184.005 57.79 184.005 38.818 183.938 38.818 178.528 57.79 175.02 57.79 169.676 38.818 169.609 38.818 169.609 57.79 165.601 57.79Z" fill="#636569"/><path d="M201.94 57.79 201.674 56.287C200.003 57.422 198.433 58.123 196.263 58.123 193.122 58.123 191.551 55.885 191.551 53.515 191.551 49.573 194.759 47.503 201.506 46.701L201.506 45.232C201.506 43.895 200.438 43.161 198.968 43.161 197.031 43.161 195.962 44.196 195.16 45.299L192.489 43.261C193.557 41.425 196.43 40.021 198.968 40.09 203.644 40.189 205.648 41.892 205.648 47.104L205.648 55.286C205.648 56.155 205.715 57.023 205.982 57.792L201.94 57.792ZM201.507 49.473C198.735 50.008 195.695 50.576 195.695 53.013 195.695 54.315 196.529 55.051 197.699 55.051 199.001 55.051 200.638 53.948 201.507 53.214L201.507 49.473Z" fill="#636569"/><path d="M210.689 40.421 210.689 34.676 214.83 34.676 214.83 40.421 218.238 40.421 218.238 43.762 214.83 43.762 214.83 53.582C214.83 54.517 215.299 54.785 216.334 54.785 216.969 54.785 217.636 54.584 218.238 54.45L218.238 57.857C217.101 57.991 216.099 58.125 214.965 58.125 211.892 58.125 210.689 56.588 210.689 54.116L210.689 43.762 208.284 43.762 208.284 40.421 210.689 40.421Z" fill="#636569"/><path d="M224.179 49.774C224.245 53.381 225.849 54.784 227.787 54.784 229.725 54.784 230.626 53.915 231.662 52.713L234.668 54.584C233.065 57.056 230.727 58.124 227.386 58.124 222.877 58.124 220.038 54.617 220.038 49.106 220.038 43.595 222.877 40.088 227.586 40.088 232.129 40.054 234.667 43.896 234.667 48.072L234.667 49.775 224.179 49.775ZM230.86 46.968C230.794 44.563 229.524 43.16 227.519 43.16 225.514 43.16 224.246 44.563 224.179 46.968L230.86 46.968Z" fill="#636569"/></g></g><g><circle cx="240.028" cy="40.004" r="3.659" stroke="#636569" stroke-width="0.48" stroke-miterlimit="10" fill="none"/><path d="M239.897 40.276 239.24 40.276 239.24 41.999 238.707 41.999 238.707 38.011 239.984 38.011C240.968 38.011 241.272 38.489 241.272 39.076 241.272 39.532 241.136 40.027 240.43 40.206L241.348 41.999 240.767 41.999 239.898 40.276ZM239.761 39.858C240.424 39.858 240.717 39.684 240.717 39.103 240.717 38.63 240.451 38.435 239.869 38.435L239.239 38.435 239.239 39.859 239.761 39.859Z" fill="#636569"/></g></svg>
+      </div>
+    </div>
+    <div class="form-title-section">
+      <h1 style="font-family:'DM Serif Display',serif;font-size:1.5rem;font-weight:700;color:#2D2E32;margin-bottom:4px;">Athena Marketplace Authorization &amp; Consent</h1>
+      <p style="font-size:0.85rem;color:#626469;">Practice Tablespace Mapping: PaceMate Requirements</p>
+    </div>
+
+    <div class="form-body">
+
+        <!-- PROGRESS -->
+
+        <!-- INSTRUCTIONS -->
+        <div class="form-section">
+            <div class="section-label"><div class="section-icon">&#x1F4CB;</div>Instructions</div>
+            <div style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.8;">
+                <div>1. Complete all applicable sections of the form.</div>
+                <div>2. Submit the completed form to PaceMate.</div>
+                <div>3. For questions or clarification, please contact your PaceMate project contact.</div>
+            </div>
+        </div>
+
+        <!-- PURPOSE -->
+        <div class="form-section">
+            <div class="section-label"><div class="section-icon">&#x1F4A1;</div>Athena Integration Form Purpose</div>
+            <div style="font-size: 0.88rem; color: var(--text-secondary); line-height: 1.8;">
+                <p style="margin-bottom: 12px;">This form is specific to Athena requirements to inform them you will like them to export to PaceMateLIVE™.</p>
+                <p style="margin-bottom: 12px;">We use APIs for clinical documentation filing, capturing revenue via the charge router, current patient demographics, active diagnosis code and medications. By providing us with the Athena Department IDs and Provider IDs we can complete the proper mapping exercise.</p>
+                <p style="margin-bottom: 0; font-weight: 600; color: var(--pm-red-dark);">Please take special note of the Athena Authorization and Consent Form Link below. It can take up to 5 days to process and approve, so we ask for this to be submitted as soon as possible.</p>
+            </div>
+        </div>
+
+        <!-- PRACTICE INFO -->
+        <div class="form-section">
+            <div class="section-label"><div class="section-icon">&#x1F3E5;</div>Practice Information</div>
+            <div class="field-row full">
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Name of Clinic, Hospital or Group</label><input type="text" class="field-input tracked" placeholder="Full practice name"></div>
+            </div>
+            <div class="field-row full">
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Street Address</label><input type="text" class="field-input tracked" placeholder="Street address"></div>
+            </div>
+            <div class="field-row">
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Zip / Postal Code</label><input type="text" name="zip_code" class="field-input tracked" placeholder="00000"></div>
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Country</label><input type="text" class="field-input tracked" placeholder="Country"></div>
+            </div>
+            <div class="field-row">
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> City</label><input type="text" name="city" class="field-input tracked" placeholder="Auto-populated from zip"></div>
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> State</label><input type="text" name="state" class="field-input tracked" placeholder="Auto-populated from zip"></div>
+            </div>
+            <div class="field-row">
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Telephone</label><input type="tel" class="field-input tracked" placeholder="(555) 555-5555"></div>
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Website URL</label><input type="url" class="field-input tracked" placeholder="https://"></div>
+            </div>
+        </div>
+
+        <!-- CONSENT CALLOUT -->
+        <div class="consent-callout">
+            <div class="consent-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Action Required
+            </div>
+            <div class="consent-title">Athena Marketplace MDP + PaceMate: Authorization and Consent Form Submission</div>
+
+            <div class="consent-steps">
+                <div class="consent-step">
+                    <div class="step-num">1</div>
+                    <div>
+                        <div class="step-text">Complete the <strong>Athena Authorization and Consent Form</strong> using the link below.</div>
+                        <div class="step-note">Practice Name / Practice ID fields submitted in the online form must match the tablespace mapping identified in this document.</div>
+                    </div>
+                </div>
+                <div class="consent-step">
+                    <div class="step-num">2</div>
+                    <div>
+                        <div class="step-text">Once completed, <strong>forward the confirmation email</strong> received from Athena Marketplace to your PaceMate project manager.</div>
+                    </div>
+                </div>
+                <div class="consent-step">
+                    <div class="step-num">3</div>
+                    <div>
+                        <div class="step-text">Athena MDP recommends allowing up to an estimated <strong>5 business days</strong> for form submission approval.</div>
+                    </div>
+                </div>
+            </div>
+
+            <a href="https://marketplace.athenahealth.com/authorization-consent?product=pacemate-live" target="_blank" class="consent-link-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Open Athena Authorization &amp; Consent Form
+            </a>
+
+            <div class="consent-warning">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E65100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span><strong>Processing time:</strong> Allow up to 5 business days for Athena to approve the consent form. Do not wait — submit this as early as possible to avoid delaying your go-live timeline.</span>
+            </div>
+
+            <div class="consent-match-note">
+                <strong>Important:</strong> The Practice Name and Practice ID you enter in the Athena online form must exactly match the tablespace mapping values provided below in this document.
+            </div>
+        </div>
+
+        <!-- TABLESPACE MAPPING -->
+        <div class="form-section">
+            <div class="section-label section-accordion" onclick="toggleSection('tablespace')"><div class="section-icon">&#x1F5C2;</div>Practice Athena Tablespace Mapping — Data Points Required<svg class="section-chevron" id="chev-tablespace" style="transform:rotate(-90deg)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="section-body collapsed" id="body-tablespace">
+
+            <div class="field-row">
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> 1. Practice Name</label><input type="text" class="field-input tracked" placeholder="Practice name as mapped in Athena"></div>
+                <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> a. Practice ID</label><input type="text" class="field-input tracked" placeholder="Athena Practice ID"></div>
+            </div>
+
+            <div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 12px; margin-top: 8px;">
+                <strong>2. Department(s) Mapping</strong><br>
+                <span style="font-size: 0.78rem; color: var(--text-tertiary);">If your practice / health system has multiple department(s) associated within the Practice / ID for Athena tablespace, please list the department (i.e., location) information including full name and department ID as mapped within your practice Athena tablespace.</span>
+            </div>
+
+            <div id="deptContainer"></div>
+            <button type="button" class="btn-add-row" onclick="addDept()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Department / Location
+            </button>
+        </div>
+        </div>
+
+        
+        <div class="form-section">
+            <div class="section-label section-accordion" onclick="toggleSection('providers')"><div class="section-icon">&#x1F468;</div>Provider(s) Mapping<svg class="section-chevron" id="chev-providers" style="transform:rotate(-90deg)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="section-body collapsed" id="body-providers">
+            <div style="font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 16px;">
+                Please provide the provider full name and credentialing with associated Provider ID assigned in your practice's Athena tablespace. <em style="color: var(--text-tertiary);">Enter if provider level request.</em>
+            </div>
+
+            <div id="provContainer"></div>
+            <button type="button" class="btn-add-row" onclick="addProv()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add Provider
+            </button>
+        </div>
+        </div>
+
+        
+        <div class="form-section">
+            <div class="section-label section-accordion" onclick="toggleSection('docpref')"><div class="section-icon">&#x1F4C4;</div>Practice Preference: Athena Document Location / Subclass<svg class="section-chevron" id="chev-docpref" style="transform:rotate(-90deg)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="section-body collapsed" id="body-docpref">
+            <div class="pref-callout">
+                <div class="pref-callout-header">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--pm-red)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    <span>Selection Required — Please choose one</span>
+                </div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px;">
+                    Please indicate your practice preference for the document location (or subclass) within the athenahealth EMR for electronically signed (CLOSED status) PaceMate reports.
+                </div>
+                <div class="checkbox-row-pop">
+                    <label class="checkbox-card" id="cb_clinical">
+                        <input type="radio" name="doc_pref" value="clinical" class="tracked" onchange="highlightCheckbox()">
+                        <div class="checkbox-card-inner">
+                            <div class="checkbox-card-icon">&#x1F4CB;</div>
+                            <div class="checkbox-card-label">Clinical Document</div>
+                        </div>
+                    </label>
+                    <label class="checkbox-card" id="cb_imaging">
+                        <input type="radio" name="doc_pref" value="imaging" class="tracked" onchange="highlightCheckbox()">
+                        <div class="checkbox-card-inner">
+                            <div class="checkbox-card-icon">&#x1F4CA;</div>
+                            <div class="checkbox-card-label">Imaging / Results</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        
+        <div class="form-section">
+            <div class="section-label section-accordion" onclick="toggleSection('interface')"><div class="section-icon">&#x2699;</div>Practice Interface Details<svg class="section-chevron" id="chev-interface" style="transform:rotate(-90deg)" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></div>
+            <div class="section-body collapsed" id="body-interface">
+            <div class="accordion-wrapper" id="interfaceAccordion">
+                <div class="accordion-header" onclick="toggleAccordion()">
+                    <div class="accordion-header-left">
+                        <span class="ref-badge">For Reference</span>
+                        <span class="accordion-title">Athena's PaceMate Unified Report Document Type IDs</span>
+                    </div>
+                    <div class="accordion-arrow" id="accordionArrow">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                    </div>
+                </div>
+                <div class="accordion-body" id="accordionBody">
+                    <div class="interface-item">
+                        <div class="interface-item-label">1. Remote Transmission Reports: Document Label — "REMOTE DEVICE INTERROGATION (PROC)"</div>
+                        <div class="interface-item-sub">Athena Interface-defined Document Type ID — 314685</div>
+                    </div>
+                    <div class="interface-item">
+                        <div class="interface-item-label">2. (Practice Applicable) In-Clinic Device Reports: Document Label — "DEVICE CHECK (PROC)"</div>
+                        <div class="interface-item-sub">Athena Interface-defined Document Type ID — 347077</div>
+                    </div>
+                    <div class="interface-item">
+                        <div class="interface-item-label">3. (Practice Applicable) CardioMEMS / Heart Failure Device Reports: Document Label — "HEART FAILURE CHECK (PROC)"</div>
+                        <div class="interface-item-sub">Athena Interface-defined Document Type ID — 389593</div>
+                    </div>
+                    <div class="interface-item">
+                        <div class="interface-item-label">4. (Practice Applicable) Wearable Transmission Reports: Document Label — "EVENT MONITOR"</div>
+                        <div class="interface-item-sub">Athena Interface-defined Document Type ID — 392230</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        
+        <div class="form-section">
+            <div class="section-label"><div class="section-icon">&#x270D;</div>Practice Form Signature + Acknowledgement</div>
+            <div class="sig-welcome">
+                <p>Thank you for taking the time to complete this form. Your partnership is what makes a successful integration possible. By signing below, you confirm that the information provided is accurate to the best of your knowledge and that you are authorized to submit this on behalf of your practice.</p>
+            </div>
+            <div class="signature-row">
+                <div class="field-group">
+                    <input type="text" class="field-input tracked" id="athena-sig" placeholder="Type full name as signature" style="border:none;border-bottom:1.5px solid #212529;border-radius:0;padding:8px 4px;">
+                    <div class="signature-label"><span style="color:#EA0044">*</span> Signature (required)</div>
+                </div>
+                <div class="field-group">
+                    <input type="date" class="field-input tracked" id="athena-date">
+                    <div class="signature-label"><span style="color:#EA0044">*</span> Date (required)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PM STANDARD ACTION BAR ── -->
+<div class="pm-action-bar">
+  <button class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+    <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+    Save Progress
+  </button>
+  <button class="pm-pill pm-pill-save" onclick="pmClearForm()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+    Clear Form
+  </button>
+  <span class="pm-autosave" id="pmAutosave"></span>
+  <div class="pm-export-wrap" id="pmExportWrap">
+    <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Export
+      <svg class="pm-chevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+    </button>
+    <div class="pm-export-menu">
+      <button class="pm-export-item" onclick="pmExport('pdf')">
+        <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+        Export as PDF
+      </button>
+      <button class="pm-export-item" onclick="pmExport('excel')">
+        <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+        Export as Excel
+      </button>
+      <button class="pm-export-item" onclick="pmExport('csv')">
+        <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+        Export as CSV
+      </button>
+    </div>
+  </div>
+  <button class="pm-pill pm-pill-submit" onclick="pmSubmit()">
+    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+    Submit to PaceMate
+  </button>
+</div>
+
+    <div class="pm-footer">
+        <div class="pm-footer-left">PaceMate<sup>&reg;</sup><span class="pipe">|</span>PaceMate.com</div>
+        <div class="pm-footer-right"><span class="doc-name">Athena Marketplace Authorization &amp; Consent</span><span class="pipe">|</span>v1<span class="pipe">|</span>February 2026</div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+let deptCount = 0, provCount = 0;
+
+function addDept(suppress) {
+    deptCount++;
+    const c = document.getElementById('deptContainer');
+    const d = document.createElement('div');
+    d.className = 'dynamic-block';
+    d.id = `dept_${deptCount}`;
+    d.innerHTML = `
+        <div class="dynamic-block-header">
+            <span class="dynamic-block-label">Department / Location ${deptCount}</span>
+            ${deptCount > 1 ? `<button class="btn-remove-row" onclick="removeBlock('dept_${deptCount}')">Remove</button>` : ''}
+        </div>
+        <div class="field-row">
+            <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Location / Department Name</label><input type="text" class="field-input tracked" placeholder="Full department name"></div>
+            <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Department ID</label><input type="text" class="field-input tracked" placeholder="Athena Department ID"></div>
+        </div>
+    `;
+    c.appendChild(d);
+    d.querySelectorAll('.tracked').forEach(i => i.addEventListener('input', updateProgress));
+    if (!suppress) showToast(`Department ${deptCount} added`);
+}
+
+function addProv(suppress) {
+    provCount++;
+    const c = document.getElementById('provContainer');
+    const d = document.createElement('div');
+    d.className = 'dynamic-block';
+    d.id = `prov_${provCount}`;
+    d.innerHTML = `
+        <div class="dynamic-block-header">
+            <span class="dynamic-block-label">Provider ${provCount}</span>
+            ${provCount > 1 ? `<button class="btn-remove-row" onclick="removeBlock('prov_${provCount}')">Remove</button>` : ''}
+        </div>
+        <div class="field-row">
+            <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Provider Name</label><input type="text" class="field-input tracked" placeholder="Full name and credentials"></div>
+            <div class="field-group"><label class="field-label"><span style="color:#EA0044">*</span> Provider ID</label><input type="text" class="field-input tracked" placeholder="Athena Provider ID"></div>
+        </div>
+    `;
+    c.appendChild(d);
+    d.querySelectorAll('.tracked').forEach(i => i.addEventListener('input', updateProgress));
+    if (!suppress) showToast(`Provider ${provCount} added`);
+}
+
+function removeBlock(id) {
+    const el = document.getElementById(id);
+    if (el) { el.remove(); showToast('Removed'); }
+}
+
+
+
+function clearForm() {
+    if (!confirm('Clear all fields? This cannot be undone.')) return;
+    document.querySelectorAll('.field-input').forEach(i => { i.value = ''; });
+    document.querySelectorAll('input[type="checkbox"]').forEach(i => { i.checked = false; });
+    document.getElementById('deptContainer').innerHTML = '';
+    document.getElementById('provContainer').innerHTML = '';
+    deptCount = 0; provCount = 0;
+    addDept(true); addProv(true);
+    showToast('Form cleared');
+}
+
+function saveForm() { showToast('Use Ctrl+P (or Cmd+P) to save as PDF'); }
+
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg; t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Accordion toggle
+function toggleAccordion() {
+    document.getElementById('accordionBody').classList.toggle('open');
+    document.getElementById('accordionArrow').classList.toggle('open');
+}
+
+// Checkbox highlight
+
+function toggleSection(id) {
+    var body = document.getElementById('body-' + id);
+    var chev = document.getElementById('chev-' + id);
+    if (!body) return;
+    if (body.classList.contains('collapsed')) {
+        body.classList.remove('collapsed');
+        chev.style.transform = 'rotate(0deg)';
+    } else {
+        body.classList.add('collapsed');
+        chev.style.transform = 'rotate(-90deg)';
+    }
+}
+
+function highlightCheckbox() {
+    document.querySelectorAll('.checkbox-card').forEach(c => c.classList.remove('selected'));
+    const checked = document.querySelector('input[name="doc_pref"]:checked');
+    if (checked) checked.closest('.checkbox-card').classList.add('selected');
+}
+
+// Bind existing tracked fields
+document.querySelectorAll('.tracked').forEach(i => i.addEventListener('input', updateProgress));
+document.querySelectorAll('input[type="checkbox"].tracked').forEach(i => i.addEventListener('change', updateProgress));
+
+// Initialize with one of each
+addDept(true);
+addProv(true);
+
+function saveProgress() {
+    try {
+        var data = {};
+        document.querySelectorAll('input, select, textarea').forEach(function(el) {
+            if (el.id) data[el.id] = el.value;
+            else if (el.name) data['n_' + el.name + '_' + el.value] = el.type === 'checkbox' || el.type === 'radio' ? el.checked : el.value;
+        });
+        localStorage.setItem('pmFormSave_' + window.location.pathname.split('/').pop(), JSON.stringify(data));
+        showProgressToast('Progress saved successfully', '#2B8A3E');
+    } catch(e) {
+        showProgressToast('Save unavailable — use Print / Save PDF', '#E67700');
+    }
+}
+
+function showProgressToast(msg, color) {
+    var t = document.createElement('div');
+    t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:' + (color||'#2B8A3E') + ';color:white;padding:12px 24px;border-radius:8px;font-weight:600;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.2);font-family:DM Sans,sans-serif;font-size:0.84rem;transition:opacity 0.3s;';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(function() { t.style.opacity='0'; setTimeout(function(){t.remove();},300); }, 2500);
+}
+</script>
+
+<!-- PaceMate Back Button -->
+<style>
+.pm-back-btn{
+  position:fixed;top:16px;left:16px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px 8px 12px;
+  background:#fff;
+  border:1.5px solid #DEE2E6;
+  border-radius:20px;
+  font-family:'DM Sans',sans-serif;
+  font-size:0.78rem;font-weight:600;
+  color:#495057;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.09);
+  transition:all 0.15s;
+  line-height:1;
+}
+.pm-back-btn:hover{
+  background:#EA0044;color:#fff;
+  border-color:#EA0044;
+  box-shadow:0 3px 12px rgba(200,16,46,0.25);
+  transform:translateX(-2px);
+}
+.pm-back-btn svg{transition:transform 0.15s;}
+.pm-back-btn:hover svg{transform:translateX(-2px);}
+@media print{.pm-back-btn{display:none!important}}
+
+/* ── PM STANDARD ACTION BAR ─────────────────────────── */
+.pm-action-bar{display:flex;align-items:center;gap:10px;padding:20px 20px 8px;border-top:1px solid #E9ECEF;margin-top:24px;flex-wrap:nowrap;max-width:850px;margin-left:auto;margin-right:auto;}
+.pm-pill{display:inline-flex;align-items:center;gap:7px;padding:10px 22px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.18s;border:none;outline:none;white-space:nowrap;line-height:1;}
+.pm-pill svg{width:14px;height:14px;flex-shrink:0;fill:currentColor;}
+.pm-pill-save{background:white;color:#495057;border:1.5px solid #DEE2E6;}
+.pm-pill-save:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529;}
+.pm-export-wrap{position:relative;margin-left:auto;}
+.pm-pill-export{background:white;color:#495057;border:1.5px solid #DEE2E6;}
+.pm-pill-export:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529;}
+.pm-chevron{width:11px!important;height:11px!important;transition:transform 0.18s;margin-left:1px;}
+.pm-export-wrap.open .pm-pill-export{border-color:#ADB5BD;background:#F8F9FA;}
+.pm-export-wrap.open .pm-chevron{transform:rotate(180deg);}
+.pm-export-menu{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:white;border:1.5px solid #E9ECEF;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.12);min-width:190px;z-index:200;overflow:hidden;}
+.pm-export-wrap.open .pm-export-menu{display:block;}
+.pm-export-item{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:0.82rem;font-weight:500;color:#495057;cursor:pointer;transition:background 0.12s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif;}
+.pm-export-item:hover{background:#F8F9FA;color:#212529;}
+.pm-export-item+.pm-export-item{border-top:1px solid #F1F3F5;}
+.pm-export-item svg{width:15px;height:15px;flex-shrink:0;}
+.pm-pill-submit{background:linear-gradient(135deg,#EA0044,#D00040);color:white;box-shadow:0 3px 12px rgba(200,16,46,0.22);}
+.pm-pill-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(200,16,46,0.35);}
+.pm-autosave{font-size:0.72rem;color:#ADB5BD;display:flex;align-items:center;gap:5px;}
+.pm-autosave.active{color:#2B8A3E;}
+.pm-autosave-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+@media print{.pm-action-bar{display:none!important;}}
+@media(max-width:600px){.pm-action-bar{gap:8px;}.pm-export-wrap{margin-left:0;}.pm-pill-submit{width:100%;justify-content:center;}}
+</style>
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 4L6 8l4 4"/>
+  </svg>
+  Back
+</button>
+
+
+<script>
+/* PM STANDARD ACTION BAR */
+var PM_WORKSTREAM='csm',PM_STORAGE_KEY='form_athena_marketplace',PM_FORM_ID='athena-marketplace',PM_FORM_NAME='Athena Marketplace Tablespace Form',PM_FORM_FILE='form-athena-marketplace-tablespace-v1.html';
+function pmGetData(){var d={};document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name||'field';if(el.type==='radio'){if(el.checked)d[el.name]=el.value;}else if(el.type==='checkbox'){if(el.checked)d[k]=(d[k]?d[k]+', ':''+(el.value||'checked'));}else if(el.value){d[k]=el.value;}});return d;}
+function pmSave(){try{localStorage.setItem(PM_STORAGE_KEY,JSON.stringify(pmGetData()));}catch(e){}}
+function pmLoad(){try{var r=localStorage.getItem(PM_STORAGE_KEY);if(!r)return;var s=JSON.parse(r);document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]):not([type=file]):not([type=hidden]),textarea,select').forEach(function(el){if(el.type==='password')return;var k=el.id||el.name;if(!k||!(k in s))return;if(el.type==='radio'){el.checked=(s[el.name]===el.value);}else if(el.type==='checkbox'){el.checked=!!(s[k]&&s[k].indexOf(el.value||'checked')>-1);}else{el.value=s[k];}});}catch(e){}}
+function pmSetAutosave(msg){var el=document.getElementById('pmAutosave');if(!el)return;var t=new Date();var ts=t.getHours()+':'+String(t.getMinutes()).padStart(2,'0');el.innerHTML='<span class="pm-autosave-dot"></span>'+(msg||('Auto-saved at '+ts));el.classList.add('active');setTimeout(function(){el.classList.remove('active');},3000);}
+function pmSaveProgress(){pmSave();pmSetAutosave('Saved');if(typeof showToast==='function')showToast('Progress saved!','success');}
+function pmToggleExport(e){e.stopPropagation();document.getElementById('pmExportWrap').classList.toggle('open');}
+document.addEventListener('click',function(){var w=document.getElementById('pmExportWrap');if(w)w.classList.remove('open');});
+function pmExport(t){document.getElementById('pmExportWrap').classList.remove('open');if(t==='pdf')pmExportPDF();else if(t==='excel')pmExportExcel();else if(t==='csv')pmExportCSV();}
+function pmExportPDF(){if(typeof showToast==='function')showToast('Generating PDF...','info');var el=document.querySelector('.form-body,.form-wrapper,.pdf-form,.form-card,.main-content,form')||document.body;html2canvas(el,{scale:2,useCORS:true,logging:false}).then(function(canvas){var img=canvas.toDataURL('image/png');var pdf=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});var pw=pdf.internal.pageSize.getWidth(),ph=pdf.internal.pageSize.getHeight(),iw=pw,ih=(canvas.height*pw)/canvas.width,y=0;while(y<ih){if(y>0)pdf.addPage();pdf.addImage(img,'PNG',0,-y,iw,ih);y+=ph;}pdf.save(PM_FORM_NAME.replace(/\s+/g,'-')+'.pdf');if(typeof showToast==='function')showToast('PDF downloaded!','success');}).catch(function(){if(typeof showToast==='function')showToast('PDF failed','error');});}
+function pmExportExcel(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var ws=XLSX.utils.aoa_to_sheet(rows);ws['!cols']=[{wch:30},{wch:50}];var wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Form Data');XLSX.writeFile(wb,PM_FORM_NAME.replace(/\s+/g,'-')+'.xlsx');if(typeof showToast==='function')showToast('Excel downloaded!','success');}
+function pmExportCSV(){var data=pmGetData();var rows=[['Field','Response']].concat(Object.keys(data).map(function(k){return[k,data[k]]}));var csv=rows.map(function(r){return r.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(',')}).join('\n');var blob=new Blob([csv],{type:'text/csv'});var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download=PM_FORM_NAME.replace(/\s+/g,'-')+'.csv';document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url);},5000);if(typeof showToast==='function')showToast('CSV downloaded!','success');}
+function pmSubmit(){
+    var missing=[];
+    document.querySelectorAll('.field-input.tracked').forEach(function(el){
+        if(!el.value.trim()){
+            missing.push(el);
+            el.style.borderColor='#DC3545';
+            el.style.boxShadow='0 0 0 3px rgba(220,53,69,0.1)';
+        } else {
+            el.style.borderColor='';
+            el.style.boxShadow='';
+        }
+    });
+    var docPref=document.querySelector('input[name="doc_pref"]:checked');
+    if(!docPref) missing.push(document.querySelector('.checkbox-row-pop'));
+    if(missing.length>0){
+        // Expand collapsed sections that have errors
+        missing.forEach(function(el){
+            var body=el.closest('.section-body');
+            if(body && body.classList.contains('collapsed')){
+                var id=body.id.replace('body-','');
+                toggleSection(id);
+            }
+        });
+        if(typeof showToast==='function') showToast('Please complete all required fields','error');
+        if(missing[0].scrollIntoView) missing[0].scrollIntoView({behavior:'smooth',block:'center'});
+        if(missing[0].focus) missing[0].focus();
+        return;
+    }
+    pmSave();var WS_KEYS={'csm':'csm_inbox_submissions','integration':'integration_inbox_submissions','clinical':'clinical_inbox_submissions','patientsvcs':'patientsvcs_inbox_submissions','support':'support_inbox_submissions'};var key=WS_KEYS[PM_WORKSTREAM];if(!key){if(typeof showToast==='function')showToast('Submitted to PaceMate!','success');return;}var data=[];try{data=JSON.parse(localStorage.getItem(key)||'[]');}catch(e){}var now=Date.now();var existing=data.find(function(e){return e.id===PM_FORM_ID;});if(existing){existing.history[existing.history.length-1].statusAtReview=existing.status;existing.history.push({submittedAt:now,statusAtReview:null});existing.status='submitted';existing.glowStart=now;}else{data.push({id:PM_FORM_ID,formName:PM_FORM_NAME,formFile:PM_FORM_FILE,status:'submitted',glowStart:now,history:[{submittedAt:now,statusAtReview:null}]});}try{localStorage.setItem(key,JSON.stringify(data));}catch(e){}if(typeof showToast==='function')showToast('Submitted to PaceMate!','success');}
+setInterval(function(){pmSave();pmSetAutosave();},30000);
+
+document.querySelectorAll('.field-input.tracked').forEach(function(el){
+    el.addEventListener('input',function(){this.style.borderColor='';this.style.boxShadow='';});
+});
+
+document.addEventListener('DOMContentLoaded',function(){var vKey=PM_STORAGE_KEY+'_v';if(localStorage.getItem(vKey)!=='v1-brand'){localStorage.removeItem(PM_STORAGE_KEY);localStorage.setItem(vKey,'v1-brand');}else{pmLoad();}});
+
+/* ── ZIP AUTO-POPULATE ── */
+(function(){
+  function lookupZip(zipVal){
+    if(!/^\d{5}$/.test(zipVal)) return;
+    fetch('https://api.zippopotam.us/us/' + zipVal)
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(data){
+        if(!data||!data.places||!data.places[0]) return;
+        var place = data.places[0];
+        var cityEl = document.querySelector('[name="city"]');
+        var stateEl = document.querySelector('[name="state"]');
+        if(cityEl){ cityEl.value = place['place name']; flashField(cityEl); }
+        if(stateEl){ stateEl.value = place['state abbreviation']; flashField(stateEl); }
+      }).catch(function(){});
+  }
+  function flashField(el){
+    el.style.transition='background 0.1s';
+    el.style.background='#E8F5E9';
+    setTimeout(function(){ el.style.background=''; },900);
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    var zipEl = document.querySelector('[name="zip_code"]');
+    if(zipEl) zipEl.addEventListener('blur', function(){ lookupZip(this.value); });
+  });
+})();
+</script>
+</body>
+</html>

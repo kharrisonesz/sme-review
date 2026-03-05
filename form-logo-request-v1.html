@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logo Request Form | PaceMate®</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@300;400;500;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   PACEMATE BRAND TOKENS — Style Guide v02.13.26
+   ============================================ */
+:root {
+  --pm-red: #EA0044;
+  --pm-gray: #626469;
+  --pm-light-gray: #D9D9D6;
+  --pm-text-dark: #2D2E32;
+  --pm-text-body: #626469;
+  --pm-text-secondary: #8A8C90;
+  --pm-text-muted: #D9D9D6;
+  --pm-bg: #FFFFFF;
+  --pm-bg-light: #FAFAFA;
+  --pm-border: #E8E8E6;
+  --pm-success: #00B140;
+  --pm-error: #DC3545;
+  --pm-radius: 10px;
+  --pm-radius-sm: 6px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background: #F3F3F1;
+  color: var(--pm-text-body);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ============================================
+   PAGE FRAME
+   ============================================ */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px 20px 80px;
+}
+
+.form-card {
+  background: var(--pm-bg);
+  border-radius: var(--pm-radius);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 20px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+/* ============================================
+   STANDARD HEADER
+   ============================================ */
+.pm-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  background: #FFFFFF;
+  border-bottom: 3px solid var(--pm-red);
+}
+
+.pm-header .pm-logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  height: 56px;
+}
+
+.pm-header .pm-logo svg { height: 56px; width: auto; }
+
+/* ============================================
+   FORM TITLE SECTION
+   ============================================ */
+.form-title-section {
+  padding: 32px 40px 28px;
+  border-bottom: 1px solid var(--pm-border);
+}
+
+.form-title-section h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  color: var(--pm-text-dark);
+  letter-spacing: -0.3px;
+  margin-bottom: 6px;
+}
+
+.form-title-section p {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: var(--pm-text-body);
+  max-width: 560px;
+  line-height: 1.6;
+}
+
+/* ============================================
+   FORM BODY
+   ============================================ */
+.form-body {
+  padding: 32px 40px 36px;
+}
+
+/* Info callout */
+.info-callout {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  background: var(--pm-bg-light);
+  border: 1px solid var(--pm-border);
+  border-left: 3px solid var(--pm-red);
+  border-radius: var(--pm-radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 32px;
+}
+
+.info-callout .callout-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  color: var(--pm-red);
+}
+
+.info-callout h3 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--pm-text-dark);
+  margin-bottom: 4px;
+}
+
+.info-callout p {
+  font-size: 13px;
+  color: var(--pm-text-body);
+  line-height: 1.55;
+}
+
+/* Form fields */
+.field-group {
+  margin-bottom: 24px;
+}
+
+.field-group label {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--pm-text-dark);
+  margin-bottom: 6px;
+}
+
+.field-group label .req {
+  color: var(--pm-red);
+  margin-left: 2px;
+}
+
+.field-group input[type="text"],
+.field-group input[type="email"],
+.field-group textarea {
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: var(--pm-text-dark);
+  padding: 10px 14px;
+  border: 1.5px solid var(--pm-border);
+  border-radius: var(--pm-radius-sm);
+  background: var(--pm-bg);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  outline: none;
+}
+
+.field-group input:focus,
+.field-group textarea:focus {
+  border-color: var(--pm-red);
+  box-shadow: 0 0 0 3px rgba(234,0,68,0.08);
+}
+
+.field-group input::placeholder,
+.field-group textarea::placeholder {
+  color: var(--pm-text-muted);
+}
+
+.field-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ============================================
+   FILE UPLOAD ZONE
+   ============================================ */
+.upload-section {
+  margin-bottom: 24px;
+}
+
+.upload-section > label {
+  display: block;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--pm-text-dark);
+  margin-bottom: 8px;
+}
+
+.drop-zone {
+  border: 2px dashed var(--pm-light-gray);
+  border-radius: var(--pm-radius);
+  padding: 36px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: var(--pm-bg-light);
+}
+
+.drop-zone:hover,
+.drop-zone.dragover {
+  border-color: var(--pm-red);
+  background: rgba(234,0,68,0.02);
+}
+
+.drop-zone .upload-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 12px;
+  color: var(--pm-light-gray);
+  transition: color 0.2s;
+}
+
+.drop-zone:hover .upload-icon,
+.drop-zone.dragover .upload-icon {
+  color: var(--pm-red);
+}
+
+.drop-zone .upload-text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  color: var(--pm-text-body);
+  margin-bottom: 4px;
+}
+
+.drop-zone .upload-text strong {
+  color: var(--pm-red);
+  cursor: pointer;
+}
+
+.drop-zone .upload-formats {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 11px;
+  color: var(--pm-text-secondary);
+  letter-spacing: 0.3px;
+}
+
+.file-input { display: none; }
+
+/* File selected state */
+.file-selected {
+  display: none;
+  align-items: center;
+  gap: 14px;
+  background: #F0FFF4;
+  border: 1.5px solid #C3E6CB;
+  border-radius: var(--pm-radius-sm);
+  padding: 14px 18px;
+}
+
+.file-selected.show { display: flex; }
+
+.file-selected .file-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--pm-success);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.file-selected .file-icon svg { width: 18px; height: 18px; color: white; }
+
+.file-selected .file-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-selected .file-name {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--pm-text-dark);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-selected .file-size {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 11px;
+  color: var(--pm-text-secondary);
+}
+
+.file-selected .remove-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--pm-text-secondary);
+  padding: 4px;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.file-selected .remove-btn:hover {
+  background: #FDE8E8;
+  color: var(--pm-error);
+}
+
+/* ============================================
+   SPEC BOX
+   ============================================ */
+.spec-box {
+  background: var(--pm-bg-light);
+  border: 1px solid var(--pm-border);
+  border-radius: var(--pm-radius-sm);
+  padding: 16px 20px;
+  margin-bottom: 28px;
+}
+
+.spec-box h4 {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--pm-text-secondary);
+  margin-bottom: 10px;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--pm-text-body);
+}
+
+.spec-item .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--pm-red);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   TOAST
+   ============================================ */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--pm-success);
+  color: white;
+  padding: 14px 24px;
+  border-radius: 8px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  box-shadow: 0 6px 20px rgba(0,177,64,0.3);
+  opacity: 0;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================
+   STANDARD FOOTER
+   ============================================ */
+.pm-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 40px;
+  border-top: 1px solid var(--pm-light-gray);
+  background: var(--pm-bg);
+}
+
+.pm-footer-left {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+  color: var(--pm-text-body);
+}
+
+.pm-footer-left .pipe { margin: 0 6px; color: var(--pm-light-gray); }
+
+.pm-footer-right {
+  text-align: right;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 10px;
+  color: var(--pm-text-secondary);
+}
+
+.pm-footer-right .doc-name {
+  font-weight: 600;
+  color: var(--pm-text-body);
+}
+
+.pm-footer-right .pipe { margin: 0 6px; color: var(--pm-light-gray); }
+
+/* ============================================
+   STANDARD ACTION BAR
+   ============================================ */
+.pm-action-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px 0 8px;
+  border-top: 1px solid var(--pm-border);
+  margin-top: 28px;
+  flex-wrap: nowrap;
+}
+
+.pm-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 20px;
+  border-radius: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+  line-height: 1;
+}
+
+.pm-pill svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+.pm-pill-save,
+.pm-pill-clear {
+  background: white;
+  color: var(--pm-text-body);
+  border: 1.5px solid var(--pm-border);
+}
+
+.pm-pill-save:hover,
+.pm-pill-clear:hover {
+  background: var(--pm-bg-light);
+  border-color: var(--pm-light-gray);
+  color: var(--pm-text-dark);
+}
+
+.pm-export-wrap { position: relative; margin-left: auto; }
+
+.pm-pill-export {
+  background: white;
+  color: var(--pm-text-body);
+  border: 1.5px solid var(--pm-border);
+}
+
+.pm-pill-export:hover {
+  background: var(--pm-bg-light);
+  border-color: var(--pm-light-gray);
+  color: var(--pm-text-dark);
+}
+
+.pm-chevron {
+  width: 11px !important;
+  height: 11px !important;
+  transition: transform 0.18s;
+  margin-left: 1px;
+}
+
+.pm-export-wrap.open .pm-pill-export {
+  border-color: var(--pm-light-gray);
+  background: var(--pm-bg-light);
+}
+
+.pm-export-wrap.open .pm-chevron { transform: rotate(180deg); }
+
+.pm-export-menu {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  right: 0;
+  background: white;
+  border: 1.5px solid var(--pm-border);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.12);
+  min-width: 180px;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.pm-export-wrap.open .pm-export-menu { display: block; }
+
+.pm-export-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 16px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--pm-text-body);
+  cursor: pointer;
+  transition: background 0.12s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+}
+
+.pm-export-item:hover { background: var(--pm-bg-light); color: var(--pm-text-dark); }
+.pm-export-item + .pm-export-item { border-top: 1px solid var(--pm-border); }
+.pm-export-item svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.pm-pill-submit {
+  background: var(--pm-red);
+  color: white;
+  box-shadow: 0 3px 12px rgba(234,0,68,0.22);
+}
+
+.pm-pill-submit:hover {
+  background: #D00040;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(234,0,68,0.3);
+}
+
+.pm-autosave {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 11px;
+  color: var(--pm-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.pm-autosave.active { color: var(--pm-success); }
+
+.pm-autosave-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+@media print { .pm-action-bar { display: none !important; } }
+@media (max-width: 600px) {
+  .pm-action-bar { gap: 8px; flex-wrap: wrap; }
+  .pm-export-wrap { margin-left: 0; }
+  .pm-pill-submit { width: 100%; justify-content: center; }
+}
+
+/* ============================================
+   BACK BUTTON
+   ============================================ */
+.pm-back-btn {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px 8px 12px;
+  background: #fff;
+  border: 1.5px solid var(--pm-border);
+  border-radius: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--pm-text-body);
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.15s;
+  line-height: 1;
+}
+
+.pm-back-btn:hover {
+  background: var(--pm-red);
+  color: #fff;
+  border-color: var(--pm-red);
+}
+
+@media print { .pm-back-btn { display: none !important; } }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 600px) {
+  .pm-header { padding: 14px 20px; }
+  .form-title-section { padding: 24px 20px 20px; }
+  .form-body { padding: 24px 20px 28px; }
+  .pm-footer { padding: 12px 20px; }
+  .field-row { grid-template-columns: 1fr; }
+  .spec-grid { grid-template-columns: 1fr; }
+}
+
+/* Print */
+@media print {
+  body { background: white; }
+  .form-card { box-shadow: none; border: 1px solid var(--pm-border); }
+  .pm-header { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .toast { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- Back button -->
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4L6 8l4 4"/></svg>
+  Back
+</button>
+
+<div class="page">
+  <div class="form-card">
+
+    <!-- HEADER -->
+    <div class="pm-header">
+      <div class="pm-logo">
+        <svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" overflow="hidden">
+          <g><path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.601 57.79 165.601 33.675 172.08 33.675 176.723 50.509 176.79 50.509 181.467 33.675 188.014 33.675 188.014 57.79 184.005 57.79 184.005 38.818 183.938 38.818 178.528 57.79 175.02 57.79 169.676 38.818 169.609 38.818 169.609 57.79 165.601 57.79Z" fill="#636569"/><path d="M201.94 57.79 201.674 56.287C200.003 57.422 198.433 58.123 196.263 58.123 193.122 58.123 191.551 55.885 191.551 53.515 191.551 49.573 194.759 47.503 201.506 46.701L201.506 45.232C201.506 43.895 200.438 43.161 198.968 43.161 197.031 43.161 195.962 44.196 195.16 45.299L192.489 43.261C193.557 41.425 196.43 40.021 198.968 40.09 203.644 40.189 205.648 41.892 205.648 47.104L205.648 55.286C205.648 56.155 205.715 57.023 205.982 57.792L201.94 57.792ZM201.507 49.473C198.735 50.008 195.695 50.576 195.695 53.013 195.695 54.315 196.529 55.051 197.699 55.051 199.001 55.051 200.638 53.948 201.507 53.214L201.507 49.473Z" fill="#636569"/><path d="M210.689 40.421 210.689 34.676 214.83 34.676 214.83 40.421 218.238 40.421 218.238 43.762 214.83 43.762 214.83 53.582C214.83 54.517 215.299 54.785 216.334 54.785 216.969 54.785 217.636 54.584 218.238 54.45L218.238 57.857C217.101 57.991 216.099 58.125 214.965 58.125 211.892 58.125 210.689 56.588 210.689 54.116L210.689 43.762 208.284 43.762 208.284 40.421 210.689 40.421Z" fill="#636569"/><path d="M224.179 49.774C224.245 53.381 225.849 54.784 227.787 54.784 229.725 54.784 230.626 53.915 231.662 52.713L234.668 54.584C233.065 57.056 230.727 58.124 227.386 58.124 222.877 58.124 220.038 54.617 220.038 49.106 220.038 43.595 222.877 40.088 227.586 40.088 232.129 40.054 234.667 43.896 234.667 48.072L234.667 49.775 224.179 49.775ZM230.86 46.968C230.794 44.563 229.524 43.16 227.519 43.16 225.514 43.16 224.246 44.563 224.179 46.968L230.86 46.968Z" fill="#636569"/></g></g><g><circle cx="240.028" cy="40.004" r="3.659" stroke="#636569" stroke-width="0.48" stroke-miterlimit="10" fill="none"/><path d="M239.897 40.276 239.24 40.276 239.24 41.999 238.707 41.999 238.707 38.011 239.984 38.011C240.968 38.011 241.272 38.489 241.272 39.076 241.272 39.532 241.136 40.027 240.43 40.206L241.348 41.999 240.767 41.999 239.898 40.276ZM239.761 39.858C240.424 39.858 240.717 39.684 240.717 39.103 240.717 38.63 240.451 38.435 239.869 38.435L239.239 38.435 239.239 39.859 239.761 39.859Z" fill="#636569"/></g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- TITLE -->
+    <div class="form-title-section">
+      <h1>Logo Request Form</h1>
+      <p>Submit your organization's logo for display on PaceMate® clinical reports in patient charts. We'll configure it during your implementation setup.</p>
+    </div>
+
+    <!-- FORM BODY -->
+    <form id="logoForm" class="form-body">
+
+      <!-- Info callout -->
+      <div class="info-callout">
+        <svg class="callout-icon" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>
+        <div>
+          <h3>Why We Need Your Logo</h3>
+          <p>Your logo appears on clinical reports generated through PaceMateLIVE™ and sent to your EHR. Providing a high-resolution file ensures crisp, professional output on all patient documentation.</p>
+        </div>
+      </div>
+
+      <!-- Organization Name -->
+      <div class="field-group">
+        <label>Organization Name <span class="req">*</span></label>
+        <input type="text" id="orgName" name="orgName" placeholder="Enter your organization name" required>
+      </div>
+
+      <!-- Contact row -->
+      <div class="field-row">
+        <div class="field-group">
+          <label>Contact Name <span class="req">*</span></label>
+          <input type="text" id="contactName" name="contactName" placeholder="Full name" required>
+        </div>
+        <div class="field-group">
+          <label>Email <span class="req">*</span></label>
+          <input type="email" id="email" name="email" placeholder="email@organization.com" required>
+        </div>
+      </div>
+
+      <!-- File Upload -->
+      <div class="upload-section">
+        <label>Logo File <span class="req" style="color:var(--pm-red)">*</span></label>
+        <div class="drop-zone" id="dropZone">
+          <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <div class="upload-text"><strong>Click to upload</strong> or drag and drop</div>
+          <div class="upload-formats">JPEG, PNG, or SVG — 10 MB max</div>
+          <input type="file" id="fileInput" class="file-input" accept=".jpg,.jpeg,.png,.svg">
+        </div>
+        <div class="file-selected" id="fileSelected">
+          <div class="file-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="file-info">
+            <div class="file-name" id="fileName"></div>
+            <div class="file-size" id="fileSize"></div>
+          </div>
+          <button type="button" class="remove-btn" id="removeFile" title="Remove file">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Spec box -->
+      <div class="spec-box">
+        <h4>Logo Requirements</h4>
+        <div class="spec-grid">
+          <div class="spec-item"><span class="dot"></span> High resolution (300+ DPI preferred)</div>
+          <div class="spec-item"><span class="dot"></span> Transparent background (PNG or SVG)</div>
+          <div class="spec-item"><span class="dot"></span> Minimum 500px wide</div>
+          <div class="spec-item"><span class="dot"></span> Official brand version only</div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="field-group">
+        <label>Special Instructions <span style="font-weight:300;color:var(--pm-text-secondary)">(optional)</span></label>
+        <textarea id="notes" name="notes" placeholder="Any special instructions or preferences for logo display..."></textarea>
+      </div>
+
+      <!-- Standard Action Bar -->
+      <div class="pm-action-bar">
+        <button type="button" class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Save Progress
+        </button>
+        <button type="button" class="pm-pill pm-pill-clear" onclick="pmClearForm()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>
+          Clear Form
+        </button>
+        <div class="pm-export-wrap" id="pmExportWrap">
+          <button type="button" class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Export
+            <svg class="pm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="pm-export-menu">
+            <button type="button" class="pm-export-item" onclick="pmExport('pdf')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Download PDF
+            </button>
+            <button type="button" class="pm-export-item" onclick="pmExport('excel')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+              Download Excel
+            </button>
+            <button type="button" class="pm-export-item" onclick="pmExport('csv')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+              Download CSV
+            </button>
+          </div>
+        </div>
+        <button type="button" class="pm-pill pm-pill-submit" onclick="pmSubmit()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9z"/></svg>
+          Submit to PaceMate
+        </button>
+        <div class="pm-autosave" id="pmAutosave"></div>
+      </div>
+
+    </form>
+
+    <!-- FOOTER -->
+    <div class="pm-footer">
+      <div class="pm-footer-left">
+        PaceMate<sup>&reg;</sup><span class="pipe">|</span>PaceMate.com
+      </div>
+      <div class="pm-footer-right">
+        <span class="doc-name">Logo Request Form</span><span class="pipe">|</span>v1<span class="pipe">|</span>February 2026
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+  Logo submitted successfully!
+</div>
+
+<script>
+/* ============================================
+   FORM LOGIC
+   ============================================ */
+var PM_WORKSTREAM = 'csm';
+var PM_STORAGE_KEY = 'form_logo_request';
+var PM_FORM_ID = 'logo-request';
+var PM_FORM_NAME = 'Logo Request Form';
+var PM_FORM_FILE = 'form-logo-request-v1.html';
+
+var dropZone = document.getElementById('dropZone');
+var fileInput = document.getElementById('fileInput');
+var fileSelected = document.getElementById('fileSelected');
+var fileName = document.getElementById('fileName');
+var fileSize = document.getElementById('fileSize');
+var removeFileBtn = document.getElementById('removeFile');
+var form = document.getElementById('logoForm');
+var toast = document.getElementById('toast');
+
+// --- File Upload ---
+dropZone.addEventListener('click', function() { fileInput.click(); });
+dropZone.addEventListener('dragover', function(e) { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', function() { dropZone.classList.remove('dragover'); });
+dropZone.addEventListener('drop', function(e) {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  if (e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', function(e) {
+  if (e.target.files.length > 0) handleFile(e.target.files[0]);
+});
+
+function handleFile(file) {
+  var validTypes = ['image/jpeg','image/jpg','image/png','image/svg+xml'];
+  if (validTypes.indexOf(file.type) === -1) {
+    showToast('Please upload a JPEG, PNG, or SVG file', 'error');
+    return;
+  }
+  if (file.size > 10 * 1024 * 1024) {
+    showToast('File size must be under 10 MB', 'error');
+    return;
+  }
+  fileName.textContent = file.name;
+  fileSize.textContent = formatSize(file.size);
+  fileSelected.classList.add('show');
+  dropZone.style.display = 'none';
+  dropZone.style.borderColor = '';
+  dropZone.style.background = '';
+}
+
+removeFileBtn.addEventListener('click', function() {
+  fileInput.value = '';
+  fileSelected.classList.remove('show');
+  dropZone.style.display = '';
+});
+
+function formatSize(bytes) {
+  if (bytes === 0) return '0 B';
+  var k = 1024;
+  var s = ['B','KB','MB'];
+  var i = Math.floor(Math.log(bytes) / Math.log(k));
+  return Math.round(bytes / Math.pow(k,i) * 100) / 100 + ' ' + s[i];
+}
+
+// --- Toast ---
+function showToast(msg, type) {
+  toast.textContent = msg;
+  toast.style.background = type === 'error' ? 'var(--pm-error)' : 'var(--pm-success)';
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 3000);
+}
+
+// --- Save / Load ---
+function pmGetData() {
+  var d = {};
+  form.querySelectorAll('input:not([type=file]):not([type=submit]):not([type=button]),textarea,select').forEach(function(el) {
+    var k = el.id || el.name;
+    if (k && el.value) d[k] = el.value;
+  });
+  return d;
+}
+
+function pmSave() {
+  try { localStorage.setItem(PM_STORAGE_KEY, JSON.stringify(pmGetData())); } catch(e) {}
+}
+
+function pmLoad() {
+  try {
+    var raw = localStorage.getItem(PM_STORAGE_KEY);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    Object.keys(data).forEach(function(k) {
+      var el = document.getElementById(k);
+      if (el) el.value = data[k];
+    });
+  } catch(e) {}
+}
+
+function pmSetAutosave(msg) {
+  var el = document.getElementById('pmAutosave');
+  if (!el) return;
+  var t = new Date();
+  var ts = t.getHours() + ':' + String(t.getMinutes()).padStart(2,'0');
+  el.innerHTML = '<span class="pm-autosave-dot"></span>' + (msg || ('Auto-saved at ' + ts));
+  el.classList.add('active');
+  setTimeout(function() { el.classList.remove('active'); }, 3000);
+}
+
+function pmSaveProgress() {
+  pmSave();
+  pmSetAutosave('Saved');
+  showToast('Progress saved!', 'success');
+}
+
+// --- Clear Form ---
+function pmClearForm() {
+  if (!confirm('Clear all form data? This cannot be undone.')) return;
+  form.reset();
+  fileInput.value = '';
+  fileSelected.classList.remove('show');
+  dropZone.style.display = '';
+  try { localStorage.removeItem(PM_STORAGE_KEY); } catch(e) {}
+  showToast('Form cleared', 'success');
+}
+
+// --- Export ---
+function pmToggleExport(e) {
+  e.stopPropagation();
+  document.getElementById('pmExportWrap').classList.toggle('open');
+}
+
+document.addEventListener('click', function() {
+  var w = document.getElementById('pmExportWrap');
+  if (w) w.classList.remove('open');
+});
+
+function pmExport(type) {
+  document.getElementById('pmExportWrap').classList.remove('open');
+  if (type === 'pdf') pmExportPDF();
+  else if (type === 'excel') pmExportExcel();
+  else if (type === 'csv') pmExportCSV();
+}
+
+function pmExportPDF() {
+  showToast('Generating PDF...', 'success');
+  window.print();
+}
+
+function pmExportExcel() {
+  var data = pmGetData();
+  var rows = [['Field','Response']];
+  Object.keys(data).forEach(function(k) { rows.push([k, data[k]]); });
+  var csv = rows.map(function(r) {
+    return r.map(function(v) { return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
+  }).join('\n');
+  downloadFile(csv, PM_FORM_NAME.replace(/\s+/g,'-') + '.csv', 'text/csv');
+  showToast('Excel data downloaded!', 'success');
+}
+
+function pmExportCSV() {
+  var data = pmGetData();
+  var rows = [['Field','Response']];
+  Object.keys(data).forEach(function(k) { rows.push([k, data[k]]); });
+  var csv = rows.map(function(r) {
+    return r.map(function(v) { return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
+  }).join('\n');
+  downloadFile(csv, PM_FORM_NAME.replace(/\s+/g,'-') + '.csv', 'text/csv');
+  showToast('CSV downloaded!', 'success');
+}
+
+function downloadFile(content, filename, mime) {
+  var blob = new Blob([content], { type: mime });
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+}
+
+// --- Submit to PaceMate ---
+function pmSubmit() {
+  // Validate required fields
+  var org = document.getElementById('orgName');
+  var contact = document.getElementById('contactName');
+  var email = document.getElementById('email');
+  var hasFile = fileSelected.classList.contains('show');
+  var missing = [];
+
+  [org, contact, email].forEach(function(el) {
+    if (!el.value.trim()) {
+      missing.push(el);
+      el.style.borderColor = 'var(--pm-error)';
+      el.style.boxShadow = '0 0 0 3px rgba(220,53,69,0.1)';
+    } else {
+      el.style.borderColor = '';
+      el.style.boxShadow = '';
+    }
+  });
+
+  if (!hasFile) {
+    missing.push(dropZone);
+    dropZone.style.borderColor = 'var(--pm-error)';
+    dropZone.style.background = 'rgba(220,53,69,0.03)';
+  } else {
+    dropZone.style.borderColor = '';
+    dropZone.style.background = '';
+  }
+
+  if (missing.length > 0) {
+    showToast('Please complete all required fields and upload a logo file', 'error');
+    missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+    missing[0].focus && missing[0].focus();
+    return;
+  }
+
+  // Clear any lingering validation styles
+  [org, contact, email].forEach(function(el) {
+    el.style.borderColor = '';
+    el.style.boxShadow = '';
+  });
+
+  pmSave();
+  var WS_KEYS = {
+    csm: 'csm_inbox_submissions',
+    integration: 'integration_inbox_submissions',
+    clinical: 'clinical_inbox_submissions',
+    patientsvcs: 'patientsvcs_inbox_submissions',
+    support: 'support_inbox_submissions'
+  };
+  var key = WS_KEYS[PM_WORKSTREAM];
+  if (!key) { showToast('Submitted to PaceMate!', 'success'); return; }
+  var data = [];
+  try { data = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+  var now = Date.now();
+  var existing = data.find(function(e) { return e.id === PM_FORM_ID; });
+  if (existing) {
+    existing.history[existing.history.length - 1].statusAtReview = existing.status;
+    existing.history.push({ submittedAt: now, statusAtReview: null });
+    existing.status = 'submitted';
+    existing.glowStart = now;
+  } else {
+    data.push({
+      id: PM_FORM_ID,
+      formName: PM_FORM_NAME,
+      formFile: PM_FORM_FILE,
+      status: 'submitted',
+      glowStart: now,
+      history: [{ submittedAt: now, statusAtReview: null }]
+    });
+  }
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+  showToast('Submitted to PaceMate!', 'success');
+}
+
+// Auto-save interval
+setInterval(function() { pmSave(); pmSetAutosave(); }, 30000);
+document.addEventListener('DOMContentLoaded', function() {
+  // One-time clear of stale data from previous form version
+  var vKey = PM_STORAGE_KEY + '_v';
+  if (localStorage.getItem(vKey) !== 'v1-rebuild') {
+    localStorage.removeItem(PM_STORAGE_KEY);
+    localStorage.setItem(vKey, 'v1-rebuild');
+  } else {
+    pmLoad();
+  }
+});
+
+// Clear validation styling on input
+['orgName','contactName','email'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', function() {
+    this.style.borderColor = '';
+    this.style.boxShadow = '';
+  });
+});
+</script>
+
+</body>
+</html>

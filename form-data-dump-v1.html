@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Data Upload | PaceMate®</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@300;400;500;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+/* PaceMate Brand Tokens — Style Guide v02.13.26 */
+:root {
+  --pm-red: #EA0044;
+  --pm-gray: #626469;
+  --pm-light-gray: #D9D9D6;
+  --pm-text-dark: #2D2E32;
+  --pm-text-body: #626469;
+  --pm-text-secondary: #8A8C90;
+  --pm-text-muted: #D9D9D6;
+  --pm-bg: #FFFFFF;
+  --pm-bg-light: #FAFAFA;
+  --pm-border: #E8E8E6;
+  --pm-success: #00B140;
+  --pm-error: #DC3545;
+  --pm-warning: #F0AD4E;
+  --pm-info: #17A2B8;
+  --pm-radius: 10px;
+  --pm-radius-sm: 6px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Roboto',sans-serif;background:#F3F3F1;color:var(--pm-text-body);line-height:1.6}
+
+/* Page */
+.page{max-width:860px;margin:0 auto;padding:28px 20px 80px}
+.form-card{background:var(--pm-bg);border-radius:var(--pm-radius);box-shadow:0 1px 3px rgba(0,0,0,0.06),0 6px 20px rgba(0,0,0,0.04);overflow:hidden}
+
+/* Standard Header */
+.pm-header{display:flex;align-items:center;padding:20px 40px;background:#FFFFFF;border-bottom:3px solid var(--pm-red)}
+.pm-header .pm-logo{height:56px;display:flex;align-items:center}
+.pm-header .pm-logo svg{height:56px;width:auto}
+
+/* Title Section */
+.form-title-section{padding:32px 40px 28px;border-bottom:1px solid var(--pm-border)}
+.form-title-section h1{font-family:'Poppins',sans-serif;font-weight:600;font-size:22px;color:var(--pm-text-dark);letter-spacing:-0.3px;margin-bottom:6px}
+.form-title-section p{font-size:14px;color:var(--pm-text-body);max-width:600px}
+
+/* Form Body */
+.form-body{padding:32px 40px 20px}
+
+/* Steps */
+.step{margin-bottom:32px;padding-bottom:28px;border-bottom:1px solid var(--pm-border)}
+.step:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.step-header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.step-num{background:var(--pm-red);color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;flex-shrink:0}
+.step-num.done{background:var(--pm-success)}
+.step-num.warn{background:var(--pm-warning);color:var(--pm-text-dark)}
+.step-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:16px;color:var(--pm-text-dark)}
+.step-desc{font-size:13px;color:var(--pm-text-body);margin-bottom:14px;padding-left:40px}
+
+/* Integration Type Cards */
+.type-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding-left:40px}
+.type-card{border:2px solid var(--pm-border);border-radius:var(--pm-radius);padding:18px;cursor:pointer;transition:all 0.2s;position:relative}
+.type-card:hover{border-color:var(--pm-red)}
+.type-card.selected{border-color:var(--pm-red);background:rgba(234,0,68,0.03);box-shadow:0 0 0 1px var(--pm-red)}
+.type-card.selected::after{content:'';position:absolute;top:12px;right:12px;width:20px;height:20px;background:var(--pm-red);border-radius:50%;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z'/%3E%3C/svg%3E");background-size:12px;background-repeat:no-repeat;background-position:center}
+.type-card h3{font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:var(--pm-text-dark);margin-bottom:4px;padding-right:28px}
+.type-card p{font-size:12px;color:var(--pm-text-body);line-height:1.5}
+.type-card .field-count{font-family:'Roboto Condensed',sans-serif;font-size:11px;color:var(--pm-red);font-weight:700;margin-top:8px;letter-spacing:0.3px}
+
+/* Timeline */
+.timeline-bar{display:flex;align-items:stretch;gap:0;padding-left:40px;margin-top:12px}
+.timeline-item{flex:1;padding:16px 20px;border-radius:var(--pm-radius-sm);min-height:110px}
+.timeline-item.t1{background:rgba(234,0,68,0.04);border:1px solid rgba(234,0,68,0.15)}
+.timeline-item.t2{background:rgba(240,173,78,0.06);border:1px solid rgba(240,173,78,0.2)}
+.timeline-connector{width:36px;display:flex;align-items:center;justify-content:center;color:var(--pm-text-muted);font-size:16px;flex-shrink:0}
+.t-label{font-family:'Roboto Condensed',sans-serif;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:700;margin-bottom:4px}
+.timeline-item.t1 .t-label{color:var(--pm-red)}
+.timeline-item.t2 .t-label{color:#856404}
+.t-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:var(--pm-text-dark)}
+.t-deadline{font-size:12px;color:var(--pm-text-body);margin-top:4px}
+.t-date{font-weight:700;color:var(--pm-red)}
+.t-note{font-size:11px;color:var(--pm-text-secondary);margin-top:4px}
+.go-live-row{display:flex;align-items:center;gap:12px;padding-left:40px;margin-bottom:12px}
+.go-live-row label{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;color:var(--pm-text-dark)}
+.go-live-input{border:1.5px solid var(--pm-border);border-radius:var(--pm-radius-sm);padding:8px 12px;font-family:'Roboto',sans-serif;font-size:13px;width:160px;outline:none}
+.go-live-input:focus{border-color:var(--pm-red);box-shadow:0 0 0 3px rgba(234,0,68,0.08)}
+.calc-date{font-family:'Poppins',sans-serif;font-size:13px;color:var(--pm-red);font-weight:600;margin-left:8px}
+
+/* Date pop animation */
+.timeline-item.date-set .t-date{display:block;font-size:18px;font-weight:700;line-height:1.1;margin-top:6px}
+.timeline-item.t1.date-set .t-date{color:var(--pm-red)}
+.timeline-item.t2.date-set .t-date{color:#856404}
+.timeline-item.date-set{animation:datePop 0.4s cubic-bezier(0.175,0.885,0.32,1.275)}
+.deadline-days{display:none;font-family:'Roboto Condensed',sans-serif;font-size:10px;font-weight:700;margin-top:4px;padding:2px 8px;border-radius:10px;width:fit-content;letter-spacing:0.3px}
+.timeline-item.t1.date-set .deadline-days{display:inline-block;background:rgba(234,0,68,0.1);color:var(--pm-red)}
+.timeline-item.t2.date-set .deadline-days{display:inline-block;background:rgba(133,100,4,0.1);color:#856404}
+@keyframes datePop{0%{transform:scale(0.96);opacity:0.5}60%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
+
+/* Billing Method Cards */
+.billing-options{padding-left:40px;display:grid;gap:10px}
+.billing-card{border:1.5px solid var(--pm-border);border-radius:var(--pm-radius);padding:16px 18px;cursor:pointer;transition:all 0.2s}
+.billing-card:hover{border-color:var(--pm-red)}
+.billing-card.selected{border-color:var(--pm-red);background:rgba(234,0,68,0.03)}
+.bc-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;display:flex;align-items:center;gap:8px;color:var(--pm-text-dark)}
+.bc-title .radio{width:16px;height:16px;border:2px solid var(--pm-light-gray);border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.billing-card.selected .bc-title .radio{border-color:var(--pm-red);background:var(--pm-red)}
+.billing-card.selected .bc-title .radio::after{content:'';width:6px;height:6px;background:#fff;border-radius:50%}
+.bc-usecase{font-size:12px;color:var(--pm-text-body);margin-top:6px;padding-left:24px}
+.bc-hint{font-size:11px;background:var(--pm-bg-light);border-radius:var(--pm-radius-sm);padding:8px 12px;margin-top:6px;color:var(--pm-text-body)}
+.bc-hint strong{color:var(--pm-text-dark)}
+.gate-hint{padding-left:40px;margin-top:10px;font-size:12px;color:var(--pm-text-secondary);font-style:italic}
+
+/* Template Card */
+.template-card{background:var(--pm-bg);border:1.5px solid var(--pm-border);border-radius:var(--pm-radius);overflow:hidden;padding-left:40px;margin-top:8px}
+.template-inner{padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.template-title{font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:var(--pm-text-dark)}
+.template-sub{font-size:12px;color:var(--pm-text-body);margin-top:2px}
+
+/* Column Tags */
+.col-tags{display:flex;flex-wrap:wrap;gap:6px;padding:12px 22px 16px;border-top:1px solid var(--pm-border)}
+.col-tag{display:inline-block;border:1px solid var(--pm-border);border-radius:20px;padding:3px 10px;font-family:'Roboto Condensed',sans-serif;font-size:11px;font-weight:400;color:var(--pm-text-body)}
+.col-tag.cat-demo{border-color:rgba(234,0,68,0.2);color:var(--pm-red);background:rgba(234,0,68,0.03)}
+.col-tag.cat-device{border-color:rgba(23,162,184,0.25);color:#0C5460;background:rgba(23,162,184,0.04)}
+.col-tag.cat-contact{border-color:rgba(117,59,189,0.2);color:#524578;background:rgba(117,59,189,0.03)}
+.col-tag.cat-billing{border-color:rgba(0,177,64,0.2);color:#1F6B44;background:rgba(0,177,64,0.04)}
+
+/* Action Buttons */
+.btn-pm{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:50px;font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s}
+.btn-pm-primary{background:var(--pm-red);color:white;box-shadow:0 3px 12px rgba(234,0,68,0.25)}
+.btn-pm-primary:hover{background:#D00040;transform:translateY(-1px);box-shadow:0 5px 18px rgba(234,0,68,0.3)}
+.btn-pm-primary:disabled{opacity:0.5;cursor:not-allowed;transform:none}
+.btn-pm-primary.submitted{background:var(--pm-success);box-shadow:0 3px 12px rgba(0,177,64,0.25)}
+.btn-pm svg{width:16px;height:16px;flex-shrink:0}
+
+/* CPT Table */
+.cpt-wrap{padding-left:40px}
+.cpt-table{width:100%;border-collapse:collapse;margin-top:10px}
+.cpt-table th{font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;text-transform:uppercase;background:var(--pm-bg-light);padding:8px 12px;text-align:left;border-bottom:2px solid var(--pm-border);color:var(--pm-text-secondary)}
+.cpt-table td{padding:8px 12px;font-size:13px;border-bottom:1px solid var(--pm-border)}
+.cpt-code{font-family:'Roboto Condensed',sans-serif;font-weight:700;color:var(--pm-red)}
+
+/* File Upload */
+.upload-zone{padding-left:40px}
+.drop-area{border:2px dashed var(--pm-light-gray);border-radius:var(--pm-radius);padding:36px 24px;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--pm-bg-light)}
+.drop-area:hover,.drop-area.dragover{border-color:var(--pm-red);background:rgba(234,0,68,0.02)}
+.drop-area.has-file{border-color:var(--pm-success);background:rgba(0,177,64,0.03)}
+.drop-area .upload-icon{font-size:28px;margin-bottom:6px}
+.drop-area .upload-text{font-size:13px;color:var(--pm-text-body)}
+.drop-area .upload-text strong{color:var(--pm-red)}
+.drop-area .upload-formats{font-family:'Roboto Condensed',sans-serif;font-size:11px;color:var(--pm-text-secondary);margin-top:4px}
+.file-input{display:none}
+
+/* Validation Results */
+.val-results{padding-left:40px;margin-top:14px}
+.val-summary{display:flex;align-items:center;gap:10px;padding:14px 18px;border-radius:var(--pm-radius-sm);margin-bottom:10px;font-size:13px}
+.val-summary.pass{background:rgba(0,177,64,0.08);border:1px solid rgba(0,177,64,0.2)}
+.val-summary.pass .val-text{color:#155724;font-family:'Poppins',sans-serif;font-weight:600}
+.val-summary.fail{background:rgba(220,53,69,0.06);border:1px solid rgba(220,53,69,0.15)}
+.val-summary.fail .val-text{color:#721C24;font-family:'Poppins',sans-serif;font-weight:600}
+.val-icon{font-size:16px;flex-shrink:0}
+.val-details{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.val-item{display:flex;align-items:center;gap:6px;font-size:12px;padding:5px 8px;border-radius:4px}
+.val-item.ok{background:rgba(0,177,64,0.06);color:#155724}
+.val-item.err{background:rgba(220,53,69,0.06);color:#721C24}
+.preview-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:14px;border-radius:var(--pm-radius-sm);overflow:hidden}
+.preview-table thead{background:var(--pm-red);color:#fff}
+.preview-table th{padding:7px 8px;text-align:left;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:10px;letter-spacing:0.5px}
+.preview-table td{padding:5px 8px;border-bottom:1px solid var(--pm-border)}
+.preview-table tr:nth-child(even){background:var(--pm-bg-light)}
+.row-count{font-family:'Poppins',sans-serif;font-size:13px;font-weight:600;color:var(--pm-text-dark);margin-top:8px}
+
+/* Callout */
+.callout{padding:12px 16px;border-radius:var(--pm-radius-sm);border-left:3px solid;margin:10px 0;font-size:13px;display:flex;gap:10px;align-items:flex-start}
+.callout.warning{background:rgba(240,173,78,0.08);border-left-color:var(--pm-warning);color:#856404}
+.callout.info{background:rgba(23,162,184,0.06);border-left-color:var(--pm-info);color:#0C5460}
+.callout.error{background:rgba(220,53,69,0.06);border-left-color:var(--pm-error);color:#721C24}
+.callout-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+
+/* Format Tips */
+.format-tips{padding-left:40px}
+.format-tip{display:flex;gap:8px;font-size:12px;color:var(--pm-text-body);margin-bottom:4px}
+.format-tip .tip-dot{width:5px;height:5px;border-radius:50%;background:var(--pm-red);flex-shrink:0;margin-top:6px}
+.fields-cat{padding-left:40px;margin-top:14px;margin-bottom:6px;font-family:'Roboto Condensed',sans-serif;font-weight:700;font-size:10px;color:var(--pm-red);text-transform:uppercase;letter-spacing:1.5px}
+
+/* Accordion */
+.accordion-header{display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;padding-left:40px}
+.accordion-header:hover{opacity:0.85}
+.accordion-arrow{width:28px;height:28px;border-radius:50%;background:var(--pm-red);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform 0.3s}
+.accordion-arrow svg{width:10px;height:10px;fill:#fff}
+.accordion-body{max-height:2000px;overflow:hidden;transition:max-height 0.4s ease}
+.accordion-body.collapsed{max-height:0}
+.collapsed-state .accordion-arrow{transform:rotate(-90deg)}
+
+/* Acknowledgement */
+.ack-section{padding-left:40px}
+.ack-list{margin-bottom:16px;font-size:13px;color:var(--pm-text-body);line-height:1.8;padding-left:18px}
+.sig-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.sig-field label{display:block;font-family:'Poppins',sans-serif;font-weight:600;font-size:11px;margin-bottom:4px;color:var(--pm-text-secondary)}
+.sig-field input{width:100%;border:none;border-bottom:2px solid var(--pm-border);padding:8px 4px;font-family:'Roboto',sans-serif;font-size:14px;background:transparent;outline:none}
+.sig-field input:focus{border-bottom-color:var(--pm-red)}
+
+/* Standard Action Bar */
+.pm-action-bar{display:flex;align-items:center;gap:10px;padding:20px 0 8px;border-top:1px solid var(--pm-border);margin-top:28px;flex-wrap:nowrap}
+.pm-pill{display:inline-flex;align-items:center;gap:7px;padding:10px 20px;border-radius:50px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all 0.18s;border:none;outline:none;white-space:nowrap;line-height:1}
+.pm-pill svg{width:14px;height:14px;flex-shrink:0}
+.pm-pill-save,.pm-pill-clear{background:white;color:var(--pm-text-body);border:1.5px solid var(--pm-border)}
+.pm-pill-save:hover,.pm-pill-clear:hover{background:var(--pm-bg-light);border-color:var(--pm-light-gray);color:var(--pm-text-dark)}
+.pm-export-wrap{position:relative;margin-left:auto}
+.pm-pill-export{background:white;color:var(--pm-text-body);border:1.5px solid var(--pm-border)}
+.pm-pill-export:hover{background:var(--pm-bg-light);border-color:var(--pm-light-gray)}
+.pm-chevron{width:11px!important;height:11px!important;transition:transform 0.18s;margin-left:1px}
+.pm-export-wrap.open .pm-pill-export{border-color:var(--pm-light-gray);background:var(--pm-bg-light)}
+.pm-export-wrap.open .pm-chevron{transform:rotate(180deg)}
+.pm-export-menu{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:white;border:1.5px solid var(--pm-border);border-radius:10px;box-shadow:0 8px 28px rgba(0,0,0,0.12);min-width:180px;z-index:200;overflow:hidden}
+.pm-export-wrap.open .pm-export-menu{display:block}
+.pm-export-item{display:flex;align-items:center;gap:10px;padding:11px 16px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:500;color:var(--pm-text-body);cursor:pointer;transition:background 0.12s;border:none;background:none;width:100%;text-align:left}
+.pm-export-item:hover{background:var(--pm-bg-light);color:var(--pm-text-dark)}
+.pm-export-item+.pm-export-item{border-top:1px solid var(--pm-border)}
+.pm-export-item svg{width:15px;height:15px;flex-shrink:0}
+.pm-pill-submit{background:var(--pm-red);color:white;box-shadow:0 3px 12px rgba(234,0,68,0.22)}
+.pm-pill-submit:hover{background:#D00040;transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,0,68,0.3)}
+.pm-autosave{font-family:'Roboto Condensed',sans-serif;font-size:11px;color:var(--pm-text-muted);display:flex;align-items:center;gap:5px;width:100%;margin-top:4px}
+.pm-autosave.active{color:var(--pm-success)}
+.pm-autosave-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* Standard Footer */
+.pm-footer{display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-top:1px solid var(--pm-light-gray);background:var(--pm-bg)}
+.pm-footer-left{font-family:'Poppins',sans-serif;font-weight:300;font-size:10px;color:var(--pm-text-body)}
+.pm-footer-left .pipe{margin:0 6px;color:var(--pm-light-gray)}
+.pm-footer-right{text-align:right;font-family:'Poppins',sans-serif;font-weight:300;font-size:10px;color:var(--pm-text-secondary)}
+.pm-footer-right .doc-name{font-weight:600;color:var(--pm-text-body)}
+.pm-footer-right .pipe{margin:0 6px;color:var(--pm-light-gray)}
+
+/* Back Button */
+.pm-back-btn{position:fixed;top:16px;left:16px;z-index:9999;display:inline-flex;align-items:center;gap:6px;padding:8px 16px 8px 12px;background:#fff;border:1.5px solid var(--pm-border);border-radius:20px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;color:var(--pm-text-body);cursor:pointer;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:all 0.15s;line-height:1}
+.pm-back-btn:hover{background:var(--pm-red);color:#fff;border-color:var(--pm-red)}
+
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--pm-success);color:white;padding:14px 24px;border-radius:8px;font-family:'Poppins',sans-serif;font-weight:600;font-size:13px;box-shadow:0 6px 20px rgba(0,0,0,0.15);opacity:0;transition:all 0.3s ease;z-index:1000}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* Fade-in animation */
+.fade-in{animation:fadeSlideIn 0.4s ease}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Print */
+@media print{
+  body{background:#fff}
+  .form-card{box-shadow:none}
+  .pm-header{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .drop-area{display:none}
+  .pm-action-bar,.pm-back-btn,.toast{display:none!important}
+  .accordion-body.collapsed{max-height:none!important}
+  .accordion-arrow{display:none}
+}
+
+/* Responsive */
+@media(max-width:640px){
+  .type-cards,.sig-row,.val-details{grid-template-columns:1fr}
+  .timeline-bar{flex-direction:column}
+  .timeline-connector{width:auto;height:16px;font-size:12px}
+  .form-body,.form-title-section{padding-left:20px;padding-right:20px}
+  .pm-header,.pm-footer{padding-left:20px;padding-right:20px}
+  .step-desc,.upload-zone,.cpt-wrap,.billing-options,.format-tips,.ack-section,.template-card,.go-live-row,.type-cards,.fields-cat,.gate-hint,.accordion-header{padding-left:0!important}
+  .pm-pill-submit{margin-left:0;width:100%;justify-content:center}
+  .pm-action-bar{flex-wrap:wrap}
+  .pm-export-wrap{margin-left:0}
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<!-- Back button -->
+<button class="pm-back-btn" onclick="window.history.back()"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4L6 8l4 4"/></svg>Back</button>
+
+<div class="page">
+<div class="form-card">
+
+<!-- HEADER -->
+<div class="pm-header">
+  <div class="pm-logo">
+    <svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" overflow="hidden"><g><path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.601 57.79 165.601 33.675 172.08 33.675 176.723 50.509 176.79 50.509 181.467 33.675 188.014 33.675 188.014 57.79 184.005 57.79 184.005 38.818 183.938 38.818 178.528 57.79 175.02 57.79 169.676 38.818 169.609 38.818 169.609 57.79 165.601 57.79Z" fill="#636569"/><path d="M201.94 57.79 201.674 56.287C200.003 57.422 198.433 58.123 196.263 58.123 193.122 58.123 191.551 55.885 191.551 53.515 191.551 49.573 194.759 47.503 201.506 46.701L201.506 45.232C201.506 43.895 200.438 43.161 198.968 43.161 197.031 43.161 195.962 44.196 195.16 45.299L192.489 43.261C193.557 41.425 196.43 40.021 198.968 40.09 203.644 40.189 205.648 41.892 205.648 47.104L205.648 55.286C205.648 56.155 205.715 57.023 205.982 57.792L201.94 57.792ZM201.507 49.473C198.735 50.008 195.695 50.576 195.695 53.013 195.695 54.315 196.529 55.051 197.699 55.051 199.001 55.051 200.638 53.948 201.507 53.214L201.507 49.473Z" fill="#636569"/><path d="M210.689 40.421 210.689 34.676 214.83 34.676 214.83 40.421 218.238 40.421 218.238 43.762 214.83 43.762 214.83 53.582C214.83 54.517 215.299 54.785 216.334 54.785 216.969 54.785 217.636 54.584 218.238 54.45L218.238 57.857C217.101 57.991 216.099 58.125 214.965 58.125 211.892 58.125 210.689 56.588 210.689 54.116L210.689 43.762 208.284 43.762 208.284 40.421 210.689 40.421Z" fill="#636569"/><path d="M224.179 49.774C224.245 53.381 225.849 54.784 227.787 54.784 229.725 54.784 230.626 53.915 231.662 52.713L234.668 54.584C233.065 57.056 230.727 58.124 227.386 58.124 222.877 58.124 220.038 54.617 220.038 49.106 220.038 43.595 222.877 40.088 227.586 40.088 232.129 40.054 234.667 43.896 234.667 48.072L234.667 49.775 224.179 49.775ZM230.86 46.968C230.794 44.563 229.524 43.16 227.519 43.16 225.514 43.16 224.246 44.563 224.179 46.968L230.86 46.968Z" fill="#636569"/></g></g><g><circle cx="240.028" cy="40.004" r="3.659" stroke="#636569" stroke-width="0.48" stroke-miterlimit="10" fill="none"/><path d="M239.897 40.276 239.24 40.276 239.24 41.999 238.707 41.999 238.707 38.011 239.984 38.011C240.968 38.011 241.272 38.489 241.272 39.076 241.272 39.532 241.136 40.027 240.43 40.206L241.348 41.999 240.767 41.999 239.898 40.276ZM239.761 39.858C240.424 39.858 240.717 39.684 240.717 39.103 240.717 38.63 240.451 38.435 239.869 38.435L239.239 38.435 239.239 39.859 239.761 39.859Z" fill="#636569"/></g></svg>
+  </div>
+</div>
+
+<!-- TITLE -->
+<div class="form-title-section">
+  <h1>Patient Data Upload</h1>
+  <p>Upload your patient data for PaceMateLIVE™ onboarding. Two submissions are required before your go-live date.</p>
+</div>
+
+<!-- FORM BODY -->
+<div class="form-body">
+
+<!-- STEP 1: Integration Type -->
+<div class="step">
+  <div class="step-header"><div class="step-num" id="s1num">1</div><div class="step-title">Select Your Integration Type</div></div>
+  <p class="step-desc">This determines which data fields are required in your patient file.</p>
+  <div class="type-cards">
+    <div class="type-card" id="card-emr" onclick="selectType('emr')">
+      <h3>EMR Integrated</h3>
+      <p>Your EHR system is connected to PaceMateLIVE™. Patient demographics are pulled automatically — you only need to provide core identifiers and billing dates.</p>
+      <div class="field-count">6 required fields</div>
+    </div>
+    <div class="type-card" id="card-nonemr" onclick="selectType('nonemr')">
+      <h3>Non-EMR Integrated</h3>
+      <p>No EHR integration. You'll provide full patient demographics, device info, contact details, and billing data so PaceMate® can create complete patient profiles.</p>
+      <div class="field-count">16 required fields</div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 2: Timeline -->
+<div class="step">
+  <div class="step-header"><div class="step-num">2</div><div class="step-title">Submission Timeline</div></div>
+  <p class="step-desc">Two data submissions are required before your go-live date.</p>
+  <div class="go-live-row">
+    <label>Target Go-Live Date:</label>
+    <input type="date" class="go-live-input" id="goLiveDate" onchange="calcDates()">
+    <span class="calc-date" id="calcDate"></span>
+  </div>
+  <div class="timeline-bar">
+    <div class="timeline-item t1" id="timeline-t1">
+      <div class="t-label">Submission 1 — Initial Data File</div>
+      <div class="t-title">Patient Data &amp; Last Off-Platform Bill Dates</div>
+      <div class="t-deadline">Due: <span class="t-date" id="deadline1">2 weeks before go-live</span></div>
+      <div class="deadline-days" id="days1"></div>
+      <div class="t-note">Non-negotiable deadline</div>
+    </div>
+    <div class="timeline-connector">→</div>
+    <div class="timeline-item t2" id="timeline-t2">
+      <div class="t-label">Submission 2 — Delta File</div>
+      <div class="t-title">Updated Bill Dates &amp; New Charges</div>
+      <div class="t-deadline">Due: <span class="t-date" id="deadline2">Day before go-live</span></div>
+      <div class="deadline-days" id="days2"></div>
+      <div class="t-note">After close of business</div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3: Billing Method Gate -->
+<div class="step" id="billingMethodStep">
+  <div class="step-header">
+    <div class="step-num warn">3</div>
+    <div class="step-title">If Last Bill Date is Unavailable</div>
+  </div>
+  <p class="step-desc">Before continuing, confirm how to handle patients with no Last Off-Platform Bill Date. <strong>This affects billing and must be selected before uploading.</strong></p>
+  <div class="billing-options">
+    <div class="billing-card" id="bm2" onclick="selectBillingGate('bm2')">
+      <div class="bc-title"><div class="radio"></div>Bill on 1st transmission to PaceMateLIVE™</div>
+      <div class="bc-usecase"><div class="bc-hint"><strong>Select this if</strong> your clinic has <u>not</u> previously billed for remote device checks.</div></div>
+    </div>
+    <div class="billing-card" id="bm3" onclick="selectBillingGate('bm3')">
+      <div class="bc-title"><div class="radio"></div>Use go-live date as last off-platform bill date</div>
+      <div class="bc-usecase"><div class="bc-hint"><strong>Select this if</strong> your clinic <u>has</u> billed before but the last bill date is unavailable.</div></div>
+    </div>
+  </div>
+  <div class="gate-hint" id="billingGateHint">🔑 Select an option above to continue.</div>
+</div>
+
+<!-- STEP 4: Download Template (hidden until gate passed) -->
+<div class="step fade-in" id="fieldsStep" style="display:none">
+  <div class="step-header"><div class="step-num">4</div><div class="step-title">Download Your Data Template</div></div>
+  <p class="step-desc" id="fieldsDesc"></p>
+  <div class="template-card">
+    <div class="template-inner">
+      <div>
+        <div class="template-title" id="templateTitle"></div>
+        <div class="template-sub" id="templateSubtitle"></div>
+      </div>
+      <button class="btn-pm btn-pm-primary" onclick="downloadTemplate()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download Template
+      </button>
+    </div>
+    <div class="col-tags" id="templateColumns"></div>
+  </div>
+  <div class="callout info" style="margin-top:14px;margin-left:40px">
+    <span class="callout-icon">💡</span>
+    <div>
+      <strong>How to use the template:</strong><br>
+      1. Download the Excel file above<br>
+      2. The first row contains column headers — do not modify them<br>
+      3. Enter one patient per row starting on row 2<br>
+      4. Save the file and upload it in Step 6 below
+    </div>
+  </div>
+</div>
+
+<!-- STEP 5: Billing Report Instructions -->
+<div class="step fade-in" id="billingInstrStep" style="display:none">
+  <div class="step-header"><div class="step-num">5</div><div class="step-title">Billing Report Instructions</div></div>
+  <p class="step-desc">To generate the Last Off-Platform Bill Date, run a billing search report using the following criteria:</p>
+  <div class="callout info" style="margin-left:40px">
+    <span class="callout-icon">ℹ️</span>
+    <div>
+      <strong>How to pull your billing report:</strong><br>
+      Run a billing search for cardiac device patients billed within the last year.<br>Include billing from the last 91 days to present.<br>Filter using the CPT codes below.
+    </div>
+  </div>
+  <div class="cpt-wrap">
+    <table class="cpt-table">
+      <thead><tr><th>Device Type</th><th>CPT Codes</th></tr></thead>
+      <tbody>
+        <tr><td>Pacemaker Check</td><td><span class="cpt-code">93296</span>, <span class="cpt-code">93294</span></td></tr>
+        <tr><td>ICD Check</td><td><span class="cpt-code">93296</span>, <span class="cpt-code">93295</span></td></tr>
+        <tr><td>Loop Recorder</td><td><span class="cpt-code">93298</span></td></tr>
+        <tr><td>Heart Failure Diagnosis</td><td><span class="cpt-code">93297</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="fields-cat" style="margin-top:18px">Formatting Guidelines</div>
+  <div class="format-tips">
+    <div class="format-tip"><span class="tip-dot"></span>For multiple values, separate with commas (e.g., R45, I25)</div>
+    <div class="format-tip"><span class="tip-dot"></span>Use consistent date formatting — we recommend MM/DD/YYYY</div>
+    <div class="format-tip"><span class="tip-dot"></span>Do <strong>not</strong> add a column for CPT codes</div>
+  </div>
+</div>
+
+<!-- STEP 6: Upload -->
+<div class="step fade-in" id="uploadStep" style="display:none">
+  <div class="step-header"><div class="step-num">6</div><div class="step-title">Upload Your Data File</div></div>
+  <p class="step-desc"><strong>Your data stays in your browser — nothing is uploaded to a server.</strong></p>
+  <div class="upload-zone">
+    <div class="drop-area" id="dropArea" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-icon">📄</div>
+      <div class="upload-text">Drag &amp; drop your file here, or <strong>click to browse</strong></div>
+      <div class="upload-formats">Accepts .csv, .xlsx, .xls files</div>
+    </div>
+    <input type="file" id="fileInput" class="file-input" accept=".csv,.xlsx,.xls" onchange="handleFile(this.files[0])">
+  </div>
+  <div class="val-results" id="valResults" style="display:none"></div>
+  <div style="padding-left:40px;margin-top:14px">
+    <button class="btn-pm btn-pm-primary" id="initialSubmitBtn" onclick="handleInitialSubmit()">Submit Initial Data File</button>
+    <div id="initialConfirmation" style="display:none;margin-top:12px">
+      <div class="val-summary pass"><span class="val-icon">✅</span><span class="val-text">Initial data file submitted successfully!</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DELTA FILE (Accordion — hidden until initial submitted) -->
+<div class="step fade-in" id="deltaStep" style="display:none">
+  <div class="accordion-header collapsed-state" onclick="toggleDelta()">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="step-num warn">Δ</div>
+      <div class="step-title">Delta File — Second Submission (Day Before Go-Live)</div>
+    </div>
+    <div class="accordion-arrow" id="deltaArrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+  </div>
+  <div class="accordion-body collapsed" id="deltaBody">
+    <div style="padding:16px 0 0 40px">
+      <p style="font-size:13px;color:var(--pm-text-body);margin-bottom:10px">The day before go-live, submit an updated file that includes:</p>
+      <div class="callout warning" style="margin-left:0">
+        <span class="callout-icon">⚠️</span>
+        <div>
+          <strong>Delta file must include:</strong><br>
+          1. All new charges billed since the first data dump<br>
+          2. Updated last off-platform bill dates for all patients from the original file
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--pm-text-body);margin:14px 0 10px">Use the same column structure as your initial submission. Download the delta template below.</p>
+
+      <div style="background:var(--pm-bg);border:1.5px solid var(--pm-border);border-radius:var(--pm-radius);padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:14px">
+        <div>
+          <div style="font-family:'Poppins',sans-serif;font-weight:600;font-size:14px;color:var(--pm-text-dark)">Delta File Template</div>
+          <div style="font-size:12px;color:var(--pm-text-body);margin-top:2px">Same columns as initial file • Labeled as DELTA</div>
+        </div>
+        <button class="btn-pm btn-pm-primary" onclick="downloadDeltaTemplate()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download Delta Template
+        </button>
+      </div>
+
+      <div class="drop-area" id="deltaDropArea" onclick="document.getElementById('deltaFileInput').click()" style="margin-top:8px">
+        <div class="upload-icon">📄</div>
+        <div class="upload-text">Drag &amp; drop your delta file here, or <strong>click to browse</strong></div>
+        <div class="upload-formats">Accepts .csv, .xlsx, .xls files</div>
+      </div>
+      <input type="file" id="deltaFileInput" class="file-input" accept=".csv,.xlsx,.xls" onchange="handleDeltaFile(this.files[0])">
+      <div id="deltaValResults" style="display:none;margin-top:10px"></div>
+      <div style="margin-top:14px">
+        <button class="btn-pm btn-pm-primary" id="deltaSubmitBtn" onclick="handleDeltaSubmit()" disabled>Submit Delta File</button>
+      </div>
+      <div id="deltaConfirmation" style="display:none;margin-top:12px">
+        <div class="val-summary pass"><span class="val-icon">✅</span><span class="val-text">Delta file submitted successfully! You're all set for go-live.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 7: Acknowledgement -->
+<div class="step fade-in" id="ackStep" style="display:none">
+  <div class="step-header"><div class="step-num">7</div><div class="step-title">Acknowledgement</div></div>
+  <div class="ack-section">
+    <p style="font-size:13px;color:var(--pm-text-body);margin-bottom:10px">By signing below, I confirm that:</p>
+    <ul class="ack-list">
+      <li>The patient data provided is accurate and complete to the best of my knowledge</li>
+      <li>I have authority to submit this data on behalf of my organization</li>
+      <li>I understand this data will be used to create patient profiles in PaceMateLIVE™</li>
+    </ul>
+    <div class="sig-row">
+      <div class="sig-field"><label>Name</label><input type="text" id="ackName" placeholder="Full name"></div>
+      <div class="sig-field"><label>Signature</label><input type="text" id="ackSig" placeholder="Type signature"></div>
+      <div class="sig-field"><label>Date</label><input type="date" id="ackDate"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Standard Action Bar -->
+<div class="pm-action-bar">
+  <button type="button" class="pm-pill pm-pill-save" onclick="pmSaveProgress()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Save Progress</button>
+  <button type="button" class="pm-pill pm-pill-clear" onclick="pmClearForm()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>Clear Form</button>
+  <div class="pm-export-wrap" id="pmExportWrap">
+    <button type="button" class="pm-pill pm-pill-export" onclick="pmToggleExport(event)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Export<svg class="pm-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>
+    <div class="pm-export-menu">
+      <button type="button" class="pm-export-item" onclick="pmExport('pdf')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Download PDF</button>
+      <button type="button" class="pm-export-item" onclick="pmExport('excel')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/></svg>Download Excel</button>
+      <button type="button" class="pm-export-item" onclick="pmExport('csv')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>Download CSV</button>
+    </div>
+  </div>
+  <button type="button" class="pm-pill pm-pill-submit" onclick="pmSubmit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9z"/></svg>Submit to PaceMate</button>
+  <div class="pm-autosave" id="pmAutosave"></div>
+</div>
+
+</div><!-- /form-body -->
+
+<!-- FOOTER -->
+<div class="pm-footer">
+  <div class="pm-footer-left">PaceMate<sup>®</sup><span class="pipe">|</span>PaceMate.com</div>
+  <div class="pm-footer-right"><span class="doc-name">Patient Data Upload</span><span class="pipe">|</span>v1<span class="pipe">|</span>February 2026</div>
+</div>
+
+</div><!-- /form-card -->
+</div><!-- /page -->
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================
+   FORM LOGIC — Patient Data Upload
+   ============================================ */
+var PM_WORKSTREAM = 'csm';
+var PM_STORAGE_KEY = 'form_data_dump';
+var PM_FORM_ID = 'patient-data-upload';
+var PM_FORM_NAME = 'Patient Data Upload';
+var PM_FORM_FILE = 'form-data-dump-v1.html';
+
+var selectedType = null;
+var selectedBilling = null;
+
+var EMR_FIELDS = [
+  {label:'First Name',note:'As it appears in EMR',cat:'demo'},
+  {label:'Last Name',note:'',cat:'demo'},
+  {label:'Middle Initial (MI)',note:'',cat:'demo'},
+  {label:'Date of Birth (DOB)',note:'MM/DD/YYYY format',cat:'demo'},
+  {label:'MRN #',note:'Medical Record Number',cat:'demo'},
+  {label:'Last Off-Platform Bill Date',note:'See billing instructions below',cat:'billing'}
+];
+
+var NONEMR_FIELDS = [
+  {label:'First Name',note:'',cat:'demo'},
+  {label:'Last Name',note:'',cat:'demo'},
+  {label:'Middle Initial (MI)',note:'',cat:'demo'},
+  {label:'Date of Birth (DOB)',note:'MM/DD/YYYY format',cat:'demo'},
+  {label:'Gender / Sex',note:'',cat:'demo'},
+  {label:'MRN #',note:'Medical Record Number',cat:'demo'},
+  {label:'Device SN',note:'Device Serial Number',cat:'device'},
+  {label:'Primary EP / Cardiologist',note:'Physician name',cat:'device'},
+  {label:'Primary ICD-10 Diagnosis Code',note:'Related to implantable cardiac device',cat:'device'},
+  {label:'Street Address Line 1',note:'',cat:'contact'},
+  {label:'Street Address Line 2',note:'Optional',cat:'contact'},
+  {label:'City',note:'',cat:'contact'},
+  {label:'State',note:'',cat:'contact'},
+  {label:'Zip Code',note:'',cat:'contact'},
+  {label:'Primary Phone Number',note:'',cat:'contact'},
+  {label:'Last Off-Platform Bill Date',note:'See billing instructions below',cat:'billing'}
+];
+
+// --- Step 1: Integration Type ---
+function selectType(type) {
+  selectedType = type;
+  document.getElementById('card-emr').classList.toggle('selected', type === 'emr');
+  document.getElementById('card-nonemr').classList.toggle('selected', type === 'nonemr');
+  document.getElementById('s1num').classList.add('done');
+  showFields(type);
+  if (selectedBilling) {
+    ['fieldsStep','billingInstrStep','uploadStep'].forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) el.style.display = '';
+    });
+  }
+}
+
+function showFields(type) {
+  var fields = type === 'emr' ? EMR_FIELDS : NONEMR_FIELDS;
+  var count = fields.length;
+  document.getElementById('fieldsDesc').textContent = type === 'emr'
+    ? 'Download the pre-formatted Excel template below. It contains the 6 required columns for EMR-integrated accounts.'
+    : 'Download the pre-formatted Excel template below. It contains all 16 required columns for non-EMR accounts.';
+  document.getElementById('templateTitle').textContent = type === 'emr'
+    ? 'PaceMateLIVE\u2122 Data Template — EMR Integrated'
+    : 'PaceMateLIVE\u2122 Data Template — Non-EMR Integrated';
+  document.getElementById('templateSubtitle').textContent = count + ' columns \u2022 Pre-formatted Excel file ready to fill';
+  var tagsHtml = fields.map(function(f) {
+    return '<span class="col-tag cat-' + f.cat + '">' + f.label + '</span>';
+  }).join('');
+  var tcEl = document.getElementById('templateColumns');
+  if (tcEl) tcEl.innerHTML = tagsHtml;
+}
+
+// --- Step 2: Timeline ---
+function calcDates() {
+  var goLive = document.getElementById('goLiveDate').value;
+  if (!goLive) return;
+  var gl = new Date(goLive + 'T00:00:00');
+  var twoWeeks = new Date(gl); twoWeeks.setDate(twoWeeks.getDate() - 14);
+  var dayBefore = new Date(gl); dayBefore.setDate(dayBefore.getDate() - 1);
+  var fmt = function(d) { return d.toLocaleDateString('en-US', {weekday:'short', month:'short', day:'numeric', year:'numeric'}); };
+  var today = new Date(); today.setHours(0,0,0,0);
+
+  document.getElementById('deadline1').textContent = fmt(twoWeeks);
+  document.getElementById('deadline2').textContent = fmt(dayBefore);
+  document.getElementById('calcDate').textContent = 'Go-live: ' + gl.toLocaleDateString('en-US', {month:'short', day:'numeric', year:'numeric'});
+
+  var d1 = Math.ceil((twoWeeks - today) / (1000*60*60*24));
+  var d2 = Math.ceil((dayBefore - today) / (1000*60*60*24));
+  var d1El = document.getElementById('days1');
+  var d2El = document.getElementById('days2');
+  if (d1El) d1El.textContent = d1 > 0 ? d1 + ' days from today' : d1 === 0 ? 'Due today!' : Math.abs(d1) + ' days ago';
+  if (d2El) d2El.textContent = d2 > 0 ? d2 + ' days from today' : d2 === 0 ? 'Due today!' : Math.abs(d2) + ' days ago';
+
+  var t1 = document.getElementById('timeline-t1');
+  var t2 = document.getElementById('timeline-t2');
+  [t1, t2].forEach(function(el) { el.classList.remove('date-set'); });
+  void t1.offsetWidth;
+  t1.classList.add('date-set');
+  void t2.offsetWidth;
+  t2.classList.add('date-set');
+}
+
+// --- Step 3: Billing Method Gate ---
+function selectBillingGate(id) {
+  selectedBilling = id;
+  ['bm2','bm3'].forEach(function(b) {
+    document.getElementById(b).classList.toggle('selected', b === id);
+    document.getElementById(b).querySelector('.radio').style.background = b === id ? 'var(--pm-red)' : '';
+    document.getElementById(b).querySelector('.radio').style.borderColor = b === id ? 'var(--pm-red)' : '';
+  });
+  document.getElementById('billingGateHint').style.display = 'none';
+  if (selectedType) {
+    ['fieldsStep','billingInstrStep','uploadStep'].forEach(function(id2) {
+      var el = document.getElementById(id2);
+      if (el) el.style.display = '';
+    });
+  }
+}
+
+// --- Step 4: Download Template ---
+function downloadTemplate() {
+  if (!selectedType) return;
+  if (!selectedBilling) {
+    document.getElementById('billingGateHint').style.display = '';
+    document.getElementById('billingGateHint').textContent = '⚠️ Please select a billing method above before downloading.';
+    document.getElementById('billingMethodStep').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  var fields = selectedType === 'emr' ? EMR_FIELDS : NONEMR_FIELDS;
+  var headers = fields.map(function(f) { return f.label; });
+  var wb = XLSX.utils.book_new();
+  var ws = XLSX.utils.aoa_to_sheet([headers]);
+  ws['!cols'] = headers.map(function(h) { return {wch: Math.max(h.length + 4, 16)}; });
+  var sheetName = selectedType === 'emr' ? 'INITIAL - EMR Integrated' : 'INITIAL - Non-EMR Integrated';
+  XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  var fileName = selectedType === 'emr' ? 'PaceMateLIVE_INITIAL_Data_File_EMR.xlsx' : 'PaceMateLIVE_INITIAL_Data_File_NonEMR.xlsx';
+  XLSX.writeFile(wb, fileName);
+  document.getElementById('uploadStep').style.display = '';
+  setTimeout(function() { document.getElementById('uploadStep').scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 200);
+}
+
+// --- Step 6: File Upload & Validation ---
+var dropArea = document.getElementById('dropArea');
+['dragenter','dragover'].forEach(function(e) {
+  dropArea.addEventListener(e, function(ev) { ev.preventDefault(); dropArea.classList.add('dragover'); });
+});
+['dragleave','drop'].forEach(function(e) {
+  dropArea.addEventListener(e, function(ev) { ev.preventDefault(); dropArea.classList.remove('dragover'); });
+});
+dropArea.addEventListener('drop', function(ev) { if (ev.dataTransfer.files.length) handleFile(ev.dataTransfer.files[0]); });
+
+function handleFile(file) {
+  if (!file) return;
+  if (!selectedType) { showToast('Please select your integration type first (Step 1)', 'error'); return; }
+  dropArea.classList.add('has-file');
+  dropArea.innerHTML = '<div class="upload-icon">✅</div><div class="upload-text"><strong>' + file.name + '</strong></div><div class="upload-formats">' + (file.size / 1024).toFixed(1) + ' KB • Click to change file</div>';
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var headers = [], rows = [];
+      if (file.name.endsWith('.csv')) {
+        var text = e.target.result;
+        var lines = text.split('\n').filter(function(l) { return l.trim(); });
+        headers = lines[0].split(',').map(function(h) { return h.trim().replace(/^"|"$/g, ''); });
+        rows = lines.slice(1).filter(function(l) { return l.trim(); });
+      } else {
+        var data = new Uint8Array(e.target.result);
+        var wb = XLSX.read(data, { type: 'array' });
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        var json = XLSX.utils.sheet_to_json(ws, { header: 1 });
+        if (json.length > 0) {
+          headers = json[0].map(function(h) { return String(h || '').trim(); });
+          rows = json.slice(1).filter(function(r) { return r.some(function(c) { return c !== undefined && c !== null && c !== ''; }); });
+        }
+      }
+      showValidation(headers, rows);
+    } catch (err) {
+      var results = document.getElementById('valResults');
+      results.style.display = '';
+      results.innerHTML = '<div class="val-summary fail"><span class="val-icon">❌</span><span class="val-text">Could not read file: ' + err.message + '</span></div>';
+    }
+  };
+  if (file.name.endsWith('.csv')) reader.readAsText(file); else reader.readAsArrayBuffer(file);
+}
+
+function showValidation(headers, rows) {
+  var expected = (selectedType === 'emr' ? EMR_FIELDS : NONEMR_FIELDS).map(function(f) { return f.label; });
+  var results = document.getElementById('valResults');
+  results.style.display = '';
+
+  var matched = expected.filter(function(exp) {
+    return headers.some(function(h) { return h.toLowerCase().trim() === exp.toLowerCase().trim(); });
+  });
+  var missing = expected.filter(function(exp) {
+    return !headers.some(function(h) { return h.toLowerCase().trim() === exp.toLowerCase().trim(); });
+  });
+
+  var allMatch = missing.length === 0;
+  var html = '<div class="val-summary ' + (allMatch ? 'pass' : 'fail') + '">';
+  html += '<span class="val-icon">' + (allMatch ? '✅' : '⚠️') + '</span>';
+  html += '<span class="val-text">' + (allMatch ? 'All ' + expected.length + ' required columns found — ' + rows.length + ' data rows detected' : missing.length + ' missing column(s) detected') + '</span>';
+  html += '</div>';
+
+  if (!allMatch) {
+    html += '<div class="val-details">';
+    expected.forEach(function(col) {
+      var found = matched.indexOf(col) !== -1;
+      html += '<div class="val-item ' + (found ? 'ok' : 'err') + '"><span class="val-icon">' + (found ? '✓' : '✗') + '</span>' + col + '</div>';
+    });
+    html += '</div>';
+  }
+
+  if (rows.length > 0 && allMatch) {
+    html += '<div class="row-count">' + rows.length + ' patient records ready for upload</div>';
+    // Show preview of first 3 rows
+    html += '<table class="preview-table"><thead><tr>';
+    headers.forEach(function(h) { html += '<th>' + h + '</th>'; });
+    html += '</tr></thead><tbody>';
+    var previewRows = rows.slice(0, 3);
+    previewRows.forEach(function(row) {
+      html += '<tr>';
+      if (Array.isArray(row)) {
+        headers.forEach(function(h, i) { html += '<td>' + (row[i] || '') + '</td>'; });
+      }
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    if (rows.length > 3) html += '<div style="font-size:11px;color:var(--pm-text-secondary);margin-top:6px;font-style:italic">Showing first 3 of ' + rows.length + ' rows</div>';
+  }
+
+  results.innerHTML = html;
+
+  // Show ack step
+  if (allMatch) {
+    document.getElementById('ackStep').style.display = '';
+  }
+}
+
+function handleInitialSubmit() {
+  if (!document.getElementById('dropArea').classList.contains('has-file')) {
+    showToast('Please upload your data file before submitting', 'error');
+    document.getElementById('dropArea').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+  document.getElementById('initialConfirmation').style.display = '';
+  var btn = document.getElementById('initialSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitted ✓';
+  btn.classList.add('submitted');
+
+  // Reveal and expand delta
+  var deltaStep = document.getElementById('deltaStep');
+  var deltaBody = document.getElementById('deltaBody');
+  var deltaHeader = deltaBody.previousElementSibling;
+  deltaStep.style.display = '';
+  deltaBody.classList.remove('collapsed');
+  deltaHeader.classList.remove('collapsed-state');
+  setTimeout(function() { deltaStep.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 300);
+}
+
+// --- Delta ---
+function toggleDelta() {
+  var body = document.getElementById('deltaBody');
+  var header = body.previousElementSibling;
+  body.classList.toggle('collapsed');
+  header.classList.toggle('collapsed-state');
+}
+
+var deltaDropArea = document.getElementById('deltaDropArea');
+if (deltaDropArea) {
+  ['dragenter','dragover'].forEach(function(e) {
+    deltaDropArea.addEventListener(e, function(ev) { ev.preventDefault(); deltaDropArea.classList.add('dragover'); });
+  });
+  ['dragleave','drop'].forEach(function(e) {
+    deltaDropArea.addEventListener(e, function(ev) { ev.preventDefault(); deltaDropArea.classList.remove('dragover'); });
+  });
+  deltaDropArea.addEventListener('drop', function(ev) { if (ev.dataTransfer.files.length) handleDeltaFile(ev.dataTransfer.files[0]); });
+}
+
+function handleDeltaFile(file) {
+  if (!file) return;
+  deltaDropArea.classList.add('has-file');
+  deltaDropArea.innerHTML = '<div class="upload-icon">✅</div><div class="upload-text"><strong>' + file.name + '</strong></div><div class="upload-formats">' + (file.size / 1024).toFixed(1) + ' KB • Click to change file</div>';
+
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      var headers = [], rows = [];
+      if (file.name.endsWith('.csv')) {
+        var text = e.target.result;
+        var lines = text.split('\n').filter(function(l) { return l.trim(); });
+        headers = lines[0].split(',').map(function(h) { return h.trim().replace(/^"|"$/g, ''); });
+        rows = lines.slice(1).filter(function(l) { return l.trim(); });
+      } else {
+        var data = new Uint8Array(e.target.result);
+        var wb = XLSX.read(data, { type: 'array' });
+        var ws = wb.Sheets[wb.SheetNames[0]];
+        var json = XLSX.utils.sheet_to_json(ws, { header: 1 });
+        if (json.length > 0) { headers = json[0]; rows = json.slice(1).filter(function(r) { return r.some(function(c) { return c; }); }); }
+      }
+      var results = document.getElementById('deltaValResults');
+      results.style.display = '';
+      results.innerHTML = '<div class="val-summary pass"><span class="val-icon">✅</span><span class="val-text">Delta file loaded — ' + rows.length + ' records found, ' + headers.length + ' columns detected</span></div>';
+      document.getElementById('deltaSubmitBtn').disabled = false;
+    } catch (err) {
+      var results = document.getElementById('deltaValResults');
+      results.style.display = '';
+      results.innerHTML = '<div class="val-summary fail"><span class="val-icon">❌</span><span class="val-text">Could not read file: ' + err.message + '</span></div>';
+    }
+  };
+  if (file.name.endsWith('.csv')) reader.readAsText(file); else reader.readAsArrayBuffer(file);
+}
+
+function downloadDeltaTemplate() {
+  if (!selectedType) { showToast('Please complete Step 1 first', 'error'); return; }
+  var fields = selectedType === 'emr' ? EMR_FIELDS : NONEMR_FIELDS;
+  var headers = fields.map(function(f) { return f.label; });
+  var wb = XLSX.utils.book_new();
+  var ws = XLSX.utils.aoa_to_sheet([headers]);
+  ws['!cols'] = headers.map(function(h) { return { wch: Math.max(h.length + 4, 16) }; });
+  XLSX.utils.book_append_sheet(wb, ws, selectedType === 'emr' ? 'DELTA - EMR Integrated' : 'DELTA - Non-EMR Integrated');
+  XLSX.writeFile(wb, selectedType === 'emr' ? 'PaceMateLIVE_DELTA_Data_File_EMR.xlsx' : 'PaceMateLIVE_DELTA_Data_File_NonEMR.xlsx');
+}
+
+function handleDeltaSubmit() {
+  if (!document.getElementById('deltaDropArea').classList.contains('has-file')) {
+    showToast('Please upload your delta file before submitting', 'error');
+    return;
+  }
+  document.getElementById('deltaConfirmation').style.display = '';
+  var btn = document.getElementById('deltaSubmitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Submitted ✓';
+  btn.classList.add('submitted');
+}
+
+// --- Toast ---
+function showToast(msg, type) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = type === 'error' ? 'var(--pm-error)' : 'var(--pm-success)';
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 3000);
+}
+
+// --- Standard Action Bar Functions ---
+function pmGetData() {
+  var d = {};
+  document.querySelectorAll('input:not([type=file]):not([type=button]):not([type=submit]),textarea,select').forEach(function(el) {
+    var k = el.id || el.name;
+    if (k && el.value) d[k] = el.value;
+  });
+  if (selectedType) d._selectedType = selectedType;
+  if (selectedBilling) d._selectedBilling = selectedBilling;
+  return d;
+}
+
+function pmSave() { try { localStorage.setItem(PM_STORAGE_KEY, JSON.stringify(pmGetData())); } catch(e) {} }
+
+function pmLoad() {
+  try {
+    var raw = localStorage.getItem(PM_STORAGE_KEY);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    Object.keys(data).forEach(function(k) {
+      if (k.startsWith('_')) return;
+      var el = document.getElementById(k);
+      if (el) el.value = data[k];
+    });
+    if (data._selectedType) selectType(data._selectedType);
+    if (data._selectedBilling) selectBillingGate(data._selectedBilling);
+    if (data.goLiveDate) calcDates();
+  } catch(e) {}
+}
+
+function pmSetAutosave(msg) {
+  var el = document.getElementById('pmAutosave');
+  if (!el) return;
+  var t = new Date();
+  var ts = t.getHours() + ':' + String(t.getMinutes()).padStart(2, '0');
+  el.innerHTML = '<span class="pm-autosave-dot"></span>' + (msg || ('Auto-saved at ' + ts));
+  el.classList.add('active');
+  setTimeout(function() { el.classList.remove('active'); }, 3000);
+}
+
+function pmSaveProgress() { pmSave(); pmSetAutosave('Saved'); showToast('Progress saved!', 'success'); }
+
+function pmClearForm() {
+  if (!confirm('Clear all form data? This cannot be undone.')) return;
+  selectedType = null; selectedBilling = null;
+  document.querySelectorAll('input:not([type=file]):not([type=button]):not([type=submit]),textarea').forEach(function(el) { el.value = ''; });
+  ['card-emr','card-nonemr','bm2','bm3'].forEach(function(id) { document.getElementById(id).classList.remove('selected'); });
+  document.getElementById('s1num').classList.remove('done');
+  ['fieldsStep','billingInstrStep','uploadStep','deltaStep','ackStep'].forEach(function(id) { document.getElementById(id).style.display = 'none'; });
+  document.getElementById('billingGateHint').style.display = '';
+  try { localStorage.removeItem(PM_STORAGE_KEY); } catch(e) {}
+  showToast('Form cleared', 'success');
+}
+
+function pmToggleExport(e) { e.stopPropagation(); document.getElementById('pmExportWrap').classList.toggle('open'); }
+document.addEventListener('click', function() { var w = document.getElementById('pmExportWrap'); if (w) w.classList.remove('open'); });
+
+function pmExport(type) {
+  document.getElementById('pmExportWrap').classList.remove('open');
+  if (type === 'pdf') { showToast('Generating PDF...', 'success'); window.print(); }
+  else {
+    var data = pmGetData();
+    var rows = [['Field', 'Response']];
+    Object.keys(data).forEach(function(k) { rows.push([k, data[k]]); });
+    var csv = rows.map(function(r) { return r.map(function(v) { return '"' + String(v).replace(/"/g, '""') + '"'; }).join(','); }).join('\n');
+    var blob = new Blob([csv], { type: 'text/csv' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = PM_FORM_NAME.replace(/\s+/g, '-') + (type === 'excel' ? '.csv' : '.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function() { URL.revokeObjectURL(url); }, 5000);
+    showToast((type === 'excel' ? 'Excel' : 'CSV') + ' downloaded!', 'success');
+  }
+}
+
+function pmSubmit() {
+  // Validate all required steps
+  var errors = [];
+  if (!selectedType) errors.push('Select your integration type (Step 1)');
+  if (!selectedBilling) errors.push('Select a billing method (Step 3)');
+  if (!document.getElementById('dropArea').classList.contains('has-file')) errors.push('Upload your data file (Step 6)');
+  var ackName = document.getElementById('ackName');
+  var ackSig = document.getElementById('ackSig');
+  var ackDate = document.getElementById('ackDate');
+  if (!ackName.value.trim() || !ackSig.value.trim() || !ackDate.value) errors.push('Complete the acknowledgement (Step 7)');
+
+  if (errors.length > 0) {
+    // Highlight empty required fields
+    [ackName, ackSig, ackDate].forEach(function(el) {
+      if (!el.value.trim()) {
+        el.style.borderBottomColor = 'var(--pm-error)';
+      } else {
+        el.style.borderBottomColor = '';
+      }
+    });
+    showToast('Please complete: ' + errors[0], 'error');
+    return;
+  }
+
+  pmSave();
+  var WS_KEYS = { csm: 'csm_inbox_submissions', integration: 'integration_inbox_submissions', clinical: 'clinical_inbox_submissions', patientsvcs: 'patientsvcs_inbox_submissions', support: 'support_inbox_submissions' };
+  var key = WS_KEYS[PM_WORKSTREAM];
+  if (!key) { showToast('Submitted to PaceMate!', 'success'); return; }
+  var data = [];
+  try { data = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+  var now = Date.now();
+  var existing = data.find(function(e) { return e.id === PM_FORM_ID; });
+  if (existing) {
+    existing.history[existing.history.length - 1].statusAtReview = existing.status;
+    existing.history.push({ submittedAt: now, statusAtReview: null });
+    existing.status = 'submitted';
+    existing.glowStart = now;
+  } else {
+    data.push({ id: PM_FORM_ID, formName: PM_FORM_NAME, formFile: PM_FORM_FILE, status: 'submitted', glowStart: now, history: [{ submittedAt: now, statusAtReview: null }] });
+  }
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch(e) {}
+  showToast('Submitted to PaceMate!', 'success');
+}
+
+// Clear validation on input
+['ackName','ackSig','ackDate'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('input', function() { this.style.borderBottomColor = ''; });
+});
+
+// Auto-save
+setInterval(function() { pmSave(); pmSetAutosave(); }, 30000);
+
+// Load
+document.addEventListener('DOMContentLoaded', function() {
+  var vKey = PM_STORAGE_KEY + '_v';
+  if (localStorage.getItem(vKey) !== 'v1-rebuild') {
+    localStorage.removeItem(PM_STORAGE_KEY);
+    localStorage.setItem(vKey, 'v1-rebuild');
+  } else {
+    pmLoad();
+  }
+});
+</script>
+
+</body>
+</html>

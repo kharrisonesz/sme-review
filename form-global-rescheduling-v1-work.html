@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceMate® | Global Rescheduling Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Roboto:wght@300;400;500;700&family=Roboto+Condensed:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #F5F6F8;
+    color: #212529;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+}
+
+/* === FORM CONTAINER === */
+.form-wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+}
+
+/* === HEADER === */
+.form-header {
+    background: #FFFFFF;
+    border-bottom: 3px solid #EA0044;
+    border-radius: 16px 16px 0 0;
+    padding: 16px 40px;
+    display: flex;
+    align-items: center;
+}
+.form-header::before { display: none; }
+.header-top { display: none; }
+.header-logo {
+    display: flex;
+    align-items: center;
+    height: 56px;
+}
+.header-logo svg { height: 56px; width: auto; }
+.heart-icon { display: none; }
+.brand-text { display: none; }
+.brand-tagline { display: none; }
+.header-badge { display: none; }
+.form-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2D2E32;
+    margin-bottom: 4px;
+    margin-left: 24px;
+}
+.form-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.82rem;
+    color: #8A8C90;
+    line-height: 1.55;
+    max-width: 580px;
+    display: none;
+}
+
+/* === PROGRESS === */
+.progress-bar-container { display: none; }
+.progress-text {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: #868E96;
+    white-space: nowrap;
+}
+.progress-text span { color: #EA0044; font-weight: 700; }
+.progress-track {
+    flex: 1;
+    height: 6px;
+    background: #F1F3F5;
+    border-radius: 3px;
+    overflow: hidden;
+}
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: #EA0044;
+    border-radius: 3px;
+    transition: width 0.4s ease;
+}
+
+/* === FORM BODY === */
+.form-body {
+    background: white;
+    padding: 0 32px 24px;
+}
+
+/* === SECTIONS === */
+.form-section { padding-top: 20px; }
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.section-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: #EA0044;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background 0.3s;
+}
+.section-num.complete { background: #2B8A3E; }
+.section-title {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #212529;
+}
+.section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, #DEE2E6, transparent);
+}
+
+/* === FIELD GRID === */
+.field-grid { display: grid; gap: 14px; }
+.field-grid.two-col { grid-template-columns: 1fr 1fr; }
+.field-grid.three-col { grid-template-columns: 1fr 1fr 1fr; }
+
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+.field-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #495057;
+}
+.field-label .req {
+    color: #EA0044;
+    margin-left: 2px;
+}
+.field-input {
+    width: 100%;
+    padding: 9px 14px;
+    border: 1.5px solid #DEE2E6;
+    border-radius: 8px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.88rem;
+    color: #212529;
+    background: #FAFBFC;
+    transition: all 0.2s;
+    outline: none;
+}
+.field-input::placeholder { color: #ADB5BD; }
+.field-input:focus {
+    border-color: #EA0044;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(234,0,68,0.08);
+}
+.field-input.filled {
+    border-color: #2B8A3E;
+    background: #F8FFF9;
+}
+.field-input.error {
+    border-color: #EA0044;
+    background: #FFF5F5;
+    box-shadow: 0 0 0 3px rgba(234,0,68,0.08);
+}
+
+/* === SERVICE TYPE CARDS === */
+.choice-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+.choice-card {
+    position: relative;
+    cursor: pointer;
+    display: block;
+}
+.choice-card input { position: absolute; opacity: 0; pointer-events: none; }
+.choice-body {
+    border: 1.5px solid #DEE2E6;
+    border-radius: 8px;
+    padding: 10px 14px;
+    text-align: center;
+    transition: all 0.2s;
+    background: #FAFBFC;
+}
+.choice-body:hover { border-color: #ADB5BD; }
+.choice-card input:checked + .choice-body {
+    border-color: #EA0044;
+    background: #FFF5F7;
+    box-shadow: 0 0 0 3px rgba(234,0,68,0.08);
+}
+.choice-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #CED4DA;
+    margin: 0 auto 10px;
+    position: relative;
+    transition: all 0.2s;
+}
+.choice-card input:checked + .choice-body .choice-dot {
+    border-color: #EA0044;
+    background: #EA0044;
+}
+.choice-dot::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+    opacity: 0;
+}
+.choice-card input:checked + .choice-body .choice-dot::after { opacity: 1; }
+.choice-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #495057;
+}
+.choice-card input:checked + .choice-body .choice-label { color: #c8003b; }
+
+/* === SCHEDULING CARDS === */
+.schedule-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+.schedule-card {
+    border: 1.5px solid #DEE2E6;
+    border-left: 4px solid #ADB5BD;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+}
+.schedule-card:hover { border-color: #ADB5BD; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+.schedule-card.selected {
+    border-color: #EA0044;
+    border-left: 4px solid #EA0044;
+    box-shadow: 0 0 0 3px rgba(234,0,68,0.08);
+}
+.schedule-card input { position: absolute; opacity: 0; pointer-events: none; }
+.schedule-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: #F8F9FA;
+    border-bottom: 1px solid #F1F3F5;
+    transition: all 0.2s;
+}
+.schedule-card.selected .schedule-card-header {
+    background: #FFF5F7;
+    border-bottom-color: rgba(234,0,68,0.1);
+}
+.schedule-radio {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #CED4DA;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.schedule-card.selected .schedule-radio {
+    border-color: #EA0044;
+    background: #EA0044;
+}
+.schedule-radio::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: white;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.schedule-card.selected .schedule-radio::after { opacity: 1; }
+.schedule-card-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #212529;
+    letter-spacing: -0.01em;
+}
+.schedule-card.selected .schedule-card-title { color: #c8003b; }
+.schedule-card-body { padding: 10px 16px; }
+.schedule-detail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 0;
+}
+.schedule-detail:not(:last-child) { border-bottom: 1px solid #F1F3F5; }
+.device-tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 5px 14px;
+    border-radius: 20px;
+    background: rgba(234,0,68,0.1);
+    color: #EA0044;
+    white-space: nowrap;
+    min-width: 90px;
+    text-align: center;
+}
+.schedule-detail-text {
+    font-size: 0.9rem;
+    color: #495057;
+}
+.schedule-detail-text strong { color: #EA0044; font-size: 1.05rem; }
+
+/* === SIGNATURE BLOCKS === */
+.signature-block {
+    border: 1.5px dashed #DEE2E6;
+    border-radius: 10px;
+    padding: 16px 20px;
+    background: #FAFBFC;
+    margin-bottom: 10px;
+}
+.signature-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #495057;
+    margin-bottom: 12px;
+}
+.sig-icon {
+    width: 28px;
+    height: 28px;
+    background: #E9ECEF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sig-icon svg { width: 16px; height: 16px; fill: #6C757D; }
+.signature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.sig-input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid #DEE2E6;
+    border-radius: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    color: #212529;
+    background: white;
+    transition: all 0.2s;
+    outline: none;
+}
+.sig-input.sig-style {
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #1a1a2e;
+    letter-spacing: 0.01em;
+}
+.sig-input:focus {
+    border-color: #EA0044;
+    box-shadow: 0 0 0 3px rgba(234,0,68,0.08);
+}
+.sig-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: #868E96;
+}
+.sig-date-value { font-weight: 600; color: #495057; }
+
+/* === ACTION BUTTONS === */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    padding-top: 32px;
+    border-top: 1px solid #E9ECEF;
+    margin-top: 36px;
+}
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 28px;
+    border-radius: 10px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: none;
+    outline: none;
+}
+.btn-primary {
+    background: #EA0044;
+    color: white;
+    box-shadow: 0 4px 12px rgba(234,0,68,0.2);
+}
+.btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(234,0,68,0.3);
+}
+.btn-secondary {
+    background: white;
+    color: #495057;
+    border: 1.5px solid #DEE2E6;
+}
+.btn-secondary:hover { border-color: #ADB5BD; background: #F8F9FA; }
+.btn-clear {
+    background: transparent;
+    color: #868E96;
+    border: none;
+    margin-left: auto;
+}
+.btn-clear:hover { color: #EA0044; }
+.btn svg { width: 16px; height: 16px; fill: currentColor; }
+
+/* === EXPORT DROPDOWN === */
+.export-wrapper { position: relative; }
+.export-dropdown {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 0;
+    background: white;
+    border: 1.5px solid #DEE2E6;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    min-width: 180px;
+    z-index: 100;
+    overflow: hidden;
+}
+.export-dropdown.open { display: block; }
+.export-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #495057;
+    cursor: pointer;
+    transition: background 0.15s;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+}
+.export-option:hover { background: #F8F9FA; color: #212529; }
+.export-option + .export-option { border-top: 1px solid #F1F3F5; }
+
+/* === AUTO-SAVE STATUS === */
+.autosave-status {
+    font-size: 0.72rem;
+    color: #ADB5BD;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+}
+.autosave-status.saved { color: #2B8A3E; }
+.autosave-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+/* === TOAST === */
+/* toast handled via JS */
+
+/* === FOOTER === */
+.form-footer {
+    background: #F8F9FA;
+    border-top: 1px solid #E9ECEF;
+    border-radius: 0 0 16px 16px;
+    padding: 16px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-left {
+    font-size: 0.72rem;
+    color: #868E96;
+}
+.footer-left .doc-name { font-weight: 600; color: #6C757D; }
+.footer-right {
+    font-size: 0.72rem;
+    color: #868E96;
+    font-style: italic;
+}
+
+/* === RESPONSIVE === */
+@media (max-width: 768px) {
+    .form-wrapper { padding: 16px 12px 40px; }
+    .form-header, .form-body, .progress-bar-container, .form-footer { padding-left: 24px; padding-right: 24px; }
+    .field-grid.two-col, .field-grid.three-col { grid-template-columns: 1fr; }
+    .choice-row { grid-template-columns: 1fr; }
+    .schedule-row { grid-template-columns: 1fr; }
+    .signature-grid { grid-template-columns: 1fr; }
+    .form-actions { flex-wrap: wrap; }
+}
+
+/* === PRINT === */
+@media print {
+    body { background: white; }
+    .form-wrapper { max-width: 100%; padding: 0; }
+    .form-header { border-radius: 0; }
+    .form-footer { border-radius: 0; }
+    .toast, .btn { display: none; }
+}
+.pm-form-footer{text-align:center;padding:24px 20px 16px;font-size:0.75rem;color:#868E96;border-top:1px solid #F1F3F5;margin-top:8px;font-family:'Roboto',sans-serif;line-height:1.8;}
+
+@media print{.pm-form-footer{display:none!important;}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<div class="form-wrapper">
+
+    <!-- HEADER -->
+    <div class="form-header">
+        <div class="header-logo"><svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" overflow="hidden"><g><path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.601 57.79 165.601 33.675 172.08 33.675 176.723 50.509 176.79 50.509 181.467 33.675 188.014 33.675 188.014 57.79 184.005 57.79 184.005 38.818 183.938 38.818 178.528 57.79 175.02 57.79 169.676 38.818 169.609 38.818 169.609 57.79 165.601 57.79Z" fill="#636569"/><path d="M201.94 57.79 201.674 56.287C200.003 57.422 198.433 58.123 196.263 58.123 193.122 58.123 191.551 55.885 191.551 53.515 191.551 49.573 194.759 47.503 201.506 46.701L201.506 45.232C201.506 43.895 200.438 43.161 198.968 43.161 197.031 43.161 195.962 44.196 195.16 45.299L192.489 43.261C193.557 41.425 196.43 40.021 198.968 40.09 203.644 40.189 205.648 41.892 205.648 47.104L205.648 55.286C205.648 56.155 205.715 57.023 205.982 57.792L201.94 57.792ZM201.507 49.473C198.735 50.008 195.695 50.576 195.695 53.013 195.695 54.315 196.529 55.051 197.699 55.051 199.001 55.051 200.638 53.948 201.507 53.214L201.507 49.473Z" fill="#636569"/><path d="M210.689 40.421 210.689 34.676 214.83 34.676 214.83 40.421 218.238 40.421 218.238 43.762 214.83 43.762 214.83 53.582C214.83 54.517 215.299 54.785 216.334 54.785 216.969 54.785 217.636 54.584 218.238 54.45L218.238 57.857C217.101 57.991 216.099 58.125 214.965 58.125 211.892 58.125 210.689 56.588 210.689 54.116L210.689 43.762 208.284 43.762 208.284 40.421 210.689 40.421Z" fill="#636569"/><path d="M224.179 49.774C224.245 53.381 225.849 54.784 227.787 54.784 229.725 54.784 230.626 53.915 231.662 52.713L234.668 54.584C233.065 57.056 230.727 58.124 227.386 58.124 222.877 58.124 220.038 54.617 220.038 49.106 220.038 43.595 222.877 40.088 227.586 40.088 232.129 40.054 234.667 43.896 234.667 48.072L234.667 49.775 224.179 49.775ZM230.86 46.968C230.794 44.563 229.524 43.16 227.519 43.16 225.514 43.16 224.246 44.563 224.179 46.968L230.86 46.968Z" fill="#636569"/></g></g><g><circle cx="240.028" cy="40.004" r="3.659" stroke="#636569" stroke-width="0.48" stroke-miterlimit="10" fill="none"/><path d="M239.897 40.276 239.24 40.276 239.24 41.999 238.707 41.999 238.707 38.011 239.984 38.011C240.968 38.011 241.272 38.489 241.272 39.076 241.272 39.532 241.136 40.027 240.43 40.206L241.348 41.999 240.767 41.999 239.898 40.276ZM239.761 39.858C240.424 39.858 240.717 39.684 240.717 39.103 240.717 38.63 240.451 38.435 239.869 38.435L239.239 38.435 239.239 39.859 239.761 39.859Z" fill="#636569"/></g></svg></div>
+        <div class="form-title">Global Rescheduling Form</div>
+    </div>
+
+
+
+    <!-- FORM BODY -->
+    <div class="form-body">
+        <form id="reschedulingForm" novalidate>
+
+            <!-- SECTION 1: General Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-num" id="sec1"><span>1</span></div>
+                    <div class="section-title">General Information</div>
+                    <div class="section-line"></div>
+                </div>
+                <div class="field-grid two-col">
+                    <div class="field-group">
+                        <label class="field-label">Date <span class="req">*</span></label>
+                        <input type="date" class="field-input tracked" id="formDate" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">PaceMate® Customer Success Manager <span class="req">*</span></label>
+                        <input type="text" class="field-input tracked" placeholder="Enter CSM name" id="csmName" required>
+                    </div>
+                </div>
+                <div class="field-grid two-col" style="margin-top: 12px;">
+                    <div class="field-group">
+                        <label class="field-label">Client Name <span class="req">*</span></label>
+                        <input type="text" class="field-input tracked" placeholder="Enter client name" id="clientName" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Client Organization / Company Name <span class="req">*</span></label>
+                        <input type="text" class="field-input tracked" placeholder="Enter organization name" id="orgName" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: Project Information -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-num" id="sec2"><span>2</span></div>
+                    <div class="section-title">Project Information</div>
+                    <div class="section-line"></div>
+                </div>
+                <div class="field-grid three-col">
+                    <div class="field-group">
+                        <label class="field-label">Go-Live Date <span class="req">*</span></label>
+                        <input type="date" class="field-input tracked" id="goLiveDate" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Project Start Date <span class="req">*</span></label>
+                        <input type="date" class="field-input tracked" id="startDate" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">Enrolled Patient Volume <span class="req">*</span></label>
+                        <input type="number" class="field-input tracked" placeholder="e.g., 500" id="patientVolume" required>
+                    </div>
+                </div>
+                <div class="field-group" style="margin-top: 12px;">
+                    <label class="field-label">Service Type <span class="req">*</span></label>
+                    <div class="choice-row" style="margin-top: 8px;">
+                        <label class="choice-card">
+                            <input type="radio" name="serviceType" value="full" class="tracked">
+                            <div class="choice-body">
+                                <div class="choice-dot"></div>
+                                <div class="choice-label">Full Service</div>
+                            </div>
+                        </label>
+                        <label class="choice-card">
+                            <input type="radio" name="serviceType" value="software" class="tracked">
+                            <div class="choice-body">
+                                <div class="choice-dot"></div>
+                                <div class="choice-label">Software-Only</div>
+                            </div>
+                        </label>
+                        <label class="choice-card">
+                            <input type="radio" name="serviceType" value="hybrid" class="tracked">
+                            <div class="choice-body">
+                                <div class="choice-dot"></div>
+                                <div class="choice-label">Hybrid</div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: Scheduling Interval Details -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-num" id="sec3"><span>3</span></div>
+                    <div class="section-title">Scheduling Interval Details</div>
+                    <div class="section-line"></div>
+                </div>
+                <div class="schedule-row">
+                    <div class="schedule-card" onclick="selectSchedule(this, 'standard-hf')" id="scheduleHF">
+                        <input type="radio" name="schedule" value="standard-hf" class="tracked">
+                        <div class="schedule-card-header">
+                            <div class="schedule-radio"></div>
+                            <div class="schedule-card-title">Standard Heart Failure</div>
+                        </div>
+                        <div class="schedule-card-body">
+                            <div class="schedule-detail">
+                                <span class="device-tag">ICDs, CRTs, ILRs</span>
+                                <span class="schedule-detail-text"><strong>31 day</strong> recurring cycles</span>
+                            </div>
+                            <div class="schedule-detail">
+                                <span class="device-tag">IPGs</span>
+                                <span class="schedule-detail-text"><strong>91/92 day</strong> recurring cycles</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="schedule-card" onclick="selectSchedule(this, 'standard-non-hf')" id="scheduleNonHF">
+                        <input type="radio" name="schedule" value="standard-non-hf" class="tracked">
+                        <div class="schedule-card-header">
+                            <div class="schedule-radio"></div>
+                            <div class="schedule-card-title">Standard Non-Heart Failure</div>
+                        </div>
+                        <div class="schedule-card-body">
+                            <div class="schedule-detail">
+                                <span class="device-tag">ILRs</span>
+                                <span class="schedule-detail-text"><strong>31 day</strong> recurring cycles</span>
+                            </div>
+                            <div class="schedule-detail">
+                                <span class="device-tag">All Other Devices</span>
+                                <span class="schedule-detail-text"><strong>91/92 day</strong> recurring cycles</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: Authorization & Signatures -->
+            <div class="form-section">
+                <div class="section-header">
+                    <div class="section-num" id="sec4"><span>4</span></div>
+                    <div class="section-title">Authorization &amp; Signatures</div>
+                    <div class="section-line"></div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <!-- Clinic Administrator -->
+                <div class="signature-block">
+                    <div class="signature-label">
+                        <div class="sig-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </div>
+                        Clinic Administrator
+                    </div>
+                    <div class="signature-grid">
+                        <div class="field-group">
+                            <label class="field-label">Full Name <span class="req">*</span></label>
+                            <input type="text" class="sig-input tracked" placeholder="Enter full name" id="adminName" required>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Signature (type your name) <span class="req">*</span></label>
+                            <input type="text" class="sig-input sig-style tracked" placeholder="Type signature here" id="adminSig" required>
+                        </div>
+                    </div>
+                    <div class="signature-grid" style="margin-bottom: 0;">
+                        <div class="field-group">
+                            <label class="field-label">Date <span class="req">*</span></label>
+                            <input type="date" class="sig-input tracked" id="adminDate" required>
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+
+                <!-- Physician Champion -->
+                <div class="signature-block">
+                    <div class="signature-label">
+                        <div class="sig-icon">
+                            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </div>
+                        Physician Champion
+                    </div>
+                    <div class="signature-grid">
+                        <div class="field-group">
+                            <label class="field-label">Full Name <span class="req">*</span></label>
+                            <input type="text" class="sig-input tracked" placeholder="Enter full name" id="physicianName" required>
+                        </div>
+                        <div class="field-group">
+                            <label class="field-label">Signature (type your name) <span class="req">*</span></label>
+                            <input type="text" class="sig-input sig-style tracked" placeholder="Type signature here" id="physicianSig" required>
+                        </div>
+                    </div>
+                    <div class="signature-grid" style="margin-bottom: 0;">
+                        <div class="field-group">
+                            <label class="field-label">Date <span class="req">*</span></label>
+                            <input type="date" class="sig-input tracked" id="physicianDate" required>
+                        </div>
+                        <div></div>
+                    </div>
+                </div>
+                </div><!-- /sig-grid -->
+            </div>
+
+<!-- ── PM STANDARD ACTION BAR ── -->
+<div class="pm-action-bar">
+  <div class="pm-action-left">
+    <button class="pm-pill pm-pill-save" onclick="pmSaveProgress()">
+      <svg viewBox="0 0 24 24"><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+      Save Progress
+    </button>
+    <button class="pm-pill pm-pill-clear" onclick="clearForm()">Clear Form</button>
+  </div>
+  <div class="pm-action-right">
+    <div class="pm-export-wrap" id="pmExportWrap">
+      <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Export &#9660;
+      </button>
+      <div class="pm-export-menu">
+        <button class="pm-export-item" onclick="pmExport('pdf')">
+          <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+          Export as PDF
+        </button>
+        <button class="pm-export-item" onclick="pmExport('excel')">
+          <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          Export as Excel
+        </button>
+        <button class="pm-export-item" onclick="pmExport('csv')">
+          <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+          Export as CSV
+        </button>
+      </div>
+    </div>
+    <button class="pm-pill pm-pill-submit" onclick="pmSubmit()">
+      <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      Submit to PaceMate&#174;
+    </button>
+  </div>
+</div>
+
+    <!-- FOOTER -->
+    
+    </div>
+
+</div>
+
+<!-- TOAST -->
+<div style="max-width:860px;margin:0 auto;padding:14px 40px;border-top:1px solid #D9D9D6;display:flex;align-items:center;justify-content:space-between;font-family:'Poppins',sans-serif;font-weight:300;font-size:10px;color:#8A8C90;">
+  <div>PaceMate<sup>&#174;</sup> <span style="color:#D9D9D6;margin:0 6px;">|</span> PaceMate.com</div>
+  <div><strong style="font-weight:600;color:#2D2E32;">Global Rescheduling Form</strong> <span style="color:#D9D9D6;margin:0 6px;">|</span> v1 <span style="color:#D9D9D6;margin:0 6px;">|</span> February 2026</div>
+</div>
+
+
+<script>
+// ── FORM CONFIGURATION ────────────────────────────────────────────
+var FORM_WORKSTREAM  = 'csm';                       // Change per workstream
+var FORM_STORAGE_KEY = 'form_global_rescheduling';  // Unique per form
+var FORM_ID          = 'global-rescheduling';
+var FORM_NAME        = 'Global Rescheduling Form';
+var FORM_FILE        = 'form-global-rescheduling-v1.html';
+
+// ── FIELD MAP (label → field id/name) for export ─────────────────
+var FIELD_MAP = [
+  { label: 'Date',                          id: 'formDate' },
+  { label: 'CSM Name',                      id: 'csmName' },
+  { label: 'Client Name',                   id: 'clientName' },
+  { label: 'Organization Name',             id: 'orgName' },
+  { label: 'Go-Live Date',                  id: 'goLiveDate' },
+  { label: 'Project Start Date',            id: 'startDate' },
+  { label: 'Enrolled Patient Volume',       id: 'patientVolume' },
+  { label: 'Service Type',                  name: 'serviceType' },
+  { label: 'Scheduling Interval',           name: 'schedule' },
+  { label: 'Admin Full Name',               id: 'adminName' },
+  { label: 'Admin Signature',               id: 'adminSig' },
+  { label: 'Admin Date',                    id: 'adminDate' },
+  { label: 'Physician Full Name',           id: 'physicianName' },
+  { label: 'Physician Signature',           id: 'physicianSig' },
+  { label: 'Physician Date',                id: 'physicianDate' }
+];
+
+// ── SAVE / LOAD ───────────────────────────────────────────────────
+function getFormData() {
+  var data = {};
+  FIELD_MAP.forEach(function(f) {
+    if (f.id) {
+      var el = document.getElementById(f.id);
+      data[f.label] = el ? el.value : '';
+    } else if (f.name) {
+      var checked = document.querySelector('input[name="' + f.name + '"]:checked');
+      data[f.label] = checked ? checked.value : '';
+    }
+  });
+  return data;
+}
+
+function saveFormData() {
+  var data = getFormData();
+  localStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(data));
+  localStorage.setItem(FORM_STORAGE_KEY + '_version', 'v1-brand-rebuild');
+  return data;
+}
+
+function loadFormData() {
+  // Clear stale data if version flag doesn't match
+  if (localStorage.getItem(FORM_STORAGE_KEY + '_version') !== 'v1-brand-rebuild') {
+    localStorage.removeItem(FORM_STORAGE_KEY);
+    localStorage.setItem(FORM_STORAGE_KEY + '_version', 'v1-brand-rebuild');
+  }
+  var raw = localStorage.getItem(FORM_STORAGE_KEY);
+  if (!raw) return;
+  try {
+    var data = JSON.parse(raw);
+    FIELD_MAP.forEach(function(f) {
+      var val = data[f.label];
+      if (!val) return;
+      if (f.id) {
+        var el = document.getElementById(f.id);
+        if (el) { el.value = val; el.classList.add('filled'); }
+      } else if (f.name) {
+        var radio = document.querySelector('input[name="' + f.name + '"][value="' + val + '"]');
+        if (radio) {
+          radio.checked = true;
+          // Trigger visual selection for schedule cards
+          if (f.name === 'schedule') {
+            var card = radio.closest('.schedule-card');
+            if (card) {
+              document.querySelectorAll('.schedule-card').forEach(function(c){ c.classList.remove('selected'); });
+              card.classList.add('selected');
+            }
+          }
+        }
+      }
+    });
+    setAutosaveStatus('Restored from last save');
+  } catch(e) {}
+}
+
+// ── AUTO-SAVE ─────────────────────────────────────────────────────
+function setAutosaveStatus(msg) {
+  var el = document.getElementById('autosaveStatus');
+  if (!el) return;
+  var now = new Date();
+  var t = now.getHours() + ':' + String(now.getMinutes()).padStart(2,'0');
+  el.innerHTML = '<span class="autosave-dot"></span>' + (msg || ('Auto-saved at ' + t));
+  el.classList.add('saved');
+  setTimeout(function(){ el.classList.remove('saved'); }, 3000);
+}
+
+setInterval(function() {
+  saveFormData();
+  setAutosaveStatus();
+}, 30000);
+
+// ── SAVE PROGRESS ─────────────────────────────────────────────────
+function saveProgress() {
+  saveFormData();
+  setAutosaveStatus('Saved');
+  showToast('Progress saved!', 'success');
+}
+
+// ── EXPORT DROPDOWN ───────────────────────────────────────────────
+function toggleExportMenu(e) {
+  e.stopPropagation();
+  document.getElementById('exportDropdown').classList.toggle('open');
+}
+document.addEventListener('click', function() {
+  var dd = document.getElementById('exportDropdown');
+  if (dd) dd.classList.remove('open');
+});
+
+function exportForm(type) {
+  document.getElementById('exportDropdown').classList.remove('open');
+  if (type === 'pdf')   exportPDF();
+  if (type === 'excel') exportExcel();
+  if (type === 'csv')   exportCSV();
+}
+
+function exportPDF() {
+  showToast('Generating PDF...', '');
+  var el = document.querySelector('.form-body') || document.querySelector('.form-wrapper');
+  html2canvas(el, { scale: 2, useCORS: true, logging: false }).then(function(canvas) {
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new window.jspdf.jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+    var pageW = pdf.internal.pageSize.getWidth();
+    var pageH = pdf.internal.pageSize.getHeight();
+    var imgW  = pageW;
+    var imgH  = (canvas.height * imgW) / canvas.width;
+    var yPos  = 0;
+    while (yPos < imgH) {
+      if (yPos > 0) pdf.addPage();
+      pdf.addImage(imgData, 'PNG', 0, -yPos, imgW, imgH);
+      yPos += pageH;
+    }
+    pdf.save(FORM_NAME.replace(/\s+/g,'-') + '.pdf');
+    showToast('PDF downloaded!', 'success');
+  }).catch(function(){ showToast('PDF generation failed — try again', 'error'); });
+}
+
+function getExportRows() {
+  var data = getFormData();
+  return FIELD_MAP.map(function(f){ return [f.label, data[f.label] || '']; });
+}
+
+function exportExcel() {
+  var rows = [['Field', 'Response']].concat(getExportRows());
+  var ws   = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{ wch: 30 }, { wch: 50 }];
+  var wb   = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Form Data');
+  XLSX.writeFile(wb, FORM_NAME.replace(/\s+/g,'-') + '.xlsx');
+  showToast('Excel downloaded!', 'success');
+}
+
+function exportCSV() {
+  var rows = [['Field', 'Response']].concat(getExportRows());
+  var csv  = rows.map(function(r){
+    return r.map(function(v){ return '"' + String(v).replace(/"/g,'""') + '"'; }).join(',');
+  }).join('\n');
+  var blob = new Blob([csv], { type: 'text/csv' });
+  var url  = URL.createObjectURL(blob);
+  var a    = document.createElement('a');
+  a.href = url; a.download = FORM_NAME.replace(/\s+/g,'-') + '.csv';
+  document.body.appendChild(a); a.click();
+  document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 5000);
+  showToast('CSV downloaded!', 'success');
+}
+
+// ── SUBMIT ────────────────────────────────────────────────────────
+function submitForm() {
+  var inputs = document.querySelectorAll('.tracked');
+  var allFilled = true;
+  var firstEmpty = null;
+
+  // Clear all previous error states
+  inputs.forEach(function(input) {
+    if (input.type !== 'radio') input.classList.remove('error');
+  });
+  document.querySelectorAll('.choice-body').forEach(function(c){ c.style.borderColor=''; });
+  document.querySelectorAll('.schedule-card').forEach(function(c){ c.style.borderColor=''; });
+
+  // Validate text/date/number inputs
+  inputs.forEach(function(input) {
+    if (input.type === 'radio') return;
+    if (!input.value.trim()) {
+      allFilled = false;
+      input.classList.add('error');
+      if (!firstEmpty) firstEmpty = input;
+      // Clear on input
+      input.addEventListener('input', function onInput() {
+        input.classList.remove('error');
+        input.removeEventListener('input', onInput);
+      });
+    }
+  });
+
+  // Validate radio groups
+  if (!document.querySelector('input[name="serviceType"]:checked')) {
+    allFilled = false;
+    document.querySelectorAll('.choice-body').forEach(function(c){
+      c.style.borderColor = '#EA0044';
+      c.style.boxShadow = '0 0 0 3px rgba(234,0,68,0.12)';
+    });
+    if (!firstEmpty) firstEmpty = document.querySelector('.choice-row');
+    // Clear on selection
+    document.querySelectorAll('input[name="serviceType"]').forEach(function(r){
+      r.addEventListener('change', function() {
+        document.querySelectorAll('.choice-body').forEach(function(c){
+          c.style.borderColor=''; c.style.boxShadow='';
+        });
+      }, { once: true });
+    });
+  }
+  if (!document.querySelector('input[name="schedule"]:checked')) {
+    allFilled = false;
+    document.querySelectorAll('.schedule-card').forEach(function(c){
+      c.style.borderColor = '#EA0044';
+      c.style.boxShadow = '0 0 0 3px rgba(234,0,68,0.12)';
+    });
+    if (!firstEmpty && !document.querySelector('.choice-row')) firstEmpty = document.querySelector('.schedule-row');
+    document.querySelectorAll('input[name="schedule"]').forEach(function(r){
+      r.addEventListener('change', function() {
+        document.querySelectorAll('.schedule-card').forEach(function(c){
+          c.style.borderColor=''; c.style.boxShadow='';
+        });
+      }, { once: true });
+    });
+  }
+
+  if (allFilled) {
+    saveFormData();
+    var WS_KEYS={'csm':'csm_inbox_submissions','integration':'integration_inbox_submissions','clinical':'clinical_inbox_submissions','patientsvcs':'patientsvcs_inbox_submissions','support':'support_inbox_submissions'};
+    var _key=WS_KEYS[FORM_WORKSTREAM];
+    if(_key){
+      var _data=[];try{_data=JSON.parse(localStorage.getItem(_key)||'[]');}catch(e){}
+      var _now=Date.now();
+      var _existing=_data.find(function(e){return e.id===FORM_ID;});
+      if(_existing){_existing.history[_existing.history.length-1].statusAtReview=_existing.status;_existing.history.push({submittedAt:_now,statusAtReview:null});_existing.status='submitted';_existing.glowStart=_now;}
+      else{_data.push({id:FORM_ID,formName:FORM_NAME,formFile:FORM_FILE,status:'submitted',glowStart:_now,history:[{submittedAt:_now,statusAtReview:null}]});}
+      try{localStorage.setItem(_key,JSON.stringify(_data));}catch(e){}
+    }
+    var btn = document.querySelector('.pm-pill-submit');
+    if (btn) { btn.textContent = '✓ Submitted'; btn.disabled = true; btn.style.opacity = '0.6'; }
+    showToast('Submitted to PaceMate®!', 'success');
+  } else {
+    showToast('Please complete all required fields before submitting', 'error');
+    if (firstEmpty) {
+      setTimeout(function() {
+        firstEmpty.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }
+}
+
+// ── CLEAR ─────────────────────────────────────────────────────────
+function clearForm() {
+  if (confirm('Are you sure you want to clear all fields? This will also remove your saved progress.')) {
+    document.getElementById('reschedulingForm').reset();
+    document.querySelectorAll('.schedule-card').forEach(function(c){ c.classList.remove('selected'); });
+    document.querySelectorAll('.field-input, .sig-input').forEach(function(i){ i.classList.remove('filled'); });
+    localStorage.removeItem(FORM_STORAGE_KEY);
+    document.getElementById('autosaveStatus').innerHTML = '';
+    updateProgress();
+    showToast('Form cleared');
+  }
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────────
+function updateProgress() {
+  var inputs = document.querySelectorAll('.tracked');
+  var filled = 0, total = 0;
+  inputs.forEach(function(input) {
+    if (input.type === 'radio') {
+      var name = input.name;
+      var group = document.querySelectorAll('input[name="' + name + '"]');
+      if (input === group[0]) {
+        total++;
+        var checked = document.querySelector('input[name="' + name + '"]:checked');
+        if (checked) filled++;
+      }
+      return;
+    }
+    total++;
+    if (input.value.trim()) { filled++; input.classList.add('filled'); }
+    else { input.classList.remove('filled'); }
+  });
+  var pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+  var bar = document.getElementById('progressFill');
+  var pctEl = null; // no percentage element in this form
+  var filledEl = document.getElementById('filledCount');
+  var totalEl  = document.getElementById('totalCount');
+  if (bar)     bar.style.width = pct + '%';
+  if (pctEl)   pctEl.textContent = pct + '%';
+  if (filledEl) filledEl.textContent = filled;
+  if (totalEl)  totalEl.textContent  = total;
+}
+
+// ── SCHEDULE SELECT ───────────────────────────────────────────────
+function selectSchedule(card, value) {
+  document.querySelectorAll('.schedule-card').forEach(function(c){ c.classList.remove('selected'); });
+  card.classList.add('selected');
+  card.querySelector('input[type="radio"]').checked = true;
+  updateProgress();
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────
+function showToast(msg, type) {
+  clearTimeout(window._toastTimer);
+  var existing = document.getElementById('_pmToast');
+  if (existing) existing.parentNode.removeChild(existing);
+
+  var t = document.createElement('div');
+  t.id = '_pmToast';
+  t.textContent = msg;
+  t.setAttribute('style',
+    'position:fixed;top:20px;left:50%;transform:translateX(-50%);' +
+    'background:' + (type === 'error' ? '#DC3545' : type === 'success' ? '#00B140' : '#212529') + ';' +
+    'color:white;padding:11px 24px;border-radius:24px;' +
+    'font-family:Poppins,sans-serif;font-size:13px;font-weight:600;' +
+    'box-shadow:0 4px 20px rgba(0,0,0,0.25);z-index:999999;' +
+    'white-space:nowrap;pointer-events:none;'
+  );
+  document.body.appendChild(t);
+  window._toastTimer = setTimeout(function() {
+    var el = document.getElementById('_pmToast');
+    if (el) el.parentNode.removeChild(el);
+  }, type === 'error' ? 5000 : 3000);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  loadFormData();
+  updateProgress();
+  document.querySelectorAll('.tracked').forEach(function(input) {
+    input.addEventListener('input', updateProgress);
+    input.addEventListener('change', updateProgress);
+  });
+});
+</script>
+
+
+<!-- PaceMate Back Button -->
+<style>
+.pm-back-btn{
+  position:fixed;top:16px;left:16px;z-index:9999;
+  display:inline-flex;align-items:center;gap:7px;
+  padding:8px 16px 8px 12px;
+  background:#fff;
+  border:1.5px solid #DEE2E6;
+  border-radius:20px;
+  font-family:'Roboto',sans-serif;
+  font-size:0.78rem;font-weight:600;
+  color:#495057;
+  cursor:pointer;
+  text-decoration:none;
+  box-shadow:0 2px 8px rgba(0,0,0,0.09);
+  transition:all 0.15s;
+  line-height:1;
+}
+.pm-back-btn:hover{
+  background:#EA0044;color:#fff;
+  border-color:#EA0044;
+  box-shadow:0 3px 12px rgba(234,0,68,0.25);
+  transform:translateX(-2px);
+}
+.pm-back-btn svg{transition:transform 0.15s;}
+.pm-back-btn:hover svg{transform:translateX(-2px);}
+@media print{.pm-back-btn{display:none!important}}
+
+/* ── PM STANDARD ACTION BAR ─────────────────────────── */
+.pm-action-bar{display:flex;align-items:center;padding:20px 0 8px;border-top:1px solid #E8E8E6;margin-top:24px;flex-wrap:nowrap;width:100%;}
+.pm-action-left{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.pm-action-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0;}
+.pm-pill{display:inline-flex;align-items:center;gap:7px;padding:8px 18px;border-radius:20px;font-family:'Poppins',sans-serif;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s;border:none;outline:none;white-space:nowrap;line-height:1;}
+.pm-pill svg{width:14px;height:14px;flex-shrink:0;fill:currentColor;}
+.pm-pill-save{background:white;color:#495057;border:1.5px solid #DEE2E6;}
+.pm-pill-save:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529;}
+.pm-export-wrap{position:relative;margin-left:auto;}
+.pm-pill-export{background:white;color:#495057;border:1.5px solid #DEE2E6;}
+.pm-pill-export:hover{background:#F8F9FA;border-color:#ADB5BD;color:#212529;}
+.pm-chevron{width:11px!important;height:11px!important;transition:transform 0.18s;margin-left:1px;}
+.pm-export-wrap.open .pm-pill-export{border-color:#ADB5BD;background:#F8F9FA;}
+.pm-export-wrap.open .pm-chevron{transform:rotate(180deg);}
+.pm-export-menu{display:none;position:absolute;bottom:calc(100% + 8px);right:0;background:white;border:1.5px solid #E9ECEF;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.12);min-width:190px;z-index:200;overflow:hidden;}
+.pm-export-wrap.open .pm-export-menu{display:block;}
+.pm-export-item{display:flex;align-items:center;gap:10px;padding:11px 16px;font-size:0.82rem;font-weight:500;color:#495057;cursor:pointer;transition:background 0.12s;border:none;background:none;width:100%;text-align:left;font-family:'Roboto',sans-serif;}
+.pm-export-item:hover{background:#F8F9FA;color:#212529;}
+.pm-export-item+.pm-export-item{border-top:1px solid #F1F3F5;}
+.pm-export-item svg{width:15px;height:15px;flex-shrink:0;}
+.pm-pill-submit{background:linear-gradient(135deg,#EA0044,#c8003b);color:white;box-shadow:0 3px 12px rgba(234,0,68,0.22);}
+.pm-pill-submit:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,0,68,0.35);}
+.pm-autosave{font-size:0.72rem;color:#ADB5BD;display:flex;align-items:center;gap:5px;}
+.pm-autosave.active{color:#2B8A3E;}
+.pm-autosave-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0;}
+@media print{.pm-action-bar{display:none!important;}}
+@media(max-width:600px){.pm-action-bar{gap:8px;}.pm-export-wrap{margin-left:0;}.pm-pill-submit{width:100%;justify-content:center;}}
+</style>
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 4L6 8l4 4"/>
+  </svg>
+  Back
+</button>
+
+
+<script>
+/* PM wrappers — delegates to existing global-rescheduling functions */
+var PM_WORKSTREAM='csm',PM_FORM_ID='global-rescheduling',PM_FORM_NAME='Global Rescheduling Form',PM_FORM_FILE='form-global-rescheduling-v1.html';
+function pmSaveProgress(){saveProgress();}
+function pmExportPDF(){exportPDF();}
+function pmExportExcel(){exportExcel();}
+function pmExportCSV(){exportCSV();}
+function pmExport(t){document.getElementById('pmExportWrap').classList.remove('open');if(t==='pdf')pmExportPDF();else if(t==='excel')pmExportExcel();else if(t==='csv')pmExportCSV();}
+function pmToggleExport(e){e.stopPropagation();document.getElementById('pmExportWrap').classList.toggle('open');}
+function pmSubmit(){submitForm();}
+document.addEventListener('click',function(){var w=document.getElementById('pmExportWrap');if(w)w.classList.remove('open');});
+</script>
+</body>
+</html>

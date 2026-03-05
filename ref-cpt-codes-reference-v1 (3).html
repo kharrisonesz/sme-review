@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PaceMateLIVE™ CPT Codes</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Roboto:wght@400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --pm-red: #EA0044;
+  --pm-red-dark: #C9003C;
+  --pm-red-light: #FF2255;
+  --text-1: #212529;
+  --text-2: #495057;
+  --text-3: #868E96;
+  --bg: #F5F6F8;
+  --white: #FFFFFF;
+  --border: #DEE2E6;
+  --shadow: 0 4px 24px rgba(0,0,0,0.07);
+  --radius: 12px;
+}
+body {
+  font-family: 'Roboto', sans-serif;
+  background: var(--bg);
+  color: var(--text-1);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.form-wrapper { max-width: 1100px; margin: 0 auto; padding: 32px 28px 60px; }
+
+/* === FORM CARD === */
+.form-card {
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  margin-bottom: 0;
+}
+
+/* === HEADER === */
+.form-header {
+  background: #FFFFFF;
+  border-bottom: 3px solid var(--pm-red);
+  padding: 18px 40px 16px;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.header-title-block { flex: 1; }
+.form-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-1);
+  margin-bottom: 2px;
+}
+.form-subtitle { font-size: 0.78rem; color: var(--text-3); font-weight: 400; line-height: 1.4; }
+.header-meta-pill {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-3);
+  background: #F5F6F8;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 14px;
+  white-space: nowrap;
+}
+
+/* === ACTION BAR === */
+.pm-action-bar {
+  background: #F8F9FA;
+  border-bottom: 1px solid var(--border);
+  padding: 10px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: nowrap;
+}
+.pm-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 18px; border-radius: 20px; border: none;
+  font-family: 'Roboto', sans-serif; font-size: 0.8rem; font-weight: 600;
+  cursor: pointer; transition: all 0.18s; white-space: nowrap;
+}
+.pm-pill svg { width: 15px; height: 15px; fill: currentColor; flex-shrink: 0; }
+.pm-pill-export { background: #F0F1F3; color: var(--text-2); border: 1.5px solid var(--border); }
+.pm-pill-export:hover { background: var(--pm-red); color: #fff; border-color: var(--pm-red); }
+
+.pm-export-wrap { position: relative; }
+.pm-export-menu {
+  display: none; position: absolute; top: calc(100% + 6px); right: 0;
+  background: #fff; border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1); min-width: 180px; z-index: 200; overflow: hidden;
+}
+.pm-export-menu.open { display: block; }
+.pm-export-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 11px 16px; border: none; background: none;
+  font-family: 'Roboto', sans-serif; font-size: 0.82rem; font-weight: 500;
+  color: var(--text-2); cursor: pointer; transition: background 0.15s; text-align: left;
+}
+.pm-export-item:hover { background: #F5F6F8; }
+.pm-export-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+.pm-chevron { width: 14px !important; height: 14px !important; transition: transform 0.2s; }
+.pm-chevron.open { transform: rotate(180deg); }
+
+/* === BODY === */
+.form-body { background: white; padding: 32px 40px 48px; }
+
+/* Purpose Banner */
+.purpose-banner {
+  background: #FFF8F8;
+  border: 1px solid #FECDD3;
+  border-left: 4px solid var(--pm-red);
+  border-radius: 10px;
+  padding: 18px 24px;
+  margin-bottom: 28px;
+}
+.purpose-banner p { font-size: 0.88rem; color: var(--text-2); line-height: 1.7; }
+
+/* Section Color Themes */
+.theme-cied    { --sec-color:#EA0044; --sec-dark:#C9003C; --sec-bg-from:#FFF0F3; --sec-bg-to:#FFE0E6; --sec-hover:#FFF8F9; --sec-code-bg:#FFF5F5; --sec-code-border:rgba(234,0,68,0.3); --sec-sub-bg:#FDF0F2; }
+.theme-ambulatory { --sec-color:#8B0027; --sec-dark:#8B0027; --sec-bg-from:#FFF3F6; --sec-bg-to:#FFE8EE; --sec-hover:#FFF8FA; --sec-code-bg:#FFF3F6; --sec-code-border:rgba(139,0,39,0.25); --sec-sub-bg:#FFE8EE; }
+.theme-ecg     { --sec-color:#A8003A; --sec-dark:#A8003A; --sec-bg-from:#FFE8EE; --sec-bg-to:#FFD6E3; --sec-hover:#FFF5F8; --sec-code-bg:#FFE8EE; --sec-code-border:rgba(168,0,58,0.25); --sec-sub-bg:#FFD6E3; }
+.theme-rpm     { --sec-color:#C9003C; --sec-dark:#C9003C; --sec-bg-from:#FFDCE6; --sec-bg-to:#FFC8D6; --sec-hover:#FFF0F4; --sec-code-bg:#FFDCE6; --sec-code-border:rgba(201,0,60,0.25); --sec-sub-bg:#FFC8D6; }
+
+/* Section Headers */
+.section-header {
+  border-radius: 0 12px 12px 0;
+  padding: 18px 24px;
+  margin: 32px 0 20px;
+  background: linear-gradient(135deg, var(--sec-bg-from) 0%, var(--sec-bg-to) 100%);
+  border-left: 4px solid var(--sec-color);
+  cursor: pointer;
+  user-select: none;
+}
+.section-header h2 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--sec-dark);
+}
+.section-header p { font-size: 0.8rem; color: var(--text-2); margin-top: 3px; }
+.accordion-toggle { display: flex; justify-content: space-between; align-items: center; }
+.accordion-arrow {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--sec-color);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: transform 0.25s;
+}
+.accordion-arrow svg { width: 14px; height: 14px; fill: #fff; }
+.section-header.collapsed-header .accordion-arrow { transform: rotate(-90deg); }
+.accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+.accordion-content.expanded { max-height: 3000px; }
+
+/* Tables */
+.table-wrapper { overflow-x: auto; margin: 0 0 28px; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); background: #fff; border: 1px solid var(--border); }
+table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+thead { color: #fff; }
+.theme-cied thead        { background: linear-gradient(135deg, #EA0044 0%, #C9003C 100%); }
+.theme-ambulatory thead  { background: linear-gradient(135deg, #8B0027 0%, #6B0020 100%); }
+.theme-ecg thead         { background: linear-gradient(135deg, #A8003A 0%, #8B0030 100%); }
+.theme-rpm thead         { background: linear-gradient(135deg, #C9003C 0%, #A8003A 100%); }
+thead th { padding: 13px 14px; text-align: left; font-weight: 600; font-size: 0.78rem; letter-spacing: 0.2px; line-height: 1.3; }
+tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+tbody tr:hover { background: var(--sec-hover, #FFF8F9); }
+tbody tr:nth-child(even) { background: #FAFBFC; }
+tbody tr:nth-child(even):hover { background: var(--sec-hover, #FFF8F9); }
+tbody td { padding: 11px 14px; vertical-align: middle; }
+tbody td:first-child { font-weight: 600; color: var(--text-1); min-width: 180px; }
+.cpt-code {
+  display: inline-block;
+  background: var(--sec-code-bg, #FFF5F5);
+  border: 1.5px solid var(--sec-code-border, rgba(234,0,68,0.3));
+  border-radius: 6px; padding: 2px 10px;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-weight: 700; font-size: 0.84rem;
+  color: var(--sec-dark, #C9003C);
+  letter-spacing: 0.5px; white-space: nowrap;
+}
+.cpt-na { color: var(--text-3); font-style: italic; font-weight: 400; font-size: 0.82rem; }
+.cpt-note { font-size: 0.75rem; color: var(--text-3); display: block; margin-top: 2px; }
+.sub-category td { background: var(--sec-sub-bg, #F0F4F8) !important; font-weight: 700 !important; font-family: 'Poppins', sans-serif; color: var(--sec-dark, #C9003C) !important; font-size: 0.82rem; letter-spacing: 0.3px; border-bottom: 2px solid var(--border) !important; }
+.sub-row td:first-child { padding-left: 28px; }
+
+/* Footnotes */
+.footnotes {
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 24px 0 0;
+  border: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.footnotes h3 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--pm-red-dark);
+  margin-bottom: 12px;
+}
+.footnote-item { display: flex; gap: 8px; margin-bottom: 8px; font-size: 0.84rem; color: var(--text-2); line-height: 1.6; }
+.footnote-marker { font-weight: 700; color: var(--pm-red); flex-shrink: 0; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 30px; right: 30px;
+  padding: 14px 24px; border-radius: 10px;
+  font-family: 'Roboto', sans-serif; font-size: 0.84rem; font-weight: 600; color: white;
+  transform: translateY(100px); opacity: 0;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+.toast.show { transform: translateY(0); opacity: 1; }
+.toast-success { background: #2B8A3E; }
+.toast-info    { background: #1971C2; }
+.toast-error   { background: #C92A2A; }
+
+/* Print */
+@media print {
+  body { background: white; }
+  .form-wrapper { padding: 0; }
+  .form-card { box-shadow: none; border: none; }
+  .pm-action-bar { display: none; }
+  .pm-back-btn { display: none !important; }
+  .form-header { border-radius: 0; }
+  thead { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .theme-cied thead       { background: #EA0044 !important; }
+  .theme-ambulatory thead { background: #8B0027 !important; }
+  .theme-ecg thead        { background: #A8003A !important; }
+  .theme-rpm thead        { background: #C9003C !important; }
+  thead th { color: #fff !important; }
+  .accordion-content.collapsed { max-height: none !important; }
+  .accordion-arrow { display: none; }
+  table { font-size: 8pt; }
+}
+@media (max-width: 768px) {
+  .form-header { padding: 14px 20px; flex-wrap: wrap; }
+  .form-body { padding: 24px 20px 36px; }
+  .pm-action-bar { padding: 10px 20px; }
+  table { font-size: 0.78rem; }
+  thead th { padding: 10px 8px; }
+  tbody td { padding: 8px; }
+  tbody td:first-child { min-width: 120px; }
+}
+</style>
+</head>
+<body>
+
+<div class="form-wrapper">
+<div class="form-card">
+
+  <!-- HEADER -->
+  <div class="form-header">
+    <svg viewBox="0 0 252 89" xmlns="http://www.w3.org/2000/svg" overflow="visible" style="height:56px;width:158px;display:block;flex-shrink:0;" aria-label="PaceMate">
+      <g><path d="M64.413 12.835C57.649 12.835 51.247 16.218 46.228 22.397L46.069 22.227 46.025 22.271C40.993 16.014 34.563 12.587 27.748 12.587 16.85 12.587 8.313 21.439 8.313 32.739 8.313 43.188 14.251 53.505 25.96 63.402 34.361 70.502 43.074 75.054 45.545 76.28L45.814 76.412 46.535 76.412 46.793 76.29C47.17 76.114 56.118 71.878 65.213 64.465 77.398 54.533 83.84 43.646 83.84 32.979 83.84 21.683 75.306 12.835 64.413 12.835M46.014 25.91 52.666 32.928 52.666 42.538 39.464 42.538 39.464 32.928 46.014 25.91ZM46.189 73.74C40.784 70.988 10.871 54.755 10.871 32.739 10.871 22.873 18.285 15.145 27.748 15.145 33.846 15.145 39.647 18.311 44.213 24.093L36.906 31.908 36.906 45.095 55.245 45.095 55.245 31.908 47.997 24.284C52.555 18.542 58.344 15.392 64.414 15.392 73.873 15.392 81.284 23.118 81.284 32.979 81.284 55.443 50.445 71.616 46.19 73.739" fill="#EB0045"/><g><path d="M95.911 57.79 95.911 33.675 104.327 33.675C109.47 33.675 111.71 36.613 111.71 40.421 111.71 44.429 108.937 47.035 102.858 47.035L98.582 47.035 98.582 57.79 95.911 57.79ZM98.582 44.763 103.124 44.763C107.567 44.763 109.037 43.227 109.037 40.354 109.037 37.481 107.334 35.945 103.726 35.945L98.582 35.945 98.582 44.763Z" fill="#636569"/><path d="M114.005 43.761C115.106 41.757 117.245 40.088 120.517 40.088 123.457 40.088 126.531 41.49 126.531 45.298L126.531 54.05C126.531 55.953 126.698 56.889 126.932 57.791L124.459 57.791 124.192 55.386C122.99 56.722 121.053 58.126 118.447 58.126 115.776 58.126 113.503 56.522 113.503 53.349 113.503 49.54 116.408 47.638 124.125 46.268L124.125 45.333C124.125 43.029 122.621 42.16 120.551 42.16 117.879 42.16 116.576 43.696 116.107 44.866L114.004 43.763ZM124.125 48.404C118.614 49.373 115.908 50.976 115.908 53.381 115.908 54.984 117.444 56.052 118.781 56.052 120.517 56.052 122.722 54.783 124.125 53.179L124.125 48.403Z" fill="#636569"/><path d="M141.592 45.599C140.924 43.494 139.556 42.159 137.483 42.159 134.511 42.159 132.773 44.697 132.773 49.106 132.773 53.515 134.511 56.053 137.483 56.053 139.688 56.053 140.924 55.318 142.26 52.846L144.197 53.715C142.46 56.654 140.924 58.124 137.483 58.124 133.14 58.124 130.369 54.717 130.369 49.106 130.369 43.495 133.14 40.088 137.483 40.088 141.057 40.088 142.726 42.092 143.829 44.797L141.591 45.599Z" fill="#636569"/><path d="M161.529 54.083C160.394 56.054 158.79 58.125 154.849 58.125 150.974 58.125 147.3 55.452 147.3 49.106 147.3 43.494 150.106 40.089 154.381 40.089 157.989 40.089 160.995 42.426 160.995 47.972L160.995 49.574 149.705 49.574C149.705 53.383 151.976 56.055 154.849 56.055 156.987 56.055 158.656 54.918 159.658 53.115L161.529 54.084ZM158.59 47.503C158.59 44.296 157.054 42.159 154.449 42.159 151.543 42.159 149.973 44.297 149.772 47.503L158.59 47.503Z" fill="#636569"/><path d="M165.605 57.791 165.605 33.675 168.211 33.675 168.211 57.791Z" fill="#636569"/><path d="M173.285 54.717C174.354 55.686 176.025 56.388 177.628 56.388 179.5 56.388 180.803 55.385 180.803 53.882 180.803 52.513 180.035 51.745 177.629 50.877 174.788 49.807 173.151 48.638 173.151 46.167 173.151 43.561 175.289 40.088 179.198 40.088 181.002 40.088 182.672 40.722 183.608 41.49L182.672 43.428C181.803 42.726 180.501 42.16 179.131 42.16 177.028 42.16 175.756 43.295 175.756 44.898 175.756 46.301 176.558 47.002 178.965 47.905 181.871 48.975 183.408 50.244 183.408 52.949 183.408 56.321 180.903 58.459 177.562 58.459 175.423 58.459 173.619 57.691 172.416 56.722L173.285 54.718Z" fill="#636569"/><path d="M186.114 42.427 186.114 40.422 191.525 40.422 191.525 34.044 194.131 34.044 194.131 40.422 199.942 40.422 199.942 42.427 194.131 42.427 194.131 52.982C194.131 55.052 194.932 56.054 196.803 56.054 197.939 56.054 198.975 55.653 199.742 55.119L200.477 57.024C199.408 57.725 198.005 58.125 196.502 58.125 193.327 58.125 191.525 56.321 191.525 52.849L191.525 42.427Z" fill="#636569"/><path d="M218.108 54.083C216.973 56.054 215.369 58.125 211.428 58.125 207.553 58.125 203.879 55.452 203.879 49.106 203.879 43.494 206.685 40.089 210.96 40.089 214.568 40.089 217.574 42.426 217.574 47.972L217.574 49.574 206.284 49.574C206.284 53.383 208.555 56.055 211.428 56.055 213.566 56.055 215.235 54.918 216.237 53.115L218.108 54.084ZM215.169 47.503C215.169 44.296 213.633 42.159 211.028 42.159 208.122 42.159 206.552 44.297 206.351 47.503L215.169 47.503Z" fill="#636569"/><path d="M222.381 57.791 222.381 40.422 224.853 40.422 225.053 43.028C226.256 41.157 228.227 40.088 230.566 40.088 232.838 40.088 234.509 41.09 235.411 42.961 236.748 41.023 238.819 40.088 241.124 40.088 244.666 40.088 246.67 42.292 246.67 46.167L246.67 57.791 244.064 57.791 244.064 46.601C244.064 43.796 242.994 42.193 240.589 42.193 238.418 42.193 236.48 43.729 236.48 47.136L236.48 57.791 233.875 57.791 233.875 46.601C233.875 43.796 232.805 42.193 230.4 42.193 228.228 42.193 226.291 43.729 226.291 47.136L226.291 57.791Z" fill="#636569"/></g></g>
+    </svg>
+    <div class="header-title-block">
+      <div class="form-title">PaceMateLIVE&#8482; CPT Codes</div>
+      <div class="form-subtitle">Review which codes need to be added to your organization's charge router for billing automation</div>
+    </div>
+
+  </div>
+
+  <!-- ACTION BAR (Export only) -->
+  <div class="pm-action-bar">
+    <div class="pm-export-wrap" id="pmExportWrap">
+      <button class="pm-pill pm-pill-export" onclick="pmToggleExport(event)">
+        <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+        Export
+        <svg class="pm-chevron" id="pmChevron" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+      <div class="pm-export-menu" id="pmExportMenu">
+        <button class="pm-export-item" onclick="pmExport('pdf')">
+          <svg viewBox="0 0 24 24" fill="#EA0044"><path d="M20 2H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-8.5 7.5c0 .83-.67 1.5-1.5 1.5H9v2H7.5V7H10c.83 0 1.5.67 1.5 1.5v1zm5 2c0 .83-.67 1.5-1.5 1.5h-2.5V7H15c.83 0 1.5.67 1.5 1.5v3zm4-3H19v1h1.5V11H19v2h-1.5V7h3v1.5zM9 9.5h1v-1H9v1zM4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm10 5.5h1v-3h-1v3z"/></svg>
+          Export as PDF
+        </button>
+        <button class="pm-export-item" onclick="pmExport('excel')">
+          <svg viewBox="0 0 24 24" fill="#217346"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+          Export as Excel
+        </button>
+        <button class="pm-export-item" onclick="pmExport('csv')">
+          <svg viewBox="0 0 24 24" fill="#495057"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 2l5 5h-5V4zM8 18v-2h2v-2H8v-2h3c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1H8zm8 0h-2v-6h2c.55 0 1 .45 1 1v4c0 .55-.45 1-1 1zm-1-4.5h.5v3H15v-3z"/></svg>
+          Export as CSV
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="form-body">
+
+    <!-- Purpose Banner -->
+    <div class="purpose-banner">
+      <p>This reference lists all CPT codes available within PaceMateLIVE&#8482;. Use this document to review which codes need to be added to your organization's charge router system to ensure proper billing automation for cardiac device monitoring services.</p>
+    </div>
+
+    <!-- SECTION 1: CIED Monitoring -->
+    <div class="theme-cied">
+      <div class="section-header collapsed-header" onclick="toggleAccordion(this)">
+        <div class="accordion-toggle">
+          <div>
+            <h2>CIED Monitoring</h2>
+            <p>Cardiac Implantable Electronic Device monitoring codes by device type and service category</p>
+          </div>
+          <div class="accordion-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+        </div>
+      </div>
+      <div class="accordion-content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Device Type</th>
+                <th>In-Person Programming Evaluation</th>
+                <th>In-Person Interrogation Only</th>
+                <th>Remote Evaluation Professional</th>
+                <th>Remote Evaluation Technical</th>
+                <th>Peri-Procedural Evaluation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="sub-category"><td colspan="6">Pacemakers</td></tr>
+              <tr class="sub-row">
+                <td>Pacemaker single lead</td>
+                <td><span class="cpt-code">93279</span></td>
+                <td><span class="cpt-code">93288</span></td>
+                <td><span class="cpt-code">93294</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93286</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Pacemaker dual lead</td>
+                <td><span class="cpt-code">93280</span></td>
+                <td><span class="cpt-code">93288</span></td>
+                <td><span class="cpt-code">93294</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93286</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Pacemaker multiple lead</td>
+                <td><span class="cpt-code">93281</span></td>
+                <td><span class="cpt-code">93288</span></td>
+                <td><span class="cpt-code">93294</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93286</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Pacemaker single leadless &mdash; Ventricular<span class="cpt-note">(e.g., Micra, AVEIR VR)</span></td>
+                <td><span class="cpt-code">93279</span></td>
+                <td><span class="cpt-code">93288</span></td>
+                <td><span class="cpt-code">93294</span><span class="cpt-note">Micra only</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93286</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Pacemaker single leadless &mdash; Atrial<span class="cpt-note">(e.g., AVEIR AR)</span></td>
+                <td><span class="cpt-code">0826T</span></td>
+                <td><span class="cpt-code">93288</span></td>
+                <td><span class="cpt-na">N/A</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93286</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Pacemaker dual chamber leadless<span class="cpt-note">(AVEIR DR)</span></td>
+                <td><span class="cpt-code">0804T</span></td>
+                <td><span class="cpt-code">93288</span></td>
+                <td><span class="cpt-na">N/A</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93286</span></td>
+              </tr>
+              <tr class="sub-category"><td colspan="6">ICDs (Implantable Cardioverter-Defibrillators)</td></tr>
+              <tr class="sub-row">
+                <td>ICD single lead</td>
+                <td><span class="cpt-code">93282</span></td>
+                <td><span class="cpt-code">93289</span></td>
+                <td><span class="cpt-code">93295</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93287</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>ICD dual lead</td>
+                <td><span class="cpt-code">93283</span></td>
+                <td><span class="cpt-code">93289</span></td>
+                <td><span class="cpt-code">93295</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93287</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>ICD multiple lead</td>
+                <td><span class="cpt-code">93284</span></td>
+                <td><span class="cpt-code">93289</span></td>
+                <td><span class="cpt-code">93295</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93287</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Subcutaneous ICD</td>
+                <td><span class="cpt-code">93260</span></td>
+                <td><span class="cpt-code">93261</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93296</span></td>
+                <td><span class="cpt-code">93287</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>EV-ICD</td>
+                <td><span class="cpt-code">0575T</span></td>
+                <td><span class="cpt-code">0576T</span></td>
+                <td><span class="cpt-code">0578T</span></td>
+                <td><span class="cpt-code">0579T</span></td>
+                <td><span class="cpt-code">93287</span></td>
+              </tr>
+              <tr class="sub-category"><td colspan="6">Other Implantable Monitors</td></tr>
+              <tr class="sub-row">
+                <td>Subcutaneous Cardiac Rhythm Monitor</td>
+                <td><span class="cpt-code">93285</span></td>
+                <td><span class="cpt-code">93291</span></td>
+                <td><span class="cpt-code">93298</span></td>
+                <td>&mdash;</td>
+                <td><span class="cpt-na">N/A</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Implantable Cardiovascular Physiologic Monitor</td>
+                <td><span class="cpt-na">N/A</span></td>
+                <td><span class="cpt-na">N/A</span></td>
+                <td><span class="cpt-code">93297</span><span class="cpt-note">*See footnote</span></td>
+                <td>&mdash;</td>
+                <td><span class="cpt-na">N/A</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Implantable Wireless Pulmonary Artery Sensor Monitor</td>
+                <td><span class="cpt-na">N/A</span></td>
+                <td><span class="cpt-na">N/A</span></td>
+                <td><span class="cpt-code">93264</span></td>
+                <td><span class="cpt-na">N/A</span></td>
+                <td><span class="cpt-na">N/A</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: Ambulatory Cardiac Monitoring -->
+    <div class="theme-ambulatory">
+      <div class="section-header collapsed-header" onclick="toggleAccordion(this)">
+        <div class="accordion-toggle">
+          <div>
+            <h2>Ambulatory Cardiac Monitoring</h2>
+            <p>Holter monitoring, event monitors, and mobile cardiac telemetry codes</p>
+          </div>
+          <div class="accordion-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+        </div>
+      </div>
+      <div class="accordion-content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Service Type</th>
+                <th>Tech / Hook-up</th>
+                <th>Professional</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="sub-category"><td colspan="3">Holter Monitoring</td></tr>
+              <tr class="sub-row">
+                <td>Holter up to 48 hours</td>
+                <td><span class="cpt-code">93225</span></td>
+                <td><span class="cpt-code">93227</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Holter &gt;48 hours up to 7 days</td>
+                <td><span class="cpt-code">93242</span></td>
+                <td><span class="cpt-code">93244</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Holter &gt;7 days up to 15 days</td>
+                <td><span class="cpt-code">93246</span></td>
+                <td><span class="cpt-code">93248</span></td>
+              </tr>
+              <tr class="sub-category"><td colspan="3">Event Monitors &amp; MCT</td></tr>
+              <tr class="sub-row">
+                <td>Event Monitors</td>
+                <td><span class="cpt-code">93270</span></td>
+                <td><span class="cpt-code">93272</span></td>
+              </tr>
+              <tr class="sub-row">
+                <td>Mobile Cardiac Telemetry</td>
+                <td><span class="cpt-na">N/A</span></td>
+                <td><span class="cpt-code">93229</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: ECG -->
+    <div class="theme-ecg">
+      <div class="section-header collapsed-header" onclick="toggleAccordion(this)">
+        <div class="accordion-toggle">
+          <div>
+            <h2>ECG</h2>
+            <p>Electrocardiogram services</p>
+          </div>
+          <div class="accordion-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+        </div>
+      </div>
+      <div class="accordion-content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Service Type</th>
+                <th>1&ndash;3 Lead</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AliveCor Kardia Station ECG</td>
+                <td><span class="cpt-code">93040</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: Remote Physiologic Monitoring -->
+    <div class="theme-rpm">
+      <div class="section-header collapsed-header" onclick="toggleAccordion(this)">
+        <div class="accordion-toggle">
+          <div>
+            <h2>Remote Physiologic Monitoring</h2>
+            <p>RPM service codes</p>
+          </div>
+          <div class="accordion-arrow"><svg viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg></div>
+        </div>
+      </div>
+      <div class="accordion-content">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Service Type</th>
+                <th>Minimum 20 min</th>
+                <th>Minimum 30 min</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Remote Physiologic Monitoring</td>
+                <td><span class="cpt-code">99091</span></td>
+                <td><span class="cpt-code">99457</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footnotes -->
+    <div class="footnotes">
+      <h3>Important Notes</h3>
+      <div class="footnote-item">
+        <span class="footnote-marker">*</span>
+        <span>In PaceMateLIVE&#8482;, CPT 93297-26 is only available when CPT 93296 is also billed.</span>
+      </div>
+      <div class="footnote-item">
+        <span class="footnote-marker">&bull;</span>
+        <span>Category III codes (0575T, 0576T, 0578T, 0579T, 0804T, 0826T) are temporary codes that may change. Verify current status with your payer.</span>
+      </div>
+      <div class="footnote-item">
+        <span class="footnote-marker">&bull;</span>
+        <span>For questions about charge router configuration, contact your assigned PaceMate&#174; Customer Success Manager.</span>
+      </div>
+    </div>
+
+  </div><!-- /.form-body -->
+</div><!-- /.form-card -->
+
+<!-- Footer -->
+<div style="max-width:1100px;margin:0 auto;padding:10px 28px 24px;display:flex;justify-content:space-between;align-items:center;font-size:0.72rem;font-family:'Roboto Condensed',sans-serif;color:#868E96;">
+  <div style="font-weight:700;color:#626469;">PaceMate&reg; &bull; PaceMate.com</div>
+  <div>PaceMateLIVE&#8482; CPT Codes &bull; v1 &bull; February 2026</div>
+</div>
+
+</div><!-- /.form-wrapper -->
+
+<!-- Toast -->
+<div class="toast" id="pmToast"></div>
+
+<!-- Back Button -->
+<style>
+.pm-back-btn {
+  position: fixed; top: 16px; left: 16px; z-index: 9999;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px 8px 12px;
+  background: #fff; border: 1.5px solid #DEE2E6; border-radius: 20px;
+  font-family: 'Roboto', sans-serif; font-size: 0.78rem; font-weight: 600;
+  color: #495057; cursor: pointer; text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.09); transition: all 0.15s; line-height: 1;
+}
+.pm-back-btn:hover { background: #EA0044; color: #fff; border-color: #EA0044; box-shadow: 0 3px 12px rgba(234,0,68,0.25); transform: translateX(-2px); }
+.pm-back-btn:hover svg { transform: translateX(-2px); }
+.pm-back-btn svg { transition: transform 0.15s; }
+@media print { .pm-back-btn { display: none !important; } }
+</style>
+<button class="pm-back-btn" onclick="window.history.back()" title="Back to portal">
+  <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 4L6 8l4 4"/>
+  </svg>
+  Back
+</button>
+
+<script>
+const PM_FORM_NAME = 'PaceMateLIVE CPT Codes';
+
+function showToast(msg, type) {
+  var t = document.getElementById('pmToast');
+  t.textContent = msg;
+  t.className = 'toast toast-' + (type || 'success');
+  void t.offsetWidth;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+function toggleAccordion(header) {
+  var content = header.nextElementSibling;
+  var isExpanded = content.classList.contains('expanded');
+  if (isExpanded) {
+    content.classList.remove('expanded');
+    header.classList.add('collapsed-header');
+  } else {
+    content.classList.add('expanded');
+    header.classList.remove('collapsed-header');
+  }
+}
+
+function pmToggleExport(e) {
+  e.stopPropagation();
+  var menu = document.getElementById('pmExportMenu');
+  var chevron = document.getElementById('pmChevron');
+  var open = menu.classList.toggle('open');
+  chevron.classList.toggle('open', open);
+}
+document.addEventListener('click', function(){ 
+  document.getElementById('pmExportMenu').classList.remove('open');
+  document.getElementById('pmChevron').classList.remove('open');
+});
+
+function pmExport(type) {
+  document.getElementById('pmExportMenu').classList.remove('open');
+  document.getElementById('pmChevron').classList.remove('open');
+  if (type === 'pdf') { pmExportPDF(); }
+  else if (type === 'excel') { pmExportExcel(); }
+  else if (type === 'csv') { pmExportCSV(); }
+}
+
+function pmExportPDF() {
+  // Expand all accordions first
+  document.querySelectorAll('.accordion-content').forEach(function(c){ c.classList.add('expanded'); });
+  document.querySelectorAll('.section-header').forEach(function(h){ h.classList.remove('collapsed-header'); });
+  var { jsPDF } = window.jspdf;
+  html2canvas(document.querySelector('.form-card'), { scale: 2, useCORS: true }).then(function(canvas) {
+    var imgData = canvas.toDataURL('image/png');
+    var pdf = new jsPDF('p', 'mm', 'a4');
+    var pdfWidth = pdf.internal.pageSize.getWidth();
+    var pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    var pageHeight = pdf.internal.pageSize.getHeight();
+    var position = 0;
+    while (pdfHeight > 0) {
+      pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, (canvas.height * pdfWidth) / canvas.width);
+      pdfHeight -= pageHeight;
+      position -= pageHeight;
+      if (pdfHeight > 0) pdf.addPage();
+    }
+    pdf.save(PM_FORM_NAME.replace(/\s+/g,'-') + '.pdf');
+    showToast('PDF downloaded!', 'success');
+  }).catch(function(){ showToast('PDF export failed', 'error'); });
+}
+
+function pmExportExcel() {
+  var rows = [['Device Type / Service', 'CPT Code', 'Category', 'Service Type']];
+  document.querySelectorAll('table').forEach(function(tbl) {
+    var section = tbl.closest('.theme-cied, .theme-ambulatory, .theme-ecg, .theme-rpm');
+    var cat = section ? section.querySelector('h2').textContent : '';
+    tbl.querySelectorAll('tbody tr').forEach(function(tr) {
+      if (tr.classList.contains('sub-category')) return;
+      var cells = tr.querySelectorAll('td');
+      if (!cells.length) return;
+      var device = cells[0] ? cells[0].textContent.trim() : '';
+      for (var i = 1; i < cells.length; i++) {
+        var code = cells[i] ? cells[i].textContent.trim() : '';
+        if (code && code !== 'N/A' && code !== '—') {
+          rows.push([device, code, cat, '']);
+        }
+      }
+    });
+  });
+  var ws = XLSX.utils.aoa_to_sheet(rows);
+  ws['!cols'] = [{wch:40},{wch:12},{wch:30},{wch:20}];
+  var wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'CPT Codes');
+  XLSX.writeFile(wb, PM_FORM_NAME.replace(/\s+/g,'-') + '.xlsx');
+  showToast('Excel downloaded!', 'success');
+}
+
+function pmExportCSV() {
+  var rows = [['Device Type / Service','CPT Code','Category']];
+  document.querySelectorAll('table').forEach(function(tbl) {
+    var section = tbl.closest('.theme-cied, .theme-ambulatory, .theme-ecg, .theme-rpm');
+    var cat = section ? section.querySelector('h2').textContent : '';
+    tbl.querySelectorAll('tbody tr').forEach(function(tr) {
+      if (tr.classList.contains('sub-category')) return;
+      var cells = tr.querySelectorAll('td');
+      if (!cells.length) return;
+      var device = cells[0] ? cells[0].textContent.trim() : '';
+      for (var i = 1; i < cells.length; i++) {
+        var code = cells[i] ? cells[i].textContent.trim() : '';
+        if (code && code !== 'N/A' && code !== '—') {
+          rows.push([device, code, cat]);
+        }
+      }
+    });
+  });
+  var csv = rows.map(function(r){ return r.map(function(v){ return '"'+String(v).replace(/"/g,'""')+'"'; }).join(','); }).join('\n');
+  var blob = new Blob([csv], {type:'text/csv'});
+  var url = URL.createObjectURL(blob);
+  var a = document.createElement('a');
+  a.href = url; a.download = PM_FORM_NAME.replace(/\s+/g,'-') + '.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 5000);
+  showToast('CSV downloaded!', 'success');
+}
+</script>
+</body>
+</html>
